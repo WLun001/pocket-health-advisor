@@ -8,7 +8,6 @@ braintree.Configuration.configure(
 )
 
 from flask import Flask, request
-# from django.http import HttpResponse
 app = Flask(__name__)
 @app.route("/client_token", methods=["GET"])
 def client_token():
