@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">pocket-health-advisor</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_payment">payment</string>
+</resources>
