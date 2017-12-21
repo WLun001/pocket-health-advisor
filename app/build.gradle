@@ -47,3 +47,5 @@ configurations.all {
         }
     }
 }
+
+apply plugin: 'kotlin-android-extensions'
