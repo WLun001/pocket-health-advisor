@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity() {
         val id = item.itemId
 
 
-        return if (id == R.id.action_settings) {
+        return if (id == R.id.action_login) {
             true
         } else super.onOptionsItemSelected(item)
 

@@ -37,8 +37,8 @@ public class PaymentActivity extends AppCompatActivity {
 
     final int REQUEST_CODE = 1;
     //replace to your own server when necessary
-    final String get_token = "http://10.0.2.2:8888/BraintreePayments-server/main.php";
-    final String send_payment_details = "http://10.0.2.2:8888/BraintreePayments-server/mycheckout.php";
+    final String get_token = "http://10.0.2.2:5000/client_token";
+    final String send_payment_details = "http://10.0.2.2:5000/checkout";
 
     private String token, amount;
     private HashMap<String, String> paramHash;
@@ -55,14 +55,14 @@ public class PaymentActivity extends AppCompatActivity {
 
         llHolder = (LinearLayout) findViewById(R.id.llHolder);
         etAmount = (EditText) findViewById(R.id.etPrice);
-        btnPay = (Button) findViewById(R.id.btnPay);
-        btnPay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBraintreeSubmit();
-            }
-        });
-        new HttpRequest().execute();
+//        btnPay = (Button) findViewById(R.id.btnPay);
+//        btnPay.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                onBraintreeSubmit();
+//            }
+//        });
+        //new HttpRequest().execute();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
