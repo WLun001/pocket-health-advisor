@@ -31,8 +31,9 @@ class MainActivity : AppCompatActivity() {
         setSingleEvent(gridLayout = GridLayout)
     }
 
-    fun setSingleEvent(gridLayout: GridLayout){
+    fun setSingleEvent(gridLayout: GridLayout?){
         for (count in 0..4){
+
             var cardView = gridLayout.getChildAt(count) as? CardView
             //val finalI: Int = count
             cardView?.setOnClickListener(object: View.OnClickListener {
