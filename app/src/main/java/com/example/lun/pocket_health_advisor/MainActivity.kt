@@ -33,12 +33,12 @@ class MainActivity : AppCompatActivity() {
 
     fun setSingleEvent(gridLayout: GridLayout){
         for (count in 0..4){
-            var cardView = gridLayout.getChildAt(count) as CardView
-            val finalI: Int = count
-            cardView.setOnClickListener(object: View.OnClickListener {
+            var cardView = gridLayout.getChildAt(count) as? CardView
+            //val finalI: Int = count
+            cardView?.setOnClickListener(object: View.OnClickListener {
                 override fun onClick(v: View?) {
                     if (count == 3){
-                        val intent = Intent(applicationContext, SinchLoginActivity::class.java)
+                        val intent = Intent(applicationContext, CheckAppointmentActivity::class.java)
                         startActivity(intent)
                     }
                 }

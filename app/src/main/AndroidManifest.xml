@@ -38,7 +38,8 @@
         <activity
             android:name=".SinchLoginActivity"
             android:label="@string/title_activity_sinch_login"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".CheckAppointmentActivity"></activity>
     </application>
 
 </manifest>
