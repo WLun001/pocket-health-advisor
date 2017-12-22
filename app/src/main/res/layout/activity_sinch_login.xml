@@ -20,7 +20,8 @@
             android:layout_marginTop="40dp"
             android:text="Enter your name"
             android:textAllCaps="true"
-            android:id="@+id/textView" android:layout_gravity="center_horizontal"
+            android:id="@+id/textView"
+            android:layout_gravity="center_horizontal"
             android:textColor="@color/sinch_purple"
             android:textSize="20sp"/>
 

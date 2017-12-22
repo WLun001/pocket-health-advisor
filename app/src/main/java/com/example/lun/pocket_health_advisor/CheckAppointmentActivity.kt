@@ -67,7 +67,7 @@ class CheckAppointmentActivity : AppCompatActivity() {
                     val intent = Intent(context, SinchLoginActivity::class.java)
                     context.startActivity(intent)
                 }
-                
+
             })
 
             return view

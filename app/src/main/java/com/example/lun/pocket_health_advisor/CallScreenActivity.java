@@ -68,7 +68,7 @@ public class CallScreenActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.callscreen);
+        setContentView(R.layout.activity_sinch_callscreen);
 
         mAudioPlayer = new AudioPlayer(this);
         mCallDuration = (TextView) findViewById(R.id.callDuration);

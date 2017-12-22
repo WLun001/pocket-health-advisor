@@ -32,7 +32,7 @@ dependencies {
     compile 'com.braintreepayments.api:braintree:2.+'
     compile 'com.braintreepayments.api:drop-in:3.+'
     compile 'com.android.volley:volley:1.0.0'
-    compile(name:'sinch-android-rtc', version:'+', ext:'aar')
+    compile(name: 'sinch-android-rtc', version: '+', ext: 'aar')
 }
 repositories {
     mavenCentral()
@@ -54,7 +54,7 @@ configurations.all {
 
 preBuild.doFirst {
     String[] path = project.buildscript.sourceFile.getParent().split("/")
-    String taskName = path[path.size()-1]
+    String taskName = path[path.size() - 1]
     if (taskName.contains("-push") && !file("./google-services.json").exists()) {
         outputFcmBuildError()
     }
