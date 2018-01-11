@@ -2,12 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.lun.pocket_health_advisor">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
-    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:allowBackup="true"
@@ -27,7 +27,7 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".SinchService"></service>
+        <service android:name=".SinchService" />
 
         <activity
             android:name=".PaymentActivity"
@@ -51,11 +51,16 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".CheckAppointmentActivity" />
-        <activity android:name=".CallScreenActivity"/>
-        <activity android:name=".IncomingCallScreenActivity" android:screenOrientation="portrait"
-            android:noHistory="true"/>
-        <activity android:name=".PlaceCallActivity" android:screenOrientation="portrait"/>
-
+        <activity android:name=".CallScreenActivity" />
+        <activity
+            android:name=".IncomingCallScreenActivity"
+            android:noHistory="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".PlaceCallActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".ChatbotAcvitity" />
+        <activity android:name=".ChatbotActivity"></activity>
     </application>
 
 </manifest>

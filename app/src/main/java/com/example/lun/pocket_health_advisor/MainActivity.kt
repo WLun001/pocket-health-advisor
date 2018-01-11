@@ -11,22 +11,22 @@ import android.view.View
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.GridLayout
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.content_main.*
 
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val toolbar = findViewById(R.id.toolbar) as Toolbar
         setSupportActionBar(toolbar)
 
-        val fab = findViewById(R.id.fab) as FloatingActionButton
         fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action kotlin", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
         }
 
-        val GridLayout = findViewById(R.id.mainGrid) as GridLayout
+        val GridLayout = mainGrid as GridLayout
 
         setSingleEvent(gridLayout = GridLayout)
     }
@@ -38,10 +38,15 @@ class MainActivity : AppCompatActivity() {
             //val finalI: Int = count
             cardView?.setOnClickListener(object: View.OnClickListener {
                 override fun onClick(v: View?) {
-                    if (count == 3){
-                        val intent = Intent(applicationContext, CheckAppointmentActivity::class.java)
-                        startActivity(intent)
-                    }
+                     when(count) {
+                        0 -> {
+                            startActivity(Intent(applicationContext, ChatbotActivity::class.java))
+                        }
+                        3 -> {
+                             val intent = Intent(applicationContext, CheckAppointmentActivity::class.java)
+                             startActivity(intent)
+                         }
+                     }
                 }
 
             })

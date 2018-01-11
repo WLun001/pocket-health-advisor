@@ -10,6 +10,12 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                includeCompileClasspath false
+            }
+        }
     }
     buildTypes {
         release {
@@ -17,10 +23,23 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES.txt'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/dependencies.txt'
+        exclude 'META-INF/LGPL2.1'
+    }
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:26.1.0'
     implementation 'com.android.support:cardview-v7:26.1.0'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
@@ -28,6 +47,14 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+    compile 'ai.api:libai:1.4.8'
+    compile 'ai.api:sdk:2.0.7@aar'
+    compile 'com.google.code.gson:gson:2.3.1'
+    implementation 'com.firebaseui:firebase-ui-firestore:3.1.3'
+    implementation "com.google.firebase:firebase-firestore:11.8.0"
+    implementation "com.android.support:recyclerview-v7:26.1.0"
+    implementation "com.android.support:support-v4:26.1.0"
+    compile 'commons-io:commons-io:2.4'
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     compile 'com.braintreepayments.api:braintree:2.+'
     compile 'com.braintreepayments.api:drop-in:3.+'
@@ -60,12 +87,6 @@ preBuild.doFirst {
     }
 }
 
-def outputFcmBuildError() {
-    System.err.println 'You are building one of Sinch sample projects that uses Firebase Cloud Messaging for delivering push notifications.'
-    System.err.println 'Android Studio FCM plugin requires \'google-services.json\' with correspondent \'package_name\' to be in gradle :app folder (e.g. in ./sinch-rtc-sample-push/)'
-    System.err.println 'Follow the Firebase Cloud Messaging manual here \'https://firebase.google.com/docs/android/setup\' to get one.'
-    System.err.println 'For details about Sinch Managed push notifications look here \'https://www.sinch.com/docs/voice/android/#pushnotifications\'.'
-    throw new GradleException('google-services.json NOT FOUND!')
-}
 
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'com.google.gms.google-services'
