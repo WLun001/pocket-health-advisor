@@ -1,13 +1,5 @@
 package com.example.lun.pocket_health_advisor;
 
-import com.sinch.android.rtc.AudioController;
-import com.sinch.android.rtc.PushPair;
-import com.sinch.android.rtc.calling.Call;
-import com.sinch.android.rtc.calling.CallEndCause;
-import com.sinch.android.rtc.calling.CallState;
-import com.sinch.android.rtc.video.VideoCallListener;
-import com.sinch.android.rtc.video.VideoController;
-
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,6 +10,14 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.sinch.android.rtc.AudioController;
+import com.sinch.android.rtc.PushPair;
+import com.sinch.android.rtc.calling.Call;
+import com.sinch.android.rtc.calling.CallEndCause;
+import com.sinch.android.rtc.calling.CallState;
+import com.sinch.android.rtc.video.VideoCallListener;
+import com.sinch.android.rtc.video.VideoController;
 
 import java.util.List;
 import java.util.Locale;
@@ -41,19 +41,6 @@ public class CallScreenActivity extends BaseActivity {
     private TextView mCallDuration;
     private TextView mCallState;
     private TextView mCallerName;
-
-    private class UpdateCallDurationTask extends TimerTask {
-
-        @Override
-        public void run() {
-            CallScreenActivity.this.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    updateCallDuration();
-                }
-            });
-        }
-    }
 
     @Override
     protected void onSaveInstanceState(Bundle savedInstanceState) {
@@ -181,6 +168,7 @@ public class CallScreenActivity extends BaseActivity {
             mLocalVideoViewAdded = true;
         }
     }
+
     private void addRemoteView() {
         if (mRemoteVideoViewAdded || getSinchServiceInterface() == null) {
             return; //early
@@ -192,7 +180,6 @@ public class CallScreenActivity extends BaseActivity {
             mRemoteVideoViewAdded = true;
         }
     }
-
 
     private void removeVideoViews() {
         if (getSinchServiceInterface() == null) {
@@ -208,6 +195,19 @@ public class CallScreenActivity extends BaseActivity {
             localView.removeView(vc.getLocalView());
             mLocalVideoViewAdded = false;
             mRemoteVideoViewAdded = false;
+        }
+    }
+
+    private class UpdateCallDurationTask extends TimerTask {
+
+        @Override
+        public void run() {
+            CallScreenActivity.this.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    updateCallDuration();
+                }
+            });
         }
     }
 

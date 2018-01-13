@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@drawable/sky_comp"
+    android:orientation="vertical"
     android:weightSum="10"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.example.lun.pocket_health_advisor.MainActivity"
@@ -19,13 +18,13 @@
 
         <TextView
             android:id="@+id/welcomeText"
-            android:text="Welcome"
-            android:textSize="34sp"
-            android:textColor="@color/bt_white_pressed"
-            android:layout_centerInParent="true"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Welcome"
+            android:textColor="@color/bt_white_pressed"
+            android:textSize="34sp" />
+
     </RelativeLayout>
 
     <GridLayout
@@ -44,10 +43,10 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_columnWeight="1"
-            android:layout_rowWeight="1"
             android:layout_marginBottom="16dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
+            android:layout_rowWeight="1"
             app:cardCornerRadius="8dp"
             app:cardElevation="8dp">
 
@@ -55,28 +54,28 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_horizontal|center_vertical"
-                android:gravity="center"
-                android:weightSum="4"
                 android:layout_margin="16dp"
-                android:orientation="vertical">
+                android:gravity="center"
+                android:orientation="vertical"
+                android:weightSum="4">
 
                 <ImageView
                     android:layout_width="120dp"
                     android:layout_height="0dp"
-                    android:layout_weight="3"
                     android:layout_gravity="center_horizontal"
+                    android:layout_weight="3"
                     android:src="@drawable/diagnose" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
+                    android:layout_gravity="center_horizontal"
                     android:layout_weight="1"
                     android:text="Diagnosis"
                     android:textAlignment="center"
-                    android:layout_gravity="center_horizontal"
-                    android:textStyle="bold"
                     android:textColor="@color/colorPrimaryDark"
-                    android:textSize="18sp"/>
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
             </LinearLayout>
 
@@ -87,10 +86,10 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_columnWeight="1"
-            android:layout_rowWeight="1"
             android:layout_marginBottom="16dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
+            android:layout_rowWeight="1"
             app:cardCornerRadius="8dp"
             app:cardElevation="8dp">
 
@@ -98,28 +97,28 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_horizontal|center_vertical"
-                android:gravity="center"
-                android:weightSum="6"
                 android:layout_margin="16dp"
-                android:orientation="vertical">
+                android:gravity="center"
+                android:orientation="vertical"
+                android:weightSum="6">
 
                 <ImageView
                     android:layout_width="200dp"
                     android:layout_height="0dp"
-                    android:layout_weight="4"
                     android:layout_gravity="center_horizontal"
+                    android:layout_weight="4"
                     android:src="@drawable/medical_centre" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
+                    android:layout_gravity="center_horizontal"
                     android:layout_weight="2"
                     android:text="Medical Centres"
                     android:textAlignment="center"
-                    android:layout_gravity="center_horizontal"
-                    android:textStyle="bold"
                     android:textColor="@color/colorPrimaryDark"
-                    android:textSize="16sp"/>
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
             </LinearLayout>
 
@@ -130,10 +129,10 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_columnWeight="1"
-            android:layout_rowWeight="1"
             android:layout_marginBottom="16dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
+            android:layout_rowWeight="1"
             app:cardCornerRadius="8dp"
             app:cardElevation="8dp">
 
@@ -141,29 +140,29 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_horizontal|center_vertical"
-                android:gravity="center"
-                android:weightSum="4"
                 android:layout_margin="16dp"
-                android:orientation="vertical">
+                android:gravity="center"
+                android:orientation="vertical"
+                android:weightSum="4">
 
                 <ImageView
                     android:layout_width="80dp"
                     android:layout_height="0dp"
-                    android:layout_weight="3"
                     android:layout_gravity="center_horizontal"
+                    android:layout_weight="3"
                     android:src="@drawable/record" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10dp"
                     android:layout_weight="1"
                     android:text="History"
                     android:textAlignment="center"
-                    android:layout_gravity="center_horizontal"
-                    android:textStyle="bold"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="18sp"
-                    android:layout_marginTop="10dp"/>
+                    android:textStyle="bold" />
 
             </LinearLayout>
 
@@ -174,10 +173,10 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_columnWeight="1"
-            android:layout_rowWeight="1"
             android:layout_marginBottom="16dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
+            android:layout_rowWeight="1"
             app:cardCornerRadius="8dp"
             app:cardElevation="8dp">
 
@@ -185,29 +184,29 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_horizontal|center_vertical"
-                android:gravity="center"
-                android:weightSum="4"
                 android:layout_margin="16dp"
-                android:orientation="vertical">
+                android:gravity="center"
+                android:orientation="vertical"
+                android:weightSum="4">
 
                 <ImageView
                     android:layout_width="80dp"
                     android:layout_height="0dp"
+                    android:layout_gravity="center_horizontal"
                     android:layout_weight="3"
-                    android:src="@drawable/appointment"
-                    android:layout_gravity="center_horizontal"/>
+                    android:src="@drawable/appointment" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10dp"
                     android:layout_weight="1"
                     android:text="Appointment"
                     android:textAlignment="center"
-                    android:layout_gravity="center_horizontal"
-                    android:textStyle="bold"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="18sp"
-                    android:layout_marginTop="10dp"/>
+                    android:textStyle="bold" />
 
             </LinearLayout>
 

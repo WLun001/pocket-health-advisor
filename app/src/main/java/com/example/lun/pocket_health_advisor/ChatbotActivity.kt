@@ -9,7 +9,6 @@ import ai.api.model.AIRequest
 import ai.api.model.AIResponse
 import ai.api.model.ResponseMessage
 import android.content.Context
-import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.AsyncTask
@@ -33,15 +32,13 @@ import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import kotlinx.android.synthetic.main.activity_chatbot_acvitity.*
-import java.util.*
-import kotlin.collections.HashMap
 
 class ChatbotActivity : AppCompatActivity(), AIListener {
 
     //create empty constructor for firestore recycleview
     data class ChatMessage(var message: String = "", var user: String = "")
 
-    lateinit var user : MainActivity.User
+    lateinit var user: MainActivity.User
     lateinit var db: FirebaseFirestore
     lateinit var adapter: FirestoreRecyclerAdapter<ChatMessage, ChatRecord>
     internal var flagFab: Boolean? = true
@@ -63,7 +60,7 @@ class ChatbotActivity : AppCompatActivity(), AIListener {
         setContentView(R.layout.activity_chatbot_acvitity)
         ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.RECORD_AUDIO), 1)
 
-        var user  = intent.getSerializableExtra(MainActivity.USER_DETAILS) as MainActivity.User
+        var user = intent.getSerializableExtra(MainActivity.USER_DETAILS) as MainActivity.User
 
         recyclerView.setHasFixedSize(true)
         val linearLayoutManager = LinearLayoutManager(this)
@@ -288,7 +285,7 @@ class ChatbotActivity : AppCompatActivity(), AIListener {
 
     }
 
-    fun getMap(chatMessage: ChatMessage) : HashMap<String, Any>{
+    fun getMap(chatMessage: ChatMessage): HashMap<String, Any> {
         val data = HashMap<String, Any>()
         data.put("message", chatMessage.message)
         data.put("user", chatMessage.user)

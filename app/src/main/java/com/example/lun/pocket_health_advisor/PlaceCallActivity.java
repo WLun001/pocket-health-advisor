@@ -1,7 +1,5 @@
 package com.example.lun.pocket_health_advisor;
 
-import com.sinch.android.rtc.calling.Call;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -11,10 +9,27 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.sinch.android.rtc.calling.Call;
+
 public class PlaceCallActivity extends BaseActivity {
 
     private Button mCallButton;
     private EditText mCallName;
+    private OnClickListener buttonClickListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.callButton:
+                    callButtonClicked();
+                    break;
+
+                case R.id.stopButton:
+                    stopButtonClicked();
+                    break;
+
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,20 +73,4 @@ public class PlaceCallActivity extends BaseActivity {
         callScreen.putExtra(SinchService.CALL_ID, callId);
         startActivity(callScreen);
     }
-
-    private OnClickListener buttonClickListener = new OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            switch (v.getId()) {
-                case R.id.callButton:
-                    callButtonClicked();
-                    break;
-
-                case R.id.stopButton:
-                    stopButtonClicked();
-                    break;
-
-            }
-        }
-    };
 }

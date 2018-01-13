@@ -8,13 +8,12 @@ import android.widget.TextView;
  * Created by Lun on 11/01/2018.
  */
 
-public class ChatRecord extends RecyclerView.ViewHolder  {
+public class ChatRecord extends RecyclerView.ViewHolder {
 
 
+    TextView leftText, rightText;
 
-     TextView leftText,rightText;
-
-    public ChatRecord(View itemView){
+    public ChatRecord(View itemView) {
         super(itemView);
 
         leftText = itemView.findViewById(R.id.leftText);

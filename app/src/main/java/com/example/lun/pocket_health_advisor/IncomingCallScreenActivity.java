@@ -1,10 +1,5 @@
 package com.example.lun.pocket_health_advisor;
 
-import com.sinch.android.rtc.PushPair;
-import com.sinch.android.rtc.calling.Call;
-import com.sinch.android.rtc.calling.CallEndCause;
-import com.sinch.android.rtc.video.VideoCallListener;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,6 +8,11 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.sinch.android.rtc.PushPair;
+import com.sinch.android.rtc.calling.Call;
+import com.sinch.android.rtc.calling.CallEndCause;
+import com.sinch.android.rtc.video.VideoCallListener;
+
 import java.util.List;
 
 public class IncomingCallScreenActivity extends BaseActivity {
@@ -20,6 +20,19 @@ public class IncomingCallScreenActivity extends BaseActivity {
     static final String TAG = IncomingCallScreenActivity.class.getSimpleName();
     private String mCallId;
     private AudioPlayer mAudioPlayer;
+    private OnClickListener mClickListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.answerButton:
+                    answerClicked();
+                    break;
+                case R.id.declineButton:
+                    declineClicked();
+                    break;
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,27 +114,15 @@ public class IncomingCallScreenActivity extends BaseActivity {
         public void onVideoTrackAdded(Call call) {
             // Display some kind of icon showing it's a video call
         }
+
         @Override
         public void onVideoTrackPaused(Call call) {
             // Display some kind of icon showing it's a video call
         }
+
         @Override
         public void onVideoTrackResumed(Call call) {
             // Display some kind of icon showing it's a video call
         }
     }
-
-    private OnClickListener mClickListener = new OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            switch (v.getId()) {
-                case R.id.answerButton:
-                    answerClicked();
-                    break;
-                case R.id.declineButton:
-                    declineClicked();
-                    break;
-            }
-        }
-    };
 }

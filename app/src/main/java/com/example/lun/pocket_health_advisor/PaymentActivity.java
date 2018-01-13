@@ -117,12 +117,11 @@ public class PaymentActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        if(response.contains("Successful"))
-                        {
+                        if (response.contains("Successful")) {
                             Toast.makeText(PaymentActivity.this, "Transaction successful", Toast.LENGTH_LONG).show();
                             llHolder.setVisibility(View.GONE);
-                        }
-                        else Toast.makeText(PaymentActivity.this, "Transaction failed", Toast.LENGTH_LONG).show();
+                        } else
+                            Toast.makeText(PaymentActivity.this, "Transaction failed", Toast.LENGTH_LONG).show();
                         Log.d("mylog", "Final Response: " + response.toString());
                     }
                 }, new Response.ErrorListener() {

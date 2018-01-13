@@ -2,9 +2,8 @@ package com.example.lun.pocket_health_advisor
 
 import android.content.Context
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Layout
+import android.support.v7.app.AppCompatActivity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -82,7 +81,6 @@ class CheckAppointmentActivity : AppCompatActivity() {
             this.label = row?.findViewById<TextView>(R.id.title) as TextView
         }
     }
-
 
 
 }

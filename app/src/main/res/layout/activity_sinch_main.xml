@@ -9,36 +9,37 @@
     tools:context=".PlaceCallActivity">
 
     <LinearLayout
+        android:id="@+id/numberInputLayout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:orientation="vertical"
         android:paddingLeft="40dp"
-        android:paddingRight="40dp"
-        android:id="@+id/numberInputLayout">
+        android:paddingRight="40dp">
 
         <TextView
+            android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:layout_marginTop="40dp"
             android:text="Enter recipient name"
             android:textAllCaps="true"
-            android:id="@+id/textView"
-            android:layout_gravity="center_horizontal"
             android:textColor="@color/sinch_purple"
-            android:textSize="20sp"/>
+            android:textSize="20sp" />
+
         <EditText
             android:id="@+id/callName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:textSize="32sp"
+            android:background="@drawable/inputbox"
+            android:inputType="textNoSuggestions"
             android:padding="10dp"
             android:textColor="@color/sinch_purple"
-            android:background="@drawable/inputbox"
-            android:inputType="textNoSuggestions">
+            android:textSize="32sp">
 
-            <requestFocus/>
+            <requestFocus />
         </EditText>
 
     </LinearLayout>
@@ -48,28 +49,28 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/numberInputLayout"
-        android:paddingBottom="24dp"
+        android:layout_centerHorizontal="true"
 
-        android:layout_centerHorizontal="true">
+        android:paddingBottom="24dp">
+
         <TextView
             android:id="@+id/infoText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Logged in as: "
             android:textAllCaps="true"
-            android:textColor="@color/sinch_purple"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            />
+            android:textColor="@color/sinch_purple" />
 
         <TextView
             android:id="@+id/loggedInName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/sinch_purple"
             android:text="Someone"
             android:textAllCaps="true"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textStyle="bold"/>
+            android:textColor="@color/sinch_purple"
+            android:textStyle="bold" />
     </LinearLayout>
 
 
@@ -83,25 +84,25 @@
             android:id="@+id/callButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
+            android:layout_centerHorizontal="true"
             android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="20dp"
             android:background="@drawable/button_call"
             android:minHeight="56dp"
-            android:minWidth="132dp"
-            android:layout_centerHorizontal="true"/>
+            android:minWidth="132dp" />
 
         <Button
             android:id="@+id/stopButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/callButton"
+            android:layout_centerHorizontal="true"
             android:layout_marginBottom="10dp"
             android:background="@android:color/transparent"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@color/sinch_purple"
-            android:textAllCaps="true"
             android:text="Stop service"
-            android:layout_centerHorizontal="true"/>
+            android:textAllCaps="true"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/sinch_purple" />
 
     </RelativeLayout>
 

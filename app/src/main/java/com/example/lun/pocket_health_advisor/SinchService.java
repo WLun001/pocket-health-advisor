@@ -21,13 +21,11 @@ import com.sinch.android.rtc.video.VideoController;
 
 public class SinchService extends Service {
 
+    public static final String CALL_ID = "CALL_ID";
+    static final String TAG = SinchService.class.getSimpleName();
     private static final String APP_KEY = "cc277e12-542f-4612-97d7-f67e7b2f85e5";
     private static final String APP_SECRET = "XIcRHW3cm06Nba+n6UMmuQ==";
     private static final String ENVIRONMENT = "sandbox.sinch.com";
-
-    public static final String CALL_ID = "CALL_ID";
-    static final String TAG = SinchService.class.getSimpleName();
-
     private SinchServiceInterface mSinchServiceInterface = new SinchServiceInterface();
     private SinchClient mSinchClient;
     private String mUserId;
@@ -87,6 +85,13 @@ public class SinchService extends Service {
         return mSinchServiceInterface;
     }
 
+    public interface StartFailedListener {
+
+        void onStartFailed(SinchError error);
+
+        void onStarted();
+    }
+
     public class SinchServiceInterface extends Binder {
 
         public Call callUserVideo(String userId) {
@@ -130,13 +135,6 @@ public class SinchService extends Service {
             }
             return mSinchClient.getAudioController();
         }
-    }
-
-    public interface StartFailedListener {
-
-        void onStartFailed(SinchError error);
-
-        void onStarted();
     }
 
     private class MySinchClientListener implements SinchClientListener {
@@ -186,7 +184,7 @@ public class SinchService extends Service {
 
         @Override
         public void onRegistrationCredentialsRequired(SinchClient client,
-                ClientRegistration clientRegistration) {
+                                                      ClientRegistration clientRegistration) {
         }
     }
 
@@ -204,9 +202,8 @@ public class SinchService extends Service {
 
     private class PersistedSettings {
 
-        private SharedPreferences mStore;
-
         private static final String PREF_KEY = "Sinch";
+        private SharedPreferences mStore;
 
         public PersistedSettings(Context context) {
             mStore = context.getSharedPreferences(PREF_KEY, MODE_PRIVATE);

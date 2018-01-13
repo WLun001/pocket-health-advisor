@@ -25,14 +25,14 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         @JvmStatic
-        val USER_DETAILS : String = "com.example.lun.pocket_health_advisor.USER_DETAILS"
+        val USER_DETAILS: String = "com.example.lun.pocket_health_advisor.USER_DETAILS"
     }
 
-    data class User(var id : String, var name : String = "") : Serializable
+    data class User(var id: String, var name: String = "") : Serializable
 
     lateinit var auth: FirebaseAuth
     lateinit var authListener: FirebaseAuth.AuthStateListener
-    lateinit var user : FirebaseUser
+    lateinit var user: FirebaseUser
 
     val RC_SIGN_IN = 1;
 
@@ -65,7 +65,7 @@ class MainActivity : AppCompatActivity() {
                                                 AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build()))
                                 .build(),
                         RC_SIGN_IN)
-            }else{
+            } else {
                 user = firebaseUser
             }
 

@@ -4,14 +4,14 @@
     tools:context="com.example.lun.pocket_health_advisor.MainActivity">
     <item
         android:id="@+id/action_login"
+        android:icon="@drawable/ic_account_circle_white_24dp"
         android:orderInCategory="100"
         android:title="Login"
-        android:icon="@drawable/ic_account_circle_white_24dp"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/sign_out"
         android:title="Sign Out"
-        app:showAsAction="collapseActionView"/>
+        app:showAsAction="collapseActionView" />
 
 </menu>
