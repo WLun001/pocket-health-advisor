@@ -32,12 +32,16 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldPath;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import ai.api.AIDataService;
 import ai.api.AIListener;
@@ -85,6 +89,7 @@ public class ChatbotActivity extends AppCompatActivity implements AIListener {
         recyclerView.setHasFixedSize(true);
         final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setStackFromEnd(true);
+        linearLayoutManager.setAutoMeasureEnabled(true);
         recyclerView.setLayoutManager(linearLayoutManager);
 
         db = FirebaseFirestore.getInstance();
@@ -115,8 +120,12 @@ public class ChatbotActivity extends AppCompatActivity implements AIListener {
                 if (!message.equals("")) {
 
                     ChatMessage chatMessage = new ChatMessage(message, "user");
+                    Map<String, Object> data = new HashMap<>();
+                    data.put("msgText", chatMessage.getMsgText());
+                    data.put("msgUser", chatMessage.getMsgUser());
+                    data.put("timestamp", FieldValue.serverTimestamp());
                     db.collection("patients").document("patient1").collection("chat_data")
-                            .add(chatMessage);
+                            .add(data);
 
 
                     aiRequest.setQuery(message);
@@ -145,10 +154,12 @@ public class ChatbotActivity extends AppCompatActivity implements AIListener {
                                         for (String message3 : message2.getSpeech()) {
                                             ChatMessage chatMessage = new ChatMessage(message3, "bot");
                                             Log.d("message3: ", message3);
+                                            Map<String, Object> data = new HashMap<>();
+                                            data.put("msgText", chatMessage.getMsgText());
+                                            data.put("msgUser", chatMessage.getMsgUser());
+                                            data.put("timestamp", FieldValue.serverTimestamp());
                                             db.collection("patients").document("patient1").collection("chat_data")
-                                                    .add(
-                                                            chatMessage
-                                                    )
+                                                    .add(data)
                                                     .addOnFailureListener(new OnFailureListener() {
                                                         @Override
                                                         public void onFailure(@NonNull Exception e) {
@@ -209,7 +220,7 @@ public class ChatbotActivity extends AppCompatActivity implements AIListener {
 
         Query query = FirebaseFirestore.getInstance()
                 .collection("patients").document("patient1").collection("chat_data").limit(100)
-                .orderBy(FieldPath.documentId());
+                .orderBy("timestamp");
 
         FirestoreRecyclerOptions<ChatMessage> options = new FirestoreRecyclerOptions.Builder<ChatMessage>()
                 .setQuery(query, ChatMessage.class)
@@ -310,16 +321,21 @@ public class ChatbotActivity extends AppCompatActivity implements AIListener {
 
         String message = result.getResolvedQuery();
         ChatMessage chatMessage0 = new ChatMessage(message, "user");
+        Map<String, Object> data = new HashMap<>();
+        data.put("msgText", chatMessage0.getMsgText());
+        data.put("msgUser", chatMessage0.getMsgUser());
+        data.put("timestamp", FieldValue.serverTimestamp());
         db.collection("patients").document("patient1").collection("chat_data")
-                .add(
-                        chatMessage0
-                );
+                .add(data);
 
         String reply = result.getFulfillment().getSpeech();
         ChatMessage chatMessage = new ChatMessage(reply, "bot");
+        Map<String, Object> data2 = new HashMap<>();
+        data.put("msgText", chatMessage.getMsgText());
+        data.put("msgUser", chatMessage.getMsgUser());
+        data.put("timestamp", FieldValue.serverTimestamp());
         db.collection("patients").document("patient1").collection("chat_data")
-                .add(chatMessage);
-
+                .add(data2);
     }
 
     @Override
