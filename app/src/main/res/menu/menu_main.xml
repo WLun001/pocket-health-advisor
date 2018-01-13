@@ -8,4 +8,10 @@
         android:title="Login"
         android:icon="@drawable/ic_account_circle_white_24dp"
         app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/sign_out"
+        android:title="Sign Out"
+        app:showAsAction="collapseActionView"/>
+
 </menu>

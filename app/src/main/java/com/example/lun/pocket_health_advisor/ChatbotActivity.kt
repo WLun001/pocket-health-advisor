@@ -1,7 +1,13 @@
 package com.example.lun.pocket_health_advisor
 
-import android.arch.lifecycle.Lifecycle
-import android.arch.lifecycle.LifecycleOwner
+import ai.api.AIDataService
+import ai.api.AIListener
+import ai.api.AIServiceException
+import ai.api.android.AIConfiguration
+import ai.api.android.AIService
+import ai.api.model.AIRequest
+import ai.api.model.AIResponse
+import ai.api.model.ResponseMessage
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -19,44 +25,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import android.widget.EditText
 import android.widget.ImageView
-import android.widget.RelativeLayout
-
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.android.gms.tasks.OnFailureListener
-import com.google.android.gms.tasks.Task
-import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
-import com.google.firebase.firestore.Query
-import com.google.firebase.firestore.QuerySnapshot
-
-import java.util.Date
-import java.util.HashMap
-
-import ai.api.AIDataService
-import ai.api.AIListener
-import ai.api.AIServiceException
-import ai.api.android.AIConfiguration
-import ai.api.android.AIService
-import ai.api.model.AIRequest
-import ai.api.model.AIResponse
-import ai.api.model.ResponseMessage
-import ai.api.model.Result
+import kotlinx.android.synthetic.main.activity_chatbot_acvitity.*
+import java.util.*
 
 class ChatbotActivity : AppCompatActivity(), AIListener {
     //create empty constructor for firestore recycleview
-    data class ChatMessage(var msgText : String = "", var msgUser : String = "")
+    data class ChatMessage(var msgText: String = "", var msgUser: String = "")
 
-    lateinit var recyclerView: RecyclerView
-    lateinit var editText: EditText
-    lateinit var addBtn: RelativeLayout
     lateinit var db: FirebaseFirestore
     lateinit var adapter: FirestoreRecyclerAdapter<ChatMessage, ChatRecord>
     internal var flagFab: Boolean? = true
@@ -77,11 +58,6 @@ class ChatbotActivity : AppCompatActivity(), AIListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chatbot_acvitity)
         ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.RECORD_AUDIO), 1)
-
-
-        recyclerView = findViewById(R.id.recyclerView) as RecyclerView
-        editText = findViewById(R.id.editText) as EditText
-        addBtn = findViewById(R.id.addBtn) as RelativeLayout
 
         recyclerView.setHasFixedSize(true)
         val linearLayoutManager = LinearLayoutManager(this)

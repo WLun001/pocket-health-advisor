@@ -15,6 +15,18 @@
       },
       "oauth_client": [
         {
+          "client_id": "949856295335-hje8o6mv1oosk8bvcqbn3ioiqnbgpiu7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.lun.pocket_health_advisor",
+            "certificate_hash": "e6d50b98ad319cc928ab3ee58d79983bd62ce609"
+          }
+        },
+        {
+          "client_id": "949856295335-4r3oar59rtc4ebd2pevc7057r46hi0mc.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
           "client_id": "949856295335-efr6vevdjsi02cbncr7fejspgh2conl3.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,8 +41,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "949856295335-4r3oar59rtc4ebd2pevc7057r46hi0mc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2

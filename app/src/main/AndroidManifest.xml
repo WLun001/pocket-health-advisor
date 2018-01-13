@@ -59,7 +59,6 @@
         <activity
             android:name=".PlaceCallActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".ChatbotAcvitity" />
         <activity android:name=".ChatbotActivity"></activity>
     </application>
 
