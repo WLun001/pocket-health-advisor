@@ -9,6 +9,7 @@ import ai.api.model.AIRequest
 import ai.api.model.AIResponse
 import ai.api.model.ResponseMessage
 import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.AsyncTask
@@ -35,9 +36,11 @@ import kotlinx.android.synthetic.main.activity_chatbot_acvitity.*
 import java.util.*
 
 class ChatbotActivity : AppCompatActivity(), AIListener {
-    //create empty constructor for firestore recycleview
-    data class ChatMessage(var msgText: String = "", var msgUser: String = "")
 
+    //create empty constructor for firestore recycleview
+    data class ChatMessage(var message: String = "", var user: String = "")
+
+    lateinit var user : MainActivity.User
     lateinit var db: FirebaseFirestore
     lateinit var adapter: FirestoreRecyclerAdapter<ChatMessage, ChatRecord>
     internal var flagFab: Boolean? = true
@@ -59,6 +62,8 @@ class ChatbotActivity : AppCompatActivity(), AIListener {
         setContentView(R.layout.activity_chatbot_acvitity)
         ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.RECORD_AUDIO), 1)
 
+        var user  = intent.getSerializableExtra(MainActivity.USER_DETAILS) as MainActivity.User
+
         recyclerView.setHasFixedSize(true)
         val linearLayoutManager = LinearLayoutManager(this)
         linearLayoutManager.stackFromEnd = true
@@ -66,6 +71,7 @@ class ChatbotActivity : AppCompatActivity(), AIListener {
         recyclerView.layoutManager = linearLayoutManager
 
         db = FirebaseFirestore.getInstance()
+
 
         val settings = FirebaseFirestoreSettings.Builder()
                 .setPersistenceEnabled(true)
@@ -89,12 +95,12 @@ class ChatbotActivity : AppCompatActivity(), AIListener {
 
             if (message != "") {
 
-                val chatMessage = ChatMessage(message, "user")
+                val chatMessage = ChatMessage(message, user.name)
                 val data = HashMap<String, Any>()
-                data.put("msgText", chatMessage.msgText)
-                data.put("msgUser", chatMessage.msgUser)
+                data.put("message", chatMessage.message)
+                data.put("user", chatMessage.user)
                 data.put("timestamp", FieldValue.serverTimestamp())
-                db.collection("patients").document("patient1").collection("chat_data")
+                db.collection("patients").document(user.id).collection("chat_data")
                         .add(data)
 
 
@@ -122,10 +128,10 @@ class ChatbotActivity : AppCompatActivity(), AIListener {
                                         val chatMessage = ChatMessage(message3, "bot")
                                         Log.d("message3: ", message3)
                                         val data = HashMap<String, Any>()
-                                        data.put("msgText", chatMessage.msgText)
-                                        data.put("msgUser", chatMessage.msgUser)
+                                        data.put("message", chatMessage.message)
+                                        data.put("user", chatMessage.user)
                                         data.put("timestamp", FieldValue.serverTimestamp())
-                                        db.collection("patients").document("patient1").collection("chat_data")
+                                        db.collection("patients").document(user.id).collection("chat_data")
                                                 .add(data)
                                                 .addOnFailureListener { e -> Log.w("Db", "Error updating document", e) }
                                     }
@@ -176,7 +182,7 @@ class ChatbotActivity : AppCompatActivity(), AIListener {
         })
 
         val query = FirebaseFirestore.getInstance()
-                .collection("patients").document("patient1").collection("chat_data").limit(100)
+                .collection("patients").document(user.id).collection("chat_data").limit(100)
                 .orderBy("timestamp")
 
         val options = FirestoreRecyclerOptions.Builder<ChatMessage>()
@@ -185,16 +191,16 @@ class ChatbotActivity : AppCompatActivity(), AIListener {
 
         adapter = object : FirestoreRecyclerAdapter<ChatMessage, ChatRecord>(options) {
             override fun onBindViewHolder(viewHolder: ChatRecord, position: Int, model: ChatMessage) {
-                Log.d("user", "" + model.msgUser)
+                Log.d("user", "" + model.user)
 
-                if (model.msgUser == "user") {
-                    Log.d("model", "" + model.msgText)
-                    viewHolder.rightText.text = model.msgText
+                if (model.user == user.name) {
+                    Log.d("model", "" + model.message)
+                    viewHolder.rightText.text = model.message
 
                     viewHolder.rightText.visibility = View.VISIBLE
                     viewHolder.leftText.visibility = View.GONE
                 } else {
-                    viewHolder.leftText.text = model.msgText
+                    viewHolder.leftText.text = model.message
 
                     viewHolder.rightText.visibility = View.GONE
                     viewHolder.leftText.visibility = View.VISIBLE
@@ -261,19 +267,19 @@ class ChatbotActivity : AppCompatActivity(), AIListener {
         val message = result.resolvedQuery
         val chatMessage0 = ChatMessage(message, "user")
         val data = HashMap<String, Any>()
-        data.put("msgText", chatMessage0.msgText)
-        data.put("msgUser", chatMessage0.msgUser)
+        data.put("message", chatMessage0.message)
+        data.put("user", chatMessage0.user)
         data.put("timestamp", FieldValue.serverTimestamp())
-        db.collection("patients").document("patient1").collection("chat_data")
+        db.collection("patients").document(user.id).collection("chat_data")
                 .add(data)
 
         val reply = result.fulfillment.speech
         val chatMessage = ChatMessage(reply, "bot")
         val data2 = HashMap<String, Any>()
-        data.put("msgText", chatMessage.msgText)
-        data.put("msgUser", chatMessage.msgUser)
+        data.put("message", chatMessage.message)
+        data.put("user", chatMessage.user)
         data.put("timestamp", FieldValue.serverTimestamp())
-        db.collection("patients").document("patient1").collection("chat_data")
+        db.collection("patients").document(user.id).collection("chat_data")
                 .add(data2)
     }
 

@@ -17,13 +17,22 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
+import java.io.Serializable
 import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
 
+    companion object {
+        @JvmStatic
+        val USER_DETAILS : String = "com.example.lun.pocket_health_advisor.USER_DETAILS"
+    }
+
+    data class User(var id : String, var name : String = "") : Serializable
+
     lateinit var auth: FirebaseAuth
     lateinit var authListener: FirebaseAuth.AuthStateListener
+    lateinit var user : FirebaseUser
 
     val RC_SIGN_IN = 1;
 
@@ -45,8 +54,8 @@ class MainActivity : AppCompatActivity() {
 
         authListener = FirebaseAuth.AuthStateListener { auth ->
 
-            var user: FirebaseUser? = auth.currentUser
-            if (user == null) {
+            var firebaseUser: FirebaseUser? = auth.currentUser
+            if (firebaseUser == null) {
                 startActivityForResult(
                         AuthUI.getInstance()
                                 .createSignInIntentBuilder()
@@ -56,6 +65,8 @@ class MainActivity : AppCompatActivity() {
                                                 AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build()))
                                 .build(),
                         RC_SIGN_IN)
+            }else{
+                user = firebaseUser
             }
 
         }
@@ -98,7 +109,16 @@ class MainActivity : AppCompatActivity() {
                 override fun onClick(v: View?) {
                     when (count) {
                         0 -> {
-                            startActivity(Intent(applicationContext, ChatbotActivity::class.java))
+                            var userName = ""
+                            user.displayName?.let { userName = user.displayName as String }
+
+                            var userDetails = User(user.uid, userName)
+
+                            val intent = Intent(applicationContext, ChatbotActivity::class.java)
+                            intent.putExtra(USER_DETAILS, userDetails as Serializable)
+                            intent.putExtras(intent)
+
+                            startActivity(intent)
                         }
                         3 -> {
                             val intent = Intent(applicationContext, CheckAppointmentActivity::class.java)
