@@ -34,6 +34,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import kotlinx.android.synthetic.main.activity_chatbot_acvitity.*
 import java.util.*
+import kotlin.collections.HashMap
 
 class ChatbotActivity : AppCompatActivity(), AIListener {
 
@@ -96,12 +97,8 @@ class ChatbotActivity : AppCompatActivity(), AIListener {
             if (message != "") {
 
                 val chatMessage = ChatMessage(message, user.name)
-                val data = HashMap<String, Any>()
-                data.put("message", chatMessage.message)
-                data.put("user", chatMessage.user)
-                data.put("timestamp", FieldValue.serverTimestamp())
                 db.collection("patients").document(user.id).collection("chat_data")
-                        .add(data)
+                        .add(getMap(chatMessage))
 
 
                 aiRequest.setQuery(message)
@@ -127,12 +124,8 @@ class ChatbotActivity : AppCompatActivity(), AIListener {
                                     for (message3 in message1.getSpeech()) {
                                         val chatMessage = ChatMessage(message3, "bot")
                                         Log.d("message3: ", message3)
-                                        val data = HashMap<String, Any>()
-                                        data.put("message", chatMessage.message)
-                                        data.put("user", chatMessage.user)
-                                        data.put("timestamp", FieldValue.serverTimestamp())
                                         db.collection("patients").document(user.id).collection("chat_data")
-                                                .add(data)
+                                                .add(getMap(chatMessage))
                                                 .addOnFailureListener { e -> Log.w("Db", "Error updating document", e) }
                                     }
 
@@ -266,21 +259,13 @@ class ChatbotActivity : AppCompatActivity(), AIListener {
 
         val message = result.resolvedQuery
         val chatMessage0 = ChatMessage(message, "user")
-        val data = HashMap<String, Any>()
-        data.put("message", chatMessage0.message)
-        data.put("user", chatMessage0.user)
-        data.put("timestamp", FieldValue.serverTimestamp())
         db.collection("patients").document(user.id).collection("chat_data")
-                .add(data)
+                .add(getMap(chatMessage0))
 
         val reply = result.fulfillment.speech
         val chatMessage = ChatMessage(reply, "bot")
-        val data2 = HashMap<String, Any>()
-        data.put("message", chatMessage.message)
-        data.put("user", chatMessage.user)
-        data.put("timestamp", FieldValue.serverTimestamp())
         db.collection("patients").document(user.id).collection("chat_data")
-                .add(data2)
+                .add(getMap(chatMessage))
     }
 
     override fun onError(error: ai.api.model.AIError) {
@@ -301,5 +286,13 @@ class ChatbotActivity : AppCompatActivity(), AIListener {
 
     override fun onListeningFinished() {
 
+    }
+
+    fun getMap(chatMessage: ChatMessage) : HashMap<String, Any>{
+        val data = HashMap<String, Any>()
+        data.put("message", chatMessage.message)
+        data.put("user", chatMessage.user)
+        data.put("timestamp", FieldValue.serverTimestamp())
+        return data
     }
 }
