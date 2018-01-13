@@ -1,5 +1,7 @@
 package com.example.lun.pocket_health_advisor;
 
+import android.arch.lifecycle.Lifecycle;
+import android.arch.lifecycle.LifecycleOwner;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -24,9 +26,16 @@ import android.widget.RelativeLayout;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.List;
 
@@ -80,6 +89,11 @@ public class ChatbotActivity extends AppCompatActivity implements AIListener {
 
         db = FirebaseFirestore.getInstance();
 
+        FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
+                .setPersistenceEnabled(true)
+                .build();
+        db.setFirestoreSettings(settings);
+
         final AIConfiguration config = new AIConfiguration("47836bc8e2494eabb7ea945d1b227d29",
                 AIConfiguration.SupportedLanguages.English,
                 AIConfiguration.RecognitionEngine.System);
@@ -101,10 +115,8 @@ public class ChatbotActivity extends AppCompatActivity implements AIListener {
                 if (!message.equals("")) {
 
                     ChatMessage chatMessage = new ChatMessage(message, "user");
-                    db.collection("patients").document("patient1").collection("chat_data").document("chat_history")
-                            .update(
-                            "message", chatMessage.getMsgText()
-                    );
+                    db.collection("patients").document("patient1").collection("chat_data")
+                            .add(chatMessage);
 
 
                     aiRequest.setQuery(message);
@@ -133,9 +145,9 @@ public class ChatbotActivity extends AppCompatActivity implements AIListener {
                                         for (String message3 : message2.getSpeech()) {
                                             ChatMessage chatMessage = new ChatMessage(message3, "bot");
                                             Log.d("message3: ", message3);
-                                            db.collection("patients").document("patient1").collection("chat_data").document("chat_history")
-                                                    .update(
-                                                            "message", chatMessage.getMsgText()
+                                            db.collection("patients").document("patient1").collection("chat_data")
+                                                    .add(
+                                                            chatMessage
                                                     )
                                                     .addOnFailureListener(new OnFailureListener() {
                                                         @Override
@@ -196,7 +208,8 @@ public class ChatbotActivity extends AppCompatActivity implements AIListener {
         });
 
         Query query = FirebaseFirestore.getInstance()
-                .collection("patients").document("patient1").collection("chat_data").limit(50);
+                .collection("patients").document("patient1").collection("chat_data").limit(100)
+                .orderBy(FieldPath.documentId());
 
         FirestoreRecyclerOptions<ChatMessage> options = new FirestoreRecyclerOptions.Builder<ChatMessage>()
                 .setQuery(query, ChatMessage.class)
@@ -204,21 +217,23 @@ public class ChatbotActivity extends AppCompatActivity implements AIListener {
 
         adapter = new FirestoreRecyclerAdapter<ChatMessage, ChatRecord>(options) {
             @Override
-            protected void onBindViewHolder(@NonNull ChatRecord  viewHolder, int position, @NonNull ChatMessage model) {
-                if (model.getMsgUser().equals("user")) {
+            protected void onBindViewHolder(@NonNull ChatRecord viewHolder, int position, @NonNull ChatMessage model) {
+                Log.d("user", "" + model.getMsgUser());
+
+                    if (model.getMsgUser().equals("user")) {
+                        Log.d("model", "" + model.getMsgText());
+                        viewHolder.rightText.setText(model.getMsgText());
+
+                        viewHolder.rightText.setVisibility(View.VISIBLE);
+                        viewHolder.leftText.setVisibility(View.GONE);
+                    } else {
+                        viewHolder.leftText.setText(model.getMsgText());
+
+                        viewHolder.rightText.setVisibility(View.GONE);
+                        viewHolder.leftText.setVisibility(View.VISIBLE);
+                    }
 
 
-                    viewHolder.rightText.setText(model.getMsgText());
-
-                    viewHolder.rightText.setVisibility(View.VISIBLE);
-                    viewHolder.leftText.setVisibility(View.GONE);
-                }
-                else {
-                    viewHolder.leftText.setText(model.getMsgText());
-
-                    viewHolder.rightText.setVisibility(View.GONE);
-                    viewHolder.leftText.setVisibility(View.VISIBLE);
-                }
 
             }
 
@@ -250,7 +265,6 @@ public class ChatbotActivity extends AppCompatActivity implements AIListener {
         });
 
         recyclerView.setAdapter(adapter);
-
 
     }
 
@@ -296,17 +310,15 @@ public class ChatbotActivity extends AppCompatActivity implements AIListener {
 
         String message = result.getResolvedQuery();
         ChatMessage chatMessage0 = new ChatMessage(message, "user");
-        db.collection("patients").document("patient1").collection("chat_data").document("chat_history")
-                .update(
-                        "message0", chatMessage0.getMsgText()
+        db.collection("patients").document("patient1").collection("chat_data")
+                .add(
+                        chatMessage0
                 );
 
         String reply = result.getFulfillment().getSpeech();
         ChatMessage chatMessage = new ChatMessage(reply, "bot");
-        db.collection("patients").document("patient1").collection("chat_data").document("chat_history")
-                .update(
-                        "message", chatMessage.getMsgText()
-                );
+        db.collection("patients").document("patient1").collection("chat_data")
+                .add(chatMessage);
 
     }
 
