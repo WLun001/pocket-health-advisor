@@ -71,7 +71,12 @@ dependencies {
 
     //firebase firestore
     implementation "com.google.firebase:firebase-firestore:11.8.0"
+
+    //sinch
     compile(name: 'sinch-android-rtc', version: '+', ext: 'aar')
+
+    //json parser
+    compile 'com.github.kittinunf.forge:forge:0.3.0'
 }
 repositories {
     mavenCentral()
