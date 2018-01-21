@@ -56,12 +56,6 @@ dependencies {
     compile 'com.braintreepayments.api:braintree:2.+'
     compile 'com.braintreepayments.api:drop-in:3.+'
 
-    //dialogflow
-    compile 'ai.api:libai:1.4.8'
-    compile 'ai.api:sdk:2.0.7@aar'
-    compile 'com.google.code.gson:gson:2.3.1'
-    compile 'commons-io:commons-io:2.4'
-
     //firebase ui
     implementation 'com.firebaseui:firebase-ui-firestore:3.1.3'
     implementation 'com.firebaseui:firebase-ui-auth:3.1.3'
@@ -74,9 +68,6 @@ dependencies {
 
     //sinch
     compile(name: 'sinch-android-rtc', version: '+', ext: 'aar')
-
-    //json parser
-    compile 'com.github.kittinunf.forge:forge:0.3.0'
 }
 repositories {
     mavenCentral()
