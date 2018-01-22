@@ -55,6 +55,7 @@ class ChatbotActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Array
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chatbot_acvitity)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.RECORD_AUDIO), 1)
 
         user = intent.getSerializableExtra(MainActivity.USER_DETAILS) as MainActivity.User

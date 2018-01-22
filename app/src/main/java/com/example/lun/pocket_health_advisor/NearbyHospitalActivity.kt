@@ -1,5 +1,6 @@
 package com.example.lun.pocket_health_advisor
 
+import android.content.Intent
 import android.opengl.Visibility
 import android.os.Bundle
 import android.support.design.widget.Snackbar
@@ -37,6 +38,7 @@ class NearbyHospitalActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_nearby_hospital)
         setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         var linearLayout = LinearLayoutManager(this, LinearLayout.VERTICAL, false)
         linearLayout.isAutoMeasureEnabled = true

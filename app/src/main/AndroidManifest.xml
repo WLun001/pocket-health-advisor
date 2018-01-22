@@ -59,10 +59,13 @@
         <activity
             android:name=".PlaceCallActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".ChatbotActivity" />
+        <activity
+            android:name=".ChatbotActivity"
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".NearbyHospitalActivity"
             android:label="@string/title_activity_nearby_hospital"
+            android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
