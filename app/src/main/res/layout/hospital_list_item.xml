@@ -23,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/hospital_name"
-            android:textSize="12sp"
+            android:textSize="16sp"
             tools:text="Opening now" />
 
         <TextView
@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_below="@id/hospital_name"
-            android:textSize="12sp"
+            android:textSize="16sp"
             tools:text="0.2KM" />
 
     </RelativeLayout>
