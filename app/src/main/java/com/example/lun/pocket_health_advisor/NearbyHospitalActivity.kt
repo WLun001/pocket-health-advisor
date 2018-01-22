@@ -1,10 +1,12 @@
 package com.example.lun.pocket_health_advisor
 
+import android.opengl.Visibility
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
+import android.view.View.GONE
 import android.widget.LinearLayout
 import kotlinx.android.synthetic.main.activity_nearby_hospital.*
 import kotlinx.android.synthetic.main.content_nearby_hospital.*
@@ -74,6 +76,7 @@ class NearbyHospitalActivity : AppCompatActivity() {
 
             uiThread {
                 adapter.notifyDataSetChanged()
+                hospital_progress_bar.visibility = GONE
                 toast("successfully fetched hospitals!")
             }
         }
