@@ -1,9 +1,13 @@
 package com.example.lun.pocket_health_advisor
 
+import android.content.Context
+import android.graphics.Color
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import com.example.lun.pocket_health_advisor.NearbyHospitalActivity.Hospital
 import kotlinx.android.synthetic.main.hospital_list_item.view.*
 
@@ -26,8 +30,15 @@ class NearbyHospitalAdapter(var hospitalList: ArrayList<Hospital>) : RecyclerVie
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view){
         fun bindView(hospital: Hospital){
+            var textView = itemView.hospital_opening_status as TextView
+
             itemView.hospital_name.text = hospital.name
-            itemView.hospital_opening_status.text = hospital.openingStatus
+            textView.text = hospital.openingStatus
+            if (hospital.openingStatus == "Open Now")
+                textView.setTextColor(Color.parseColor("#FF3BE215"))
+            else
+                textView.setTextColor(Color.parseColor("#FFE22315"))
+
             itemView.hospital_distance.text = hospital.distance.toString()
         }
     }

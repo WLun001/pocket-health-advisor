@@ -4,4 +4,8 @@
     <string name="title_activity_payment">payment</string>
     <string name="title_activity_sinch_login">SinchLoginActivity</string>
     <string name="title_activity_nearby_hospital">NearbyHospitalActivity</string>
+
+    <string name="hospital_open_now">Open Now</string>
+    <string name="hospital_closed">Closed</string>
+    <string name="hospital_unknown">Unknown</string>
 </resources>
