@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:textStyle="bold"
+            android:id="@+id/hospital_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:textSize="20sp"
+            tools:text="Sg Long Medical Centre" />
+
+        <TextView
+            android:id="@+id/hospital_distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/hospital_name"
+            android:padding="16dp"
+            android:textSize="12sp"
+            tools:text="Sg Long Medical Centre" />
+
+        <TextView
+            android:id="@+id/hospital_opening_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/hospital_name"
+            android:layout_alignParentEnd="true"
+            android:padding="16dp"
+            android:textSize="12sp"
+            tools:text="Opening now" />
+
+
+    </RelativeLayout>
+
+</android.support.constraint.ConstraintLayout>
