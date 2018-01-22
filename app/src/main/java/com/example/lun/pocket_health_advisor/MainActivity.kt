@@ -6,18 +6,27 @@ import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.CardView
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.GridLayout
 import android.widget.Toast
+import com.example.lun.pocket_health_advisor.R.id.nearby_hospital
 import com.example.lun.pocket_health_advisor.R.id.sign_out
 import com.firebase.ui.auth.AuthUI
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
+import kotlinx.coroutines.experimental.async
+import org.jetbrains.anko.custom.async
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.toast
+import org.jetbrains.anko.uiThread
+import org.json.JSONObject
 import java.io.Serializable
+import java.net.URL
 import java.util.*
 
 
@@ -147,6 +156,15 @@ class MainActivity : AppCompatActivity() {
 
         when (id) {
             sign_out -> AuthUI.getInstance().signOut(this)
+
+            nearby_hospital -> doAsync{
+                var url = "https://maps.googleapis.com/maps/api/place/details/json?placeid=ChIJ-823_6g0zDER5H9ROAwvB0s&key=AIzaSyCbe3pFzJfI2wmyInY4hmsz2Fp7WoXSpZs"
+                var result = URL(url).readText()
+                var name = JSONObject(result).getJSONObject("result").getString("name")
+
+                uiThread { Log.d("Result", name)
+                toast(name)}
+            }
         }
         return super.onOptionsItemSelected(item)
 

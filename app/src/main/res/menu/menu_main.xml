@@ -14,4 +14,9 @@
         android:title="Sign Out"
         app:showAsAction="collapseActionView" />
 
+    <item
+        android:id="@+id/nearby_hospital"
+        android:title="Nearby Hospital"
+        app:showAsAction="collapseActionView"/>
+
 </menu>
