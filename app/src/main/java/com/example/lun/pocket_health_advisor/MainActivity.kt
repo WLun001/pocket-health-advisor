@@ -157,14 +157,7 @@ class MainActivity : AppCompatActivity() {
         when (id) {
             sign_out -> AuthUI.getInstance().signOut(this)
 
-            nearby_hospital -> doAsync{
-                var url = "https://maps.googleapis.com/maps/api/place/details/json?placeid=ChIJ-823_6g0zDER5H9ROAwvB0s&key=AIzaSyCbe3pFzJfI2wmyInY4hmsz2Fp7WoXSpZs"
-                var result = URL(url).readText()
-                var name = JSONObject(result).getJSONObject("result").getString("name")
-
-                uiThread { Log.d("Result", name)
-                toast(name)}
-            }
+            nearby_hospital -> startActivity(Intent(this, NearbyHospitalActivity::class.java))
         }
         return super.onOptionsItemSelected(item)
 

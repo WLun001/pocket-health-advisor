@@ -33,7 +33,6 @@ class ChatbotActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Array
         val DIALOGFLOW_URL = "https://api.dialogflow.com/v1/query?v=20170712&lang=en"
         val LOADER_ID = 1
     }
-
     //create empty constructor for firestore recycleview
     data class ChatMessage(var message: String = "", var user: String = "")
 
@@ -67,7 +66,6 @@ class ChatbotActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Array
         recyclerView.layoutManager = linearLayoutManager
 
         db = FirebaseFirestore.getInstance()
-
 
         val settings = FirebaseFirestoreSettings.Builder()
                 .setPersistenceEnabled(true)
