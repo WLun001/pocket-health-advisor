@@ -1,7 +1,9 @@
 package com.example.lun.pocket_health_advisor
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
@@ -39,17 +41,24 @@ class MainActivity : AppCompatActivity() {
 
     data class User(var id: String, var name: String = "") : Serializable
 
+    private var connection = false
     lateinit var auth: FirebaseAuth
     lateinit var authListener: FirebaseAuth.AuthStateListener
     lateinit var user: FirebaseUser
 
-    val RC_SIGN_IN = 1;
+    val RC_SIGN_IN = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
+        var networkInfo = (getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager)
+                .activeNetworkInfo
+        networkInfo?.let {
+            if(networkInfo.isConnected)
+                connection = true
+        }
         auth = FirebaseAuth.getInstance()
 
         fab.setOnClickListener { view ->
@@ -118,16 +127,18 @@ class MainActivity : AppCompatActivity() {
                 override fun onClick(v: View?) {
                     when (count) {
                         0 -> {
-                            var userName = ""
-                            user.displayName?.let { userName = user.displayName as String }
+                            if (connection) {
+                                var userName = ""
+                                user.displayName?.let { userName = user.displayName as String }
 
-                            var userDetails = User(user.uid, userName)
+                                var userDetails = User(user.uid, userName)
 
-                            val intent = Intent(applicationContext, ChatbotActivity::class.java)
-                            intent.putExtra(USER_DETAILS, userDetails as Serializable)
-                            intent.putExtras(intent)
+                                val intent = Intent(applicationContext, ChatbotActivity::class.java)
+                                intent.putExtra(USER_DETAILS, userDetails as Serializable)
+                                intent.putExtras(intent)
 
-                            startActivity(intent)
+                                startActivity(intent)
+                            }else toast("No network available")
                         }
 
                         1 -> { startActivity(Intent(applicationContext, NearbyHospitalActivity::class.java))}

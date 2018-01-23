@@ -4,6 +4,7 @@ import android.content.AsyncTaskLoader
 import android.content.Context
 import android.util.Base64
 import android.util.Log
+import android.widget.Toast
 import org.json.JSONObject
 import java.io.BufferedReader
 import java.io.InputStream
@@ -41,32 +42,38 @@ class DialogflowAsyncWorker(context: Context, url: String)
     }
 
     override fun loadInBackground(): ArrayList<ChatbotActivity.ChatMessage>? {
-        var inputStream: InputStream? = null
         var chatMessage: ArrayList<ChatbotActivity.ChatMessage> = ArrayList()
         var requestUrl = URL(url)
+        try {
+            var inputStream: InputStream? = null
 
-        var connection = requestUrl.openConnection() as HttpsURLConnection
-        connection.readTimeout = 10000
-        connection.connectTimeout = 15000
-        connection.requestMethod = "GET"
-        connection.setRequestProperty("Authorization", "Bearer 47836bc8e2494eabb7ea945d1b227d29")
-        connection.connect()
+            var connection = requestUrl.openConnection() as HttpsURLConnection
+            connection.readTimeout = 10000
+            connection.connectTimeout = 15000
+            connection.requestMethod = "GET"
+            connection.setRequestProperty("Authorization", "Bearer 47836bc8e2494eabb7ea945d1b227d29")
+            connection.connect()
 
-        Log.d("Response Code", connection.responseCode.toString() + connection.responseMessage)
+            Log.d("Response Code", connection.responseCode.toString() + connection.responseMessage)
 
-        if (connection.responseCode == 200) {
-            inputStream = connection.inputStream
-            var jsonResponse = readInput(inputStream)
-            chatMessage = extractFromJson(jsonResponse) as ArrayList<ChatbotActivity.ChatMessage>
+            if (connection.responseCode == 200) {
+                inputStream = connection.inputStream
+                var jsonResponse = readInput(inputStream)
+                chatMessage = extractFromJson(jsonResponse) as ArrayList<ChatbotActivity.ChatMessage>
 
-            Log.d("loadInBackground", chatMessage.toString())
+                Log.d("loadInBackground", chatMessage.toString())
+            }
+
+            if (inputStream != null) {
+                inputStream.close()
+            }
+
+        } catch (e: Exception){
+            Toast.makeText(context, e.message, Toast.LENGTH_SHORT)
         }
-
-        if (inputStream != null) {
-            inputStream.close()
-        }
-
         return chatMessage
+
+
     }
 
     fun readInput(inputStream: InputStream): String {
