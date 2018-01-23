@@ -1,8 +1,6 @@
 package com.example.lun.pocket_health_advisor
 
-import android.content.Context
 import android.graphics.Color
-import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -20,20 +18,20 @@ class NearbyHospitalAdapter(var hospitalList: ArrayList<Hospital>) : RecyclerVie
     }
 
     override fun getItemCount(): Int {
-      return hospitalList.size
+        return hospitalList.size
     }
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
-       var v =  LayoutInflater.from(parent?.context).inflate(R.layout.hospital_list_item, parent, false)
+        var v = LayoutInflater.from(parent?.context).inflate(R.layout.hospital_list_item, parent, false)
         return ViewHolder(v)
     }
 
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view){
-        fun bindView(hospital: Hospital){
+    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        fun bindView(hospital: Hospital) {
             var hospitalName = itemView.hospital_opening_status as TextView
-            var hospitalDistance = itemView.hospital_distance as TextView
 
             itemView.hospital_name.text = hospital.name
+            itemView.hospital_distance.text = hospital.distance
 
             hospitalName.text = hospital.openingStatus
             if (hospital.openingStatus == "Open Now")
@@ -41,9 +39,6 @@ class NearbyHospitalAdapter(var hospitalList: ArrayList<Hospital>) : RecyclerVie
             else
                 hospitalName.setTextColor(Color.parseColor("#FFE22315"))
 
-            if(hospital.distance != 0.0)
-                 hospitalDistance.text = hospital.distance.toString().plus(" KM")
-            else hospitalDistance.text = "Fetching distance"
         }
     }
 }
