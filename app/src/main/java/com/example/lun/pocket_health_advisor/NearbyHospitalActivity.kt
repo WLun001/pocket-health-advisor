@@ -29,7 +29,7 @@ class NearbyHospitalActivity : AppCompatActivity() {
     data class Hospital(
             var name: String,
             var openingStatus: String,
-            var distance: Double) : Serializable
+            var distance: Double = 0.0) : Serializable
 
     private var hospitals = ArrayList<Hospital>()
     private var adapter = NearbyHospitalAdapter(hospitals)
@@ -91,7 +91,7 @@ class NearbyHospitalActivity : AppCompatActivity() {
                         statusDes = getString(R.string.hospital_unknown)
                     }
                 }
-                hospitals.add(Hospital(name, statusDes, 0.2))
+                hospitals.add(Hospital(name, statusDes))
             }
 
             uiThread {

@@ -30,16 +30,20 @@ class NearbyHospitalAdapter(var hospitalList: ArrayList<Hospital>) : RecyclerVie
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view){
         fun bindView(hospital: Hospital){
-            var textView = itemView.hospital_opening_status as TextView
+            var hospitalName = itemView.hospital_opening_status as TextView
+            var hospitalDistance = itemView.hospital_distance as TextView
 
             itemView.hospital_name.text = hospital.name
-            textView.text = hospital.openingStatus
-            if (hospital.openingStatus == "Open Now")
-                textView.setTextColor(Color.parseColor("#FF3BE215"))
-            else
-                textView.setTextColor(Color.parseColor("#FFE22315"))
 
-            itemView.hospital_distance.text = hospital.distance.toString().plus(" KM")
+            hospitalName.text = hospital.openingStatus
+            if (hospital.openingStatus == "Open Now")
+                hospitalName.setTextColor(Color.parseColor("#FF3BE215"))
+            else
+                hospitalName.setTextColor(Color.parseColor("#FFE22315"))
+
+            if(hospital.distance != 0.0)
+                 hospitalDistance.text = hospital.distance.toString().plus(" KM")
+            else hospitalDistance.text = "Fetching distance"
         }
     }
 }
