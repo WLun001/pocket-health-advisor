@@ -39,7 +39,7 @@ class NearbyHospitalAdapter(var hospitalList: ArrayList<Hospital>) : RecyclerVie
             else
                 textView.setTextColor(Color.parseColor("#FFE22315"))
 
-            itemView.hospital_distance.text = hospital.distance.toString()
+            itemView.hospital_distance.text = hospital.distance.toString().plus("KM")
         }
     }
 }

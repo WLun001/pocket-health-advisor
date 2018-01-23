@@ -1,12 +1,12 @@
 package com.example.lun.pocket_health_advisor
 
-import android.content.Intent
-import android.opengl.Visibility
+import android.content.Context
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
+import android.view.View
 import android.view.View.GONE
 import android.widget.LinearLayout
 import kotlinx.android.synthetic.main.activity_nearby_hospital.*
@@ -44,9 +44,21 @@ class NearbyHospitalActivity : AppCompatActivity() {
         linearLayout.isAutoMeasureEnabled = true
         nearby_hospital_recycleview.layoutManager = linearLayout
 
+        getNearbyHospital()
+
         nearby_hospital_recycleview.adapter = adapter
 
-        getNearbyHospital()
+//        var networkInfo = (getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager)
+//                .activeNetworkInfo
+//        networkInfo?.let {
+//            if (networkInfo.isConnected)
+//
+//            else {
+//                toast("No network connection")
+//                hospital_progress_bar.visibility = View.GONE
+//            }
+//
+//        }
 
         fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -62,16 +74,22 @@ class NearbyHospitalActivity : AppCompatActivity() {
             for (i in 0 until array.length()) {
                 var name = array.getJSONObject(i).getString("name")
 
-                if(array.getJSONObject(i).has("opening_hours")) {
+                if (array.getJSONObject(i).has("opening_hours")) {
                     status = array.getJSONObject(i).getJSONObject("opening_hours")
                             .getBoolean("open_now")
                 } else status = null
 
                 var statusDes: String
-                when(status){
-                    true -> { statusDes = getString(R.string.hospital_open_now) }
-                    false -> { statusDes = getString(R.string.hospital_closed) }
-                    null -> { statusDes = getString(R.string.hospital_unknown)}
+                when (status) {
+                    true -> {
+                        statusDes = getString(R.string.hospital_open_now)
+                    }
+                    false -> {
+                        statusDes = getString(R.string.hospital_closed)
+                    }
+                    null -> {
+                        statusDes = getString(R.string.hospital_unknown)
+                    }
                 }
                 hospitals.add(Hospital(name, statusDes, 0.2))
             }
