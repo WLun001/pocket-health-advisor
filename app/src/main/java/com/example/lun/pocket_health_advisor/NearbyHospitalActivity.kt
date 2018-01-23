@@ -1,16 +1,20 @@
 package com.example.lun.pocket_health_advisor
 
+import android.content.Context
+import android.net.ConnectivityManager
 import android.net.Uri
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
+import android.view.View
 import android.view.View.GONE
 import android.widget.LinearLayout
 import kotlinx.android.synthetic.main.activity_nearby_hospital.*
 import kotlinx.android.synthetic.main.content_nearby_hospital.*
 import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.toast
 import org.jetbrains.anko.uiThread
 import org.json.JSONObject
 import java.io.Serializable
@@ -19,10 +23,9 @@ import java.net.URL
 class NearbyHospitalActivity : AppCompatActivity() {
 
     companion object {
-        val googleApiKey = "AIzaSyAg3W8vlilMkGYNSpdlceSxCzZtGUlKrx8"
-        val searchPlaceURL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?&location="
-                .plus(Uri.encode("3.041803,101.793075"))
-        val distanceURL = "https://maps.googleapis.com/maps/api/distancematrix/json?"
+        const val googleApiKey = "AIzaSyAg3W8vlilMkGYNSpdlceSxCzZtGUlKrx8"
+        const val searchPlaceURL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?"
+        const val distanceURL = "https://maps.googleapis.com/maps/api/distancematrix/json?"
         val detailsPlaceURL = ""
     }
 
@@ -45,8 +48,6 @@ class NearbyHospitalActivity : AppCompatActivity() {
         linearLayout.isAutoMeasureEnabled = true
         nearby_hospital_recycleview.layoutManager = linearLayout
 
-        getNearbyHospital()
-
         nearby_hospital_recycleview.adapter = adapter
 
 //        var networkInfo = (getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager)
@@ -56,10 +57,11 @@ class NearbyHospitalActivity : AppCompatActivity() {
 //
 //            else {
 //                toast("No network connection")
+//                no_hospital_view.visibility = View.VISIBLE
 //                hospital_progress_bar.visibility = View.GONE
 //            }
-//
 //        }
+        getNearbyHospital()
 
         fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -69,9 +71,11 @@ class NearbyHospitalActivity : AppCompatActivity() {
 
     private fun getNearbyHospital() {
         doAsync {
+            var location = Uri.encode("3.041803,101.793075")
             var tempHospital = ArrayList<Hospital>()
             var uriBuilder = Uri.parse(searchPlaceURL)
                     .buildUpon()
+                    .encodedQuery("location=$location")
                     .appendQueryParameter("rankby", "distance")
                     .appendQueryParameter("type", "hospital")
                     .appendQueryParameter("key", googleApiKey)
