@@ -5,6 +5,14 @@
     <string name="title_activity_sinch_login">SinchLoginActivity</string>
     <string name="title_activity_nearby_hospital">NearbyHospitalActivity</string>
 
+    <!--firestore name - users-->
+    <string name="first_col">users</string>
+    <string name="second_col">chat_data</string>
+    <string name="timestamp">timestamp</string>
+    <string name="message_field">message</string>
+    <string name="user_field">user</string>
+
+
     <string name="hospital_open_now">Open Now</string>
     <string name="hospital_closed">Closed</string>
     <string name="hospital_unknown">Unknown</string>
