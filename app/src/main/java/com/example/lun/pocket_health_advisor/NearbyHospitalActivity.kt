@@ -50,17 +50,13 @@ class NearbyHospitalActivity : AppCompatActivity() {
 
         nearby_hospital_recycleview.adapter = adapter
 
-//        var networkInfo = (getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager)
-//                .activeNetworkInfo
-//        networkInfo?.let {
-//            if (networkInfo.isConnected)
-//
-//            else {
-//                toast("No network connection")
-//                no_hospital_view.visibility = View.VISIBLE
-//                hospital_progress_bar.visibility = View.GONE
-//            }
-//        }
+        var networkInfo = (getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager)
+                .activeNetworkInfo
+        networkInfo?.let {
+            if (networkInfo.isConnected)
+                toast("connected")
+        }
+        networkInfo?: kotlin.run { toast("not connected") }
         getNearbyHospital()
 
         fab.setOnClickListener { view ->
