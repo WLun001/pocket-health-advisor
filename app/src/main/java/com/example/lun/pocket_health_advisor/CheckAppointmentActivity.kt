@@ -4,12 +4,11 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.BaseAdapter
 import android.widget.ListView
 import android.widget.TextView
+import com.example.lun.pocket_health_advisor.R.id.check_appointment
 
 class CheckAppointmentActivity : AppCompatActivity() {
 
@@ -19,6 +18,19 @@ class CheckAppointmentActivity : AppCompatActivity() {
 
         val listView = findViewById(R.id.list) as ListView
         listView.adapter = ListViewAdapter(this)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.check_appointment_menu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        val id = item?.itemId
+        when(id){
+            check_appointment -> { }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private class ListViewAdapter(private val context: Context) : BaseAdapter() {

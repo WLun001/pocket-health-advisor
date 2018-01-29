@@ -8,16 +8,19 @@ import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.CardView
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.GridLayout
 import android.widget.Toast
-import com.example.lun.pocket_health_advisor.R.id.nearby_hospital
-import com.example.lun.pocket_health_advisor.R.id.sign_out
+import com.example.lun.pocket_health_advisor.R.id.*
 import com.firebase.ui.auth.AuthUI
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import org.jetbrains.anko.toast
@@ -156,6 +159,30 @@ class MainActivity : AppCompatActivity() {
             sign_out -> AuthUI.getInstance().signOut(this)
 
             nearby_hospital -> startActivity(Intent(this, NearbyHospitalActivity::class.java))
+
+            check_appointment -> {
+                var firestore = FirebaseFirestore.getInstance()
+                        .collection("patients")
+                        .whereEqualTo("name", "yong")
+                        .get()
+                        .addOnCompleteListener({
+                            task -> if (task.isSuccessful) {
+                            var result = task.result
+                            result?.let {
+                                if (result.size() > 0) {
+                                    for (i in result) {
+                                        var age = i.get("age")
+                                        toast(age.toString())
+
+                                    }
+                                }else toast("no matches found")
+                            }
+
+                        } else toast("No matches found")
+
+                        })
+                        .addOnFailureListener { toast("No matches found") }
+            }
         }
         return super.onOptionsItemSelected(item)
 
