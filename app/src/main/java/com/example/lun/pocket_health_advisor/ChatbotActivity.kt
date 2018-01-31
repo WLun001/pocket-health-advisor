@@ -130,7 +130,7 @@ class ChatbotActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Array
             override fun onBindViewHolder(viewHolder: ChatRecord, position: Int, model: ChatMessage) {
                 Log.d("authUser", "" + model.user)
 
-                if (model.user == authUser.name) {
+                if (model.user !=DialogflowAsyncWorker.BOT) {
                     Log.d("model", "" + model.message)
                     viewHolder.rightText.text = model.message
 

@@ -2,6 +2,7 @@ package com.example.lun.pocket_health_advisor
 
 import android.app.Activity
 import android.app.AlertDialog
+import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
@@ -10,12 +11,14 @@ import android.support.v7.widget.CardView
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.EditText
 import android.widget.GridLayout
 import android.widget.Toast
 import com.example.lun.pocket_health_advisor.R.id.*
 import com.firebase.ui.auth.AuthUI
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
@@ -81,7 +84,6 @@ class MainActivity : AppCompatActivity() {
                 this.firebaseUser = firebaseUser
                 var userName = ""
                 firebaseUser.displayName?.let { userName = firebaseUser.displayName as String }
-                toast(userName)
                 authUser = AuthUser(firebaseUser.uid, userName)
             }
         }
@@ -169,7 +171,12 @@ class MainActivity : AppCompatActivity() {
                         .setView(R.layout.auth_user_details_dialog)
                         .setPositiveButton(R.string.button_ok,
                                 { dialogInterface, i ->
-                                    toast("ok")
+                                    val dialog = dialogInterface as Dialog
+                                    var newName = dialog.findViewById<EditText>(R.id.display_name)
+                                            .text.toString()
+                                    if (newName.isNotEmpty()){
+                                        updateAuthUser(newName)
+                                    }
                                 })
                         .setNegativeButton(R.string.button_cancel,
                                 { dialogInterface, i ->
@@ -187,6 +194,14 @@ class MainActivity : AppCompatActivity() {
 
     fun payment(view: View) {
         startActivity(Intent(this, PaymentActivity::class.java))
+    }
+
+    fun updateAuthUser(newName: String) {
+        val userProfile = UserProfileChangeRequest.Builder()
+                .setDisplayName(newName)
+                .build()
+        firebaseUser.updateProfile(userProfile)
+        toast(R.string.updated_display_name)
     }
 
     fun getHospitalUser() {
