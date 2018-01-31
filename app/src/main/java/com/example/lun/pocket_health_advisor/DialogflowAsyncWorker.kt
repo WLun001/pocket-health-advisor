@@ -68,7 +68,7 @@ class DialogflowAsyncWorker(context: Context, url: String)
                 inputStream.close()
             }
 
-        } catch (e: Exception){
+        } catch (e: Exception) {
             Toast.makeText(context, e.message, Toast.LENGTH_SHORT)
         }
         return chatMessage

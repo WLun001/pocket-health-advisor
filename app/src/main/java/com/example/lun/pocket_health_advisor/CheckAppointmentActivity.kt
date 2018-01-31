@@ -27,8 +27,9 @@ class CheckAppointmentActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         val id = item?.itemId
-        when(id){
-            check_appointment -> { }
+        when (id) {
+            check_appointment -> {
+            }
         }
         return super.onOptionsItemSelected(item)
     }

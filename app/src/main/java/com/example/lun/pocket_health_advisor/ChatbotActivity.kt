@@ -20,6 +20,9 @@ import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
+import com.example.lun.pocket_health_advisor.DialogflowAsyncWorker.Companion.BOT
+import com.example.lun.pocket_health_advisor.MainActivity.AuthUser
+import com.example.lun.pocket_health_advisor.MainActivity.Companion.USER_DETAILS
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.FieldValue
@@ -36,7 +39,7 @@ class ChatbotActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Array
     //create empty constructor for firestore recycleview
     data class ChatMessage(var message: String = "", var user: String = "")
 
-    lateinit var authUser: MainActivity.AuthUser
+    lateinit var authUser: AuthUser
     lateinit var db: FirebaseFirestore
     lateinit var adapter: FirestoreRecyclerAdapter<ChatMessage, ChatRecord>
     internal var flagFab: Boolean? = true
@@ -58,7 +61,7 @@ class ChatbotActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Array
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.RECORD_AUDIO), 1)
 
-        authUser = intent.getSerializableExtra(MainActivity.USER_DETAILS) as MainActivity.AuthUser
+        authUser = intent.getSerializableExtra(USER_DETAILS) as AuthUser
 
         recyclerView.setHasFixedSize(true)
         val linearLayoutManager = LinearLayoutManager(this)
@@ -130,7 +133,7 @@ class ChatbotActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Array
             override fun onBindViewHolder(viewHolder: ChatRecord, position: Int, model: ChatMessage) {
                 Log.d("authUser", "" + model.user)
 
-                if (model.user !=DialogflowAsyncWorker.BOT) {
+                if (model.user != BOT) {
                     Log.d("model", "" + model.message)
                     viewHolder.rightText.text = model.message
 

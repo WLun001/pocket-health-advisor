@@ -174,7 +174,7 @@ class MainActivity : AppCompatActivity() {
                                     val dialog = dialogInterface as Dialog
                                     var newName = dialog.findViewById<EditText>(R.id.display_name)
                                             .text.toString()
-                                    if (newName.isNotEmpty()){
+                                    if (newName.isNotEmpty()) {
                                         updateAuthUser(newName)
                                     }
                                 })

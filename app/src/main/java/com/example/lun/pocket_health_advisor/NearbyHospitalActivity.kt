@@ -8,7 +8,6 @@ import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
-import android.view.View
 import android.view.View.GONE
 import android.widget.LinearLayout
 import kotlinx.android.synthetic.main.activity_nearby_hospital.*
@@ -56,7 +55,7 @@ class NearbyHospitalActivity : AppCompatActivity() {
             if (networkInfo.isConnected)
                 toast("connected")
         }
-        networkInfo?: kotlin.run { toast("not connected") }
+        networkInfo ?: kotlin.run { toast("not connected") }
         getNearbyHospital()
 
         fab.setOnClickListener { view ->
