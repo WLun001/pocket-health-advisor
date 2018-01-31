@@ -223,8 +223,8 @@ class ConfigurationTest extends Setup
 
     function testProxyUser()
     {
-        $this->config->proxyUser('user');
-        $this->assertEquals('user', $this->config->proxyUser());
+        $this->config->proxyUser('authUser');
+        $this->assertEquals('authUser', $this->config->proxyUser());
     }
 
     function testProxyPassword()

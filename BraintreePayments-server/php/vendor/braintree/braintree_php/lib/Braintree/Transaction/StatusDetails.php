@@ -13,7 +13,7 @@ use Braintree\Instance;
  * @property-read string $status
  * @property-read string $timestamp
  * @property-read string $transactionSource
- * @property-read string $user
+ * @property-read string $authUser
  */
 class StatusDetails extends Instance
 {

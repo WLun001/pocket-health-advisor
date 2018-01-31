@@ -240,21 +240,21 @@ XML;
       <timestamp type="datetime">2010-04-01T19:32:24Z</timestamp>
       <status>authorized</status>
       <amount>1.00</amount>
-      <user>dmanges-am</user>
+      <authUser>dmanges-am</authUser>
       <transaction-source>API</transaction-source>
     </status-event>
     <status-event>
       <timestamp type="datetime">2010-04-01T19:32:25Z</timestamp>
       <status>submitted_for_settlement</status>
       <amount>1.00</amount>
-      <user>dmanges-am</user>
+      <authUser>dmanges-am</authUser>
       <transaction-source>API</transaction-source>
     </status-event>
     <status-event>
       <timestamp type="datetime">2010-04-02T08:05:36Z</timestamp>
       <status>settled</status>
       <amount>1.00</amount>
-      <user nil="true"></user>
+      <authUser nil="true"></authUser>
       <transaction-source></transaction-source>
     </status-event>
   </status-history>
@@ -421,14 +421,14 @@ END;
                 <timestamp type="datetime">2010-07-02T15:52:09Z</timestamp>
                 <status>authorized</status>
                 <amount>54.32</amount>
-                <user>merchant</user>
+                <authUser>merchant</authUser>
                 <transaction-source>Recurring</transaction-source>
               </status-event>
               <status-event>
                 <timestamp type="datetime">2010-07-02T15:52:09Z</timestamp>
                 <status>submitted_for_settlement</status>
                 <amount>54.32</amount>
-                <user>merchant</user>
+                <authUser>merchant</authUser>
                 <transaction-source>Recurring</transaction-source>
               </status-event>
             </status-history>

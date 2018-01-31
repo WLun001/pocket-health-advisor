@@ -126,7 +126,7 @@ public class CallScreenActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        // User should exit activity by ending call, not by going back.
+        // AuthUser should exit activity by ending call, not by going back.
     }
 
     private void endCall() {

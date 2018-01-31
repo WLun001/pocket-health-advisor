@@ -123,7 +123,7 @@ class TransactionAdvancedSearchTest extends Setup
           'shippingPostalCode' => "54321",
           'shippingRegion' => "MA",
           'shippingStreetAddress' => "456 Road",
-          'user' => "integration_user_public_id"
+          'authUser' => "integration_user_public_id"
         ];
 
         $query = [Braintree\TransactionSearch::id()->is($transaction->id)];

@@ -3,10 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.lun.pocket_health_advisor.MainActivity">
     <item
-        android:id="@+id/action_login"
+        android:id="@+id/auth_user"
         android:icon="@drawable/ic_account_circle_white_24dp"
         android:orderInCategory="100"
-        android:title="Login"
+        android:title="User"
         app:showAsAction="ifRoom" />
 
     <item

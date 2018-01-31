@@ -1,14 +1,12 @@
 package com.example.lun.pocket_health_advisor
 
 import android.app.Activity
-import android.content.Context
+import android.app.AlertDialog
 import android.content.Intent
-import android.net.ConnectivityManager
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.CardView
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -16,10 +14,8 @@ import android.widget.GridLayout
 import android.widget.Toast
 import com.example.lun.pocket_health_advisor.R.id.*
 import com.firebase.ui.auth.AuthUI
-import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
@@ -35,11 +31,20 @@ class MainActivity : AppCompatActivity() {
         val USER_DETAILS: String = "com.example.lun.pocket_health_advisor.USER_DETAILS"
     }
 
-    data class User(var id: String, var name: String = "") : Serializable
+    data class AuthUser(var id: String, var name: String = "") : Serializable
+    data class HospitalUser(
+            var ic: String,
+            var id: String,
+            var name: String,
+            var hospitalId: String,
+            var age: String
+    )
 
     lateinit var auth: FirebaseAuth
     lateinit var authListener: FirebaseAuth.AuthStateListener
-    lateinit var user: FirebaseUser
+    lateinit var firebaseUser: FirebaseUser
+    lateinit var authUser: AuthUser
+    lateinit var hospitalUser: HospitalUser
 
     val RC_SIGN_IN = 1
 
@@ -73,7 +78,11 @@ class MainActivity : AppCompatActivity() {
                                 .build(),
                         RC_SIGN_IN)
             } else {
-                user = firebaseUser
+                this.firebaseUser = firebaseUser
+                var userName = ""
+                firebaseUser.displayName?.let { userName = firebaseUser.displayName as String }
+                toast(userName)
+                authUser = AuthUser(firebaseUser.uid, userName)
             }
         }
     }
@@ -115,13 +124,8 @@ class MainActivity : AppCompatActivity() {
                 override fun onClick(v: View?) {
                     when (count) {
                         0 -> {
-                            var userName = ""
-                            user.displayName?.let { userName = user.displayName as String }
-
-                            var userDetails = User(user.uid, userName)
-
                             val intent = Intent(applicationContext, ChatbotActivity::class.java)
-                            intent.putExtra(USER_DETAILS, userDetails as Serializable)
+                            intent.putExtra(USER_DETAILS, authUser as Serializable)
                             intent.putExtras(intent)
 
                             startActivity(intent)
@@ -160,28 +164,21 @@ class MainActivity : AppCompatActivity() {
 
             nearby_hospital -> startActivity(Intent(this, NearbyHospitalActivity::class.java))
 
-            check_appointment -> {
-                var firestore = FirebaseFirestore.getInstance()
-                        .collection("patients")
-                        .whereEqualTo("name", "yong")
-                        .get()
-                        .addOnCompleteListener({
-                            task -> if (task.isSuccessful) {
-                            var result = task.result
-                            result?.let {
-                                if (result.size() > 0) {
-                                    for (i in result) {
-                                        var age = i.get("age")
-                                        toast(age.toString())
+            auth_user -> {
+                var builder = AlertDialog.Builder(this)
+                        .setView(R.layout.auth_user_details_dialog)
+                        .setPositiveButton(R.string.button_ok,
+                                { dialogInterface, i ->
+                                    toast("ok")
+                                })
+                        .setNegativeButton(R.string.button_cancel,
+                                { dialogInterface, i ->
+                                    toast("cancel")
+                                })
+                        .setTitle(authUser.name)
+                        .create()
+                        .show()
 
-                                    }
-                                }else toast("no matches found")
-                            }
-
-                        } else toast("No matches found")
-
-                        })
-                        .addOnFailureListener { toast("No matches found") }
             }
         }
         return super.onOptionsItemSelected(item)
@@ -190,5 +187,33 @@ class MainActivity : AppCompatActivity() {
 
     fun payment(view: View) {
         startActivity(Intent(this, PaymentActivity::class.java))
+    }
+
+    fun getHospitalUser() {
+        var firestore = FirebaseFirestore.getInstance()
+                .collection("patients")
+                .whereEqualTo("name", "yong")
+                .get()
+                .addOnCompleteListener({ task ->
+                    if (task.isSuccessful) {
+                        var result = task.result
+                        result?.let {
+                            if (result.size() > 0) {
+                                for (i in result) {
+                                    hospitalUser = HospitalUser(
+                                            i.getString("ic"),
+                                            i.getString("id"),
+                                            i.getString("name"),
+                                            i.getString("hospital_id"),
+                                            i.getString("age")
+                                    )
+                                }
+                            } else toast("no matches found")
+                        }
+
+                    } else toast("No matches found")
+
+                })
+                .addOnFailureListener { toast("No matches found") }
     }
 }

@@ -36,7 +36,7 @@ class ChatbotActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Array
     //create empty constructor for firestore recycleview
     data class ChatMessage(var message: String = "", var user: String = "")
 
-    lateinit var user: MainActivity.User
+    lateinit var authUser: MainActivity.AuthUser
     lateinit var db: FirebaseFirestore
     lateinit var adapter: FirestoreRecyclerAdapter<ChatMessage, ChatRecord>
     internal var flagFab: Boolean? = true
@@ -58,7 +58,7 @@ class ChatbotActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Array
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.RECORD_AUDIO), 1)
 
-        user = intent.getSerializableExtra(MainActivity.USER_DETAILS) as MainActivity.User
+        authUser = intent.getSerializableExtra(MainActivity.USER_DETAILS) as MainActivity.AuthUser
 
         recyclerView.setHasFixedSize(true)
         val linearLayoutManager = LinearLayoutManager(this)
@@ -80,9 +80,9 @@ class ChatbotActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Array
                 queryText = message
                 Log.d("Init loader", "loader initiated")
                 loaderManager.restartLoader(LOADER_ID, null, this)
-                val chatMessage = ChatMessage(message, user.name)
+                val chatMessage = ChatMessage(message, authUser.name)
                 db.collection(getString(R.string.first_col))
-                        .document(user.id)
+                        .document(authUser.id)
                         .collection(getString(R.string.second_col))
                         .add(getMap(chatMessage))
             }
@@ -117,7 +117,7 @@ class ChatbotActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Array
 
         val query = FirebaseFirestore.getInstance()
                 .collection(getString(R.string.first_col))
-                .document(user.id)
+                .document(authUser.id)
                 .collection(getString(R.string.second_col))
                 .limit(100)
                 .orderBy(getString(R.string.timestamp))
@@ -128,9 +128,9 @@ class ChatbotActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Array
 
         adapter = object : FirestoreRecyclerAdapter<ChatMessage, ChatRecord>(options) {
             override fun onBindViewHolder(viewHolder: ChatRecord, position: Int, model: ChatMessage) {
-                Log.d("user", "" + model.user)
+                Log.d("authUser", "" + model.user)
 
-                if (model.user == user.name) {
+                if (model.user == authUser.name) {
                     Log.d("model", "" + model.message)
                     viewHolder.rightText.text = model.message
 
@@ -206,7 +206,7 @@ class ChatbotActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Array
         var baseUri = Uri.parse(DIALOGFLOW_URL)
         var uriBuilder = baseUri.buildUpon()
         uriBuilder.appendQueryParameter("query", queryText)
-                .appendQueryParameter("sessionId", user.id)
+                .appendQueryParameter("sessionId", authUser.id)
 
         return DialogflowAsyncWorker(applicationContext, uriBuilder.build().toString())
     }
@@ -216,7 +216,7 @@ class ChatbotActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Array
             Log.d("OnLoadFinish", i.message)
             var chatMessage = i
             db.collection(getString(R.string.first_col))
-                    .document(user.id)
+                    .document(authUser.id)
                     .collection(getString(R.string.second_col))
                     .add(getMap(chatMessage))
         }

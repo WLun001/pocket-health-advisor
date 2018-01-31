@@ -321,10 +321,10 @@ class Util
     }
 
     /**
-     * verify user request structure
+     * verify authUser request structure
      *
      * compares the expected signature of a gateway request
-     * against the actual structure sent by the user
+     * against the actual structure sent by the authUser
      *
      * @param array $signature
      * @param array $attributes

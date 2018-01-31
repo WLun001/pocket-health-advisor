@@ -74,7 +74,7 @@ class Http
     {
         if ($this->_useClientCredentials) {
             return [
-                'user' => $this->_config->getClientId(),
+                'authUser' => $this->_config->getClientId(),
                 'password' => $this->_config->getClientSecret(),
             ];
         } else if ($this->_config->isAccessToken()) {
@@ -83,7 +83,7 @@ class Http
             ];
         } else {
             return [
-                'user' => $this->_config->getPublicKey(),
+                'authUser' => $this->_config->getPublicKey(),
                 'password' => $this->_config->getPrivateKey(),
             ];
         }
@@ -118,9 +118,9 @@ class Http
         $headers[] = 'X-ApiVersion: ' . Configuration::API_VERSION;
 
         $authorization = $this->_getAuthorization();
-        if (isset($authorization['user'])) {
+        if (isset($authorization['authUser'])) {
             curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-            curl_setopt($curl, CURLOPT_USERPWD, $authorization['user'] . ':' . $authorization['password']);
+            curl_setopt($curl, CURLOPT_USERPWD, $authorization['authUser'] . ':' . $authorization['password']);
         } else if (isset($authorization['token'])) {
             $headers[] = 'Authorization: Bearer ' . $authorization['token'];
         }

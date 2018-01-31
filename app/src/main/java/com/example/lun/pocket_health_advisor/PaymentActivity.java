@@ -94,8 +94,8 @@ public class PaymentActivity extends AppCompatActivity {
                     Toast.makeText(PaymentActivity.this, "Please enter a valid amount.", Toast.LENGTH_SHORT).show();
 
             } else if (resultCode == Activity.RESULT_CANCELED) {
-                // the user canceled
-                Log.d("mylog", "user canceled");
+                // the authUser canceled
+                Log.d("mylog", "authUser canceled");
             } else {
                 // handle errors here, an exception may be available in
                 Exception error = (Exception) data.getSerializableExtra(DropInActivity.EXTRA_ERROR);

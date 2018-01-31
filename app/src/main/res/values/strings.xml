@@ -12,6 +12,13 @@
     <string name="message_field">message</string>
     <string name="user_field">user</string>
 
+    <!--firebase user dialog-->
+    <string name="dialog_title">User Details</string>
+    <string name="display_name">Display name</string>
+    <string name="display_message">Please use your real name, as we need to match with hospital later.</string>
+    <string name="button_ok">OK</string>
+    <string name="button_cancel">Cancel</string>
+
 
     <string name="hospital_open_now">Open Now</string>
     <string name="hospital_closed">Closed</string>
