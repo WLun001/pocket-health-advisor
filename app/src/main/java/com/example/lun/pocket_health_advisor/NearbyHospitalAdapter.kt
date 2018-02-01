@@ -12,9 +12,15 @@ import kotlinx.android.synthetic.main.hospital_list_item.view.*
 /**
  * Created by Wei Lun on 1/22/2018.
  */
-class NearbyHospitalAdapter(var hospitalList: ArrayList<Hospital>) : RecyclerView.Adapter<NearbyHospitalAdapter.ViewHolder>() {
+class NearbyHospitalAdapter(var hospitalList: ArrayList<Hospital>,
+                            var listener: OnItemClickListerner)
+    : RecyclerView.Adapter<NearbyHospitalAdapter.ViewHolder>() {
+
+    interface OnItemClickListerner {
+        fun onItemClick(hospital: Hospital)
+    }
     override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
-        holder?.bindView(hospitalList[position])
+        holder?.bindView(hospitalList[position],listener)
     }
 
     override fun getItemCount(): Int {
@@ -27,18 +33,21 @@ class NearbyHospitalAdapter(var hospitalList: ArrayList<Hospital>) : RecyclerVie
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        fun bindView(hospital: Hospital) {
-            var hospitalName = itemView.hospital_opening_status as TextView
+        fun bindView(hospital: Hospital, listener: OnItemClickListerner) {
+            var hospitalStatus = itemView.hospital_opening_status as TextView
 
             itemView.hospital_name.text = hospital.name
             itemView.hospital_distance.text = hospital.distance
 
-            hospitalName.text = hospital.openingStatus
+            hospitalStatus.text = hospital.openingStatus
             if (hospital.openingStatus == "Open Now")
-                hospitalName.setTextColor(Color.parseColor("#FF3BE215"))
+                hospitalStatus.setTextColor(Color.parseColor("#FF3BE215"))
             else
-                hospitalName.setTextColor(Color.parseColor("#FFE22315"))
+                hospitalStatus.setTextColor(Color.parseColor("#FFE22315"))
+
+            itemView.setOnClickListener { listener.onItemClick(hospital) }
 
         }
+
     }
 }
