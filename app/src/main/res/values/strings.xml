@@ -3,4 +3,27 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_payment">payment</string>
     <string name="title_activity_sinch_login">SinchLoginActivity</string>
+    <string name="title_activity_nearby_hospital">NearbyHospitalActivity</string>
+
+    <!--firestore name - users-->
+    <string name="first_col">users</string>
+    <string name="second_col">chat_data</string>
+    <string name="timestamp">timestamp</string>
+    <string name="message_field">message</string>
+    <string name="user_field">user</string>
+
+    <!--firebase user dialog-->
+    <string name="dialog_title">User Details</string>
+    <string name="new_display_name">New name</string>
+    <string name="display_message">Please use your real name, as we need to match with hospital later.</string>
+    <string name="button_ok">OK</string>
+    <string name="button_cancel">Cancel</string>
+
+    <!--Firebase User-->
+    <string name="updated_display_name">Display name updated.</string>
+
+
+    <string name="hospital_open_now">Open Now</string>
+    <string name="hospital_closed">Closed</string>
+    <string name="hospital_unknown">Unknown</string>
 </resources>

@@ -6,7 +6,7 @@ use Braintree\Exception;
 /**
  * Raised when authorization fails
  * Raised when the API key being used is not authorized to perform
- * the attempted action according to the roles assigned to the user
+ * the attempted action according to the roles assigned to the authUser
  * who owns the API key.
  *
  * @package    Braintree

@@ -58,7 +58,7 @@ class TransactionSearch
     public static function shippingRegion()             { return new TextNode('shipping_region'); }
     public static function shippingStreetAddress()      { return new TextNode('shipping_street_address'); }
     public static function submittedForSettlementAt()   { return new RangeNode("submittedForSettlementAt"); }
-    public static function user()                       { return new MultipleValueNode('user'); }
+    public static function authUser()                       { return new MultipleValueNode('authUser'); }
     public static function voidedAt()                   { return new RangeNode("voidedAt"); }
 
     public static function createdUsing()

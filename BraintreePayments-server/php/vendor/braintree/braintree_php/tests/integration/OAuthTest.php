@@ -191,7 +191,7 @@ class OAuthTest extends Setup
             'scope' => 'read_write',
             'state' => 'baz_state',
             'landingPage' => 'login',
-            'user' => [
+            'authUser' => [
                 'country' => 'USA',
                 'email' => 'foo@example.com',
                 'firstName' => 'Bob',
@@ -239,18 +239,18 @@ class OAuthTest extends Setup
         $this->assertEquals('baz_state', $query['state']);
         $this->assertEquals('login', $query['landing_page']);
 
-        $this->assertEquals('USA', $query['user']['country']);
-        $this->assertEquals('foo@example.com', $query['user']['email']);
-        $this->assertEquals('Bob', $query['user']['first_name']);
-        $this->assertEquals('Jones', $query['user']['last_name']);
-        $this->assertEquals('555-555-5555', $query['user']['phone']);
-        $this->assertEquals('1970', $query['user']['dob_year']);
-        $this->assertEquals('01', $query['user']['dob_month']);
-        $this->assertEquals('01', $query['user']['dob_day']);
-        $this->assertEquals('222 W Merchandise Mart', $query['user']['street_address']);
-        $this->assertEquals('Chicago', $query['user']['locality']);
-        $this->assertEquals('IL', $query['user']['region']);
-        $this->assertEquals('60606', $query['user']['postal_code']);
+        $this->assertEquals('USA', $query['authUser']['country']);
+        $this->assertEquals('foo@example.com', $query['authUser']['email']);
+        $this->assertEquals('Bob', $query['authUser']['first_name']);
+        $this->assertEquals('Jones', $query['authUser']['last_name']);
+        $this->assertEquals('555-555-5555', $query['authUser']['phone']);
+        $this->assertEquals('1970', $query['authUser']['dob_year']);
+        $this->assertEquals('01', $query['authUser']['dob_month']);
+        $this->assertEquals('01', $query['authUser']['dob_day']);
+        $this->assertEquals('222 W Merchandise Mart', $query['authUser']['street_address']);
+        $this->assertEquals('Chicago', $query['authUser']['locality']);
+        $this->assertEquals('IL', $query['authUser']['region']);
+        $this->assertEquals('60606', $query['authUser']['postal_code']);
 
         $this->assertEquals('14 Ladders', $query['business']['name']);
         $this->assertEquals('14.0 Ladders', $query['business']['registered_as']);

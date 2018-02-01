@@ -1,6 +1,8 @@
 package com.example.lun.pocket_health_advisor
 
 import android.app.Activity
+import android.app.AlertDialog
+import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
@@ -9,14 +11,18 @@ import android.support.v7.widget.CardView
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.EditText
 import android.widget.GridLayout
 import android.widget.Toast
-import com.example.lun.pocket_health_advisor.R.id.sign_out
+import com.example.lun.pocket_health_advisor.R.id.*
 import com.firebase.ui.auth.AuthUI
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.UserProfileChangeRequest
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
+import org.jetbrains.anko.toast
 import java.io.Serializable
 import java.util.*
 
@@ -28,13 +34,22 @@ class MainActivity : AppCompatActivity() {
         val USER_DETAILS: String = "com.example.lun.pocket_health_advisor.USER_DETAILS"
     }
 
-    data class User(var id: String, var name: String = "") : Serializable
+    data class AuthUser(var id: String, var name: String = "") : Serializable
+    data class HospitalUser(
+            var ic: String,
+            var id: String,
+            var name: String,
+            var hospitalId: String,
+            var age: String
+    )
 
     lateinit var auth: FirebaseAuth
     lateinit var authListener: FirebaseAuth.AuthStateListener
-    lateinit var user: FirebaseUser
+    lateinit var firebaseUser: FirebaseUser
+    lateinit var authUser: AuthUser
+    lateinit var hospitalUser: HospitalUser
 
-    val RC_SIGN_IN = 1;
+    val RC_SIGN_IN = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,9 +81,11 @@ class MainActivity : AppCompatActivity() {
                                 .build(),
                         RC_SIGN_IN)
             } else {
-                user = firebaseUser
+                this.firebaseUser = firebaseUser
+                var userName = ""
+                firebaseUser.displayName?.let { userName = firebaseUser.displayName as String }
+                authUser = AuthUser(firebaseUser.uid, userName)
             }
-
         }
     }
 
@@ -109,19 +126,20 @@ class MainActivity : AppCompatActivity() {
                 override fun onClick(v: View?) {
                     when (count) {
                         0 -> {
-                            var userName = ""
-                            user.displayName?.let { userName = user.displayName as String }
-
-                            var userDetails = User(user.uid, userName)
-
                             val intent = Intent(applicationContext, ChatbotActivity::class.java)
-                            intent.putExtra(USER_DETAILS, userDetails as Serializable)
+                            intent.putExtra(USER_DETAILS, authUser as Serializable)
                             intent.putExtras(intent)
 
                             startActivity(intent)
                         }
+
+                        1 -> {
+                            startActivity(Intent(applicationContext, NearbyHospitalActivity::class.java))
+                        }
                         3 -> {
                             val intent = Intent(applicationContext, CheckAppointmentActivity::class.java)
+                            intent.putExtra(USER_DETAILS, authUser as Serializable)
+                            intent.putExtras(intent)
                             startActivity(intent)
                         }
                     }
@@ -147,6 +165,30 @@ class MainActivity : AppCompatActivity() {
 
         when (id) {
             sign_out -> AuthUI.getInstance().signOut(this)
+
+            nearby_hospital -> startActivity(Intent(this, NearbyHospitalActivity::class.java))
+
+            auth_user -> {
+                var builder = AlertDialog.Builder(this)
+                        .setView(R.layout.auth_user_details_dialog)
+                        .setPositiveButton(R.string.button_ok,
+                                { dialogInterface, i ->
+                                    val dialog = dialogInterface as Dialog
+                                    var newName = dialog.findViewById<EditText>(R.id.display_name)
+                                            .text.toString()
+                                    if (newName.isNotEmpty()) {
+                                        updateAuthUser(newName)
+                                    }
+                                })
+                        .setNegativeButton(R.string.button_cancel,
+                                { dialogInterface, i ->
+                                    toast("cancel")
+                                })
+                        .setTitle(authUser.name)
+                        .create()
+                        .show()
+
+            }
         }
         return super.onOptionsItemSelected(item)
 
@@ -155,4 +197,13 @@ class MainActivity : AppCompatActivity() {
     fun payment(view: View) {
         startActivity(Intent(this, PaymentActivity::class.java))
     }
+
+    fun updateAuthUser(newName: String) {
+        val userProfile = UserProfileChangeRequest.Builder()
+                .setDisplayName(newName)
+                .build()
+        firebaseUser.updateProfile(userProfile)
+        toast(R.string.updated_display_name)
+    }
+
 }

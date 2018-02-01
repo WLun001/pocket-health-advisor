@@ -42,7 +42,7 @@ class Error extends Base
 
     /**
      * return original value for a field
-     * For example, if a user tried to submit 'invalid-email' in the html field transaction[customer][email],
+     * For example, if a authUser tried to submit 'invalid-email' in the html field transaction[customer][email],
      * $result->valueForHtmlField("transaction[customer][email]") would yield "invalid-email"
      *
      * @param string $field

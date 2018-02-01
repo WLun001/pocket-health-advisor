@@ -11,7 +11,7 @@ namespace Braintree;
  * about transparent redirect, see (TODO).
  *
  * You must provide a redirectUrl to which the gateway will redirect the
- * user the action is complete.
+ * authUser the action is complete.
  *
  * <code>
  *   $trData = TransparentRedirect::createCustomerData(array(
@@ -20,8 +20,8 @@ namespace Braintree;
  * </code>
  *
  * In addition to the redirectUrl, any data that needs to be protected
- * from user tampering should be included in the trData.
- * For example, to prevent the user from tampering with the transaction
+ * from authUser tampering should be included in the trData.
+ * For example, to prevent the authUser from tampering with the transaction
  * amount, include the amount in the trData.
  *
  * <code>
