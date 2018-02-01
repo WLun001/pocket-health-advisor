@@ -17,7 +17,7 @@ import javax.net.ssl.HttpsURLConnection
 /**
  * Created by Lun on 14/01/2018.
  */
-class DialogflowAsyncWorker(context: Context, url: String)
+class DialogflowAsyncWorker(context: Context, private var url:String)
     : AsyncTaskLoader<ArrayList<ChatbotActivity.ChatMessage>>(context) {
 
     data class Response(var response: JSONObject)
@@ -27,8 +27,6 @@ class DialogflowAsyncWorker(context: Context, url: String)
         val ACCESS_TOKEN = ("47836bc8e2494eabb7ea945d1b227d29").toByteArray(Charset.defaultCharset())
         var encodedAuth = "Bearer " + Base64.encode(ACCESS_TOKEN, Base64.DEFAULT)
     }
-
-    private var url = url
 
     override fun onStartLoading() {
         super.onStartLoading()
@@ -69,7 +67,7 @@ class DialogflowAsyncWorker(context: Context, url: String)
             }
 
         } catch (e: Exception) {
-            Toast.makeText(context, e.message, Toast.LENGTH_SHORT)
+            Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
         }
         return chatMessage
 
