@@ -138,6 +138,8 @@ class MainActivity : AppCompatActivity() {
                         }
                         3 -> {
                             val intent = Intent(applicationContext, CheckAppointmentActivity::class.java)
+                            intent.putExtra(USER_DETAILS, authUser as Serializable)
+                            intent.putExtras(intent)
                             startActivity(intent)
                         }
                     }
@@ -204,31 +206,4 @@ class MainActivity : AppCompatActivity() {
         toast(R.string.updated_display_name)
     }
 
-    fun getHospitalUser() {
-        var firestore = FirebaseFirestore.getInstance()
-                .collection("patients")
-                .whereEqualTo("name", "yong")
-                .get()
-                .addOnCompleteListener({ task ->
-                    if (task.isSuccessful) {
-                        var result = task.result
-                        result?.let {
-                            if (result.size() > 0) {
-                                for (i in result) {
-                                    hospitalUser = HospitalUser(
-                                            i.getString("ic"),
-                                            i.getString("id"),
-                                            i.getString("name"),
-                                            i.getString("hospital_id"),
-                                            i.getString("age")
-                                    )
-                                }
-                            } else toast("no matches found")
-                        }
-
-                    } else toast("No matches found")
-
-                })
-                .addOnFailureListener { toast("No matches found") }
-    }
 }

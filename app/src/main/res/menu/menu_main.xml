@@ -19,9 +19,4 @@
         android:title="Nearby Hospital"
         app:showAsAction="collapseActionView"/>
 
-    <item
-        android:id="@+id/check_appointment"
-        android:title="Check Appointment"
-        app:showAsAction="collapseActionView"/>
-
 </menu>
