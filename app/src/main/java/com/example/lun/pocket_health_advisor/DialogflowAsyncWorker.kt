@@ -17,7 +17,7 @@ import javax.net.ssl.HttpsURLConnection
 /**
  * Created by Lun on 14/01/2018.
  */
-class DialogflowAsyncWorker(context: Context, private var url:String)
+class DialogflowAsyncWorker(context: Context, private var url: String)
     : AsyncTaskLoader<ArrayList<ChatbotActivity.ChatMessage>>(context) {
 
     data class Response(var response: JSONObject)

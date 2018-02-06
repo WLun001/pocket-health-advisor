@@ -1,7 +1,6 @@
 package com.example.lun.pocket_health_advisor
 
 import android.content.Context
-import android.content.DialogInterface
 import android.net.ConnectivityManager
 import android.net.Uri
 import android.os.Bundle
@@ -152,7 +151,7 @@ class NearbyHospitalActivity : AppCompatActivity() {
 
             }
             uiThread {
-                hospitals.sortBy { hospital -> hospital.distance  }
+                hospitals.sortBy { hospital -> hospital.distance }
                 adapter.notifyDataSetChanged()
                 hospital_progress_bar.visibility = GONE
             }
@@ -175,7 +174,7 @@ class NearbyHospitalActivity : AppCompatActivity() {
             var name = result.getString("name")
             // var weekdayText = result.getJSONObject("opening_hours").getJSONArray()
             var placeId = result.getString("place_id")
-           // var rating = result.getDouble("rating")
+            // var rating = result.getDouble("rating")
             var url = result.getString("url")
             //var website = result.getString("website")
 

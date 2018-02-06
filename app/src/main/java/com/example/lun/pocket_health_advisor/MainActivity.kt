@@ -4,7 +4,6 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Intent
-import android.location.Location
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
@@ -17,15 +16,11 @@ import android.widget.GridLayout
 import android.widget.Toast
 import com.example.lun.pocket_health_advisor.R.id.*
 import com.firebase.ui.auth.AuthUI
-import com.google.android.gms.location.LocationServices
-import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
-import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
-import org.jetbrains.anko.locationManager
 import org.jetbrains.anko.toast
 import java.io.Serializable
 import java.util.*

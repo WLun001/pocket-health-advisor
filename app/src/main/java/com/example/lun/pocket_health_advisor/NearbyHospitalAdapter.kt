@@ -19,8 +19,9 @@ class NearbyHospitalAdapter(var hospitalList: ArrayList<Hospital>,
     interface OnItemClickListerner {
         fun onItemClick(hospital: Hospital)
     }
+
     override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
-        holder?.bindView(hospitalList[position],listener)
+        holder?.bindView(hospitalList[position], listener)
     }
 
     override fun getItemCount(): Int {
