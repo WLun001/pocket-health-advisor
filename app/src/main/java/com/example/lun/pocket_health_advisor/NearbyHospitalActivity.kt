@@ -149,10 +149,12 @@ class NearbyHospitalActivity : AppCompatActivity() {
                 Log.d("Distance", distance.toString())
 
                 hospitals.add(Hospital(i.name, i.openingStatus, i.placeId, distance))
-                uiThread {
-                    adapter.notifyDataSetChanged()
-                    hospital_progress_bar.visibility = GONE
-                }
+
+            }
+            uiThread {
+                hospitals.sortBy { hospital -> hospital.distance  }
+                adapter.notifyDataSetChanged()
+                hospital_progress_bar.visibility = GONE
             }
         }
     }
