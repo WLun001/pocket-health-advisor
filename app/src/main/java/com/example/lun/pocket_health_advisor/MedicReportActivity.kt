@@ -22,6 +22,7 @@ import kotlinx.android.synthetic.main.activity_medic_report.*
 import kotlinx.android.synthetic.main.fragment_medic_report.view.*
 import java.io.Serializable
 import java.sql.Timestamp
+import com.example.lun.pocket_health_advisor.MainActivity.AuthUser
 
 class MedicReportActivity : AppCompatActivity() {
 
@@ -54,6 +55,7 @@ class MedicReportActivity : AppCompatActivity() {
      * [android.support.v4.app.FragmentStatePagerAdapter].
      */
     private var mSectionsPagerAdapter: SectionsPagerAdapter? = null
+    private lateinit var authUser: AuthUser
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -69,8 +71,11 @@ class MedicReportActivity : AppCompatActivity() {
         // Set up the ViewPager with the sections adapter.
         container.adapter = mSectionsPagerAdapter
 
+
         container.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabs))
         tabs.addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(container))
+
+        authUser = intent.getSerializableExtra(MainActivity.USER_DETAILS) as AuthUser
 
         fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)

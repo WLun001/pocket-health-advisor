@@ -11,7 +11,10 @@ import android.view.ViewGroup
 import android.widget.ListView
 import org.jetbrains.anko.support.v4.toast
 import android.widget.ArrayAdapter
-
+import com.example.lun.pocket_health_advisor.MainActivity.Companion.USER_DETAILS
+import com.example.lun.pocket_health_advisor.MainActivity.AuthUser
+import com.google.firebase.auth.FirebaseAuth
+import org.jetbrains.anko.toast
 
 
 /**
@@ -39,6 +42,11 @@ class MedicReportHistoryFragment : ListFragment(){
 
         val adapter = MedicReportAdapter(context ,medicReport)
         listAdapter = adapter
+
+//        var authUser = activity.intent.getSerializableExtra(USER_DETAILS) as AuthUser
+//        activity.toast(authUser.name)
+        var auth = FirebaseAuth.getInstance().currentUser
+        activity.toast(auth?.displayName.toString())
     }
 
     override fun onListItemClick(l: ListView?, v: View?, position: Int, id: Long) {

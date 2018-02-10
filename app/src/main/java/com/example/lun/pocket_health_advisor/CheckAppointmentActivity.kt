@@ -12,6 +12,7 @@ import android.widget.TextView
 import com.example.lun.pocket_health_advisor.MainActivity.AuthUser
 import com.example.lun.pocket_health_advisor.MainActivity.HospitalUser
 import com.example.lun.pocket_health_advisor.R.id.check_appointment
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import org.jetbrains.anko.toast
 
@@ -28,7 +29,8 @@ class CheckAppointmentActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_check_appointment)
 
-        authUser = intent.getSerializableExtra(MainActivity.USER_DETAILS) as AuthUser
+        val auth = FirebaseAuth.getInstance().currentUser
+        auth?.displayName?.let { authUser = AuthUser(auth.uid, auth.displayName as String) }
 
         val listView = findViewById(R.id.list) as ListView
         listView.adapter = ListViewAdapter(this)

@@ -25,10 +25,12 @@ import com.example.lun.pocket_health_advisor.MainActivity.Companion.USER_DETAILS
 import com.example.lun.pocket_health_advisor.R.id.medic_report
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import kotlinx.android.synthetic.main.activity_chatbot_acvitity.*
+import java.io.Serializable
 
 class ChatbotActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<ArrayList<ChatbotActivity.ChatMessage>> {
     companion object {
@@ -39,9 +41,9 @@ class ChatbotActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Array
     //create empty constructor for firestore recycleview
     data class ChatMessage(var message: String = "", var user: String = "")
 
-    lateinit var authUser: AuthUser
-    lateinit var db: FirebaseFirestore
-    lateinit var adapter: FirestoreRecyclerAdapter<ChatMessage, ChatRecord>
+    private lateinit var authUser: AuthUser
+    private lateinit var db: FirebaseFirestore
+    private lateinit var adapter: FirestoreRecyclerAdapter<ChatMessage, ChatRecord>
     internal var flagFab: Boolean? = true
     private lateinit var queryText: String
 
@@ -61,13 +63,14 @@ class ChatbotActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Array
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.RECORD_AUDIO), 1)
 
-        authUser = intent.getSerializableExtra(USER_DETAILS) as AuthUser
-
         recyclerView.setHasFixedSize(true)
         val linearLayoutManager = LinearLayoutManager(this)
         linearLayoutManager.stackFromEnd = true
         linearLayoutManager.isAutoMeasureEnabled = true
         recyclerView.layoutManager = linearLayoutManager
+
+        val auth = FirebaseAuth.getInstance().currentUser
+        auth?.displayName?.let { authUser = AuthUser(auth.uid, auth.displayName as String) }
 
         db = FirebaseFirestore.getInstance()
 
@@ -209,7 +212,12 @@ class ChatbotActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Array
         var id = item?.itemId
 
         when(id){
-            medic_report -> startActivity(Intent(this, MedicReportActivity::class.java))
+            medic_report -> {
+                val intent = Intent(this, MedicReportActivity::class.java)
+                intent.putExtra(USER_DETAILS, authUser as Serializable)
+                intent.putExtras(intent)
+                startActivity(intent)
+            }
         }
         return super.onOptionsItemSelected(item)
     }

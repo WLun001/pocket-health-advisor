@@ -126,9 +126,6 @@ class MainActivity : AppCompatActivity() {
                     when (count) {
                         0 -> {
                             val intent = Intent(applicationContext, ChatbotActivity::class.java)
-                            intent.putExtra(USER_DETAILS, authUser as Serializable)
-                            intent.putExtras(intent)
-
                             startActivity(intent)
                         }
 
@@ -137,8 +134,6 @@ class MainActivity : AppCompatActivity() {
                         }
                         3 -> {
                             val intent = Intent(applicationContext, CheckAppointmentActivity::class.java)
-                            intent.putExtra(USER_DETAILS, authUser as Serializable)
-                            intent.putExtras(intent)
                             startActivity(intent)
                         }
                     }
