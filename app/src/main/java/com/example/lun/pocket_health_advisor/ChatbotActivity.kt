@@ -2,6 +2,7 @@ package com.example.lun.pocket_health_advisor
 
 import android.app.LoaderManager
 import android.content.Context
+import android.content.Intent
 import android.content.Loader
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -14,15 +15,14 @@ import android.support.v7.widget.RecyclerView
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import com.example.lun.pocket_health_advisor.DialogflowAsyncWorker.Companion.BOT
 import com.example.lun.pocket_health_advisor.MainActivity.AuthUser
 import com.example.lun.pocket_health_advisor.MainActivity.Companion.USER_DETAILS
+import com.example.lun.pocket_health_advisor.R.id.medic_report
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.FieldValue
@@ -198,6 +198,20 @@ class ChatbotActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Array
         data.put(getString(R.string.user_field), chatMessage.user)
         data.put(getString(R.string.timestamp), FieldValue.serverTimestamp())
         return data
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.chatbot_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        var id = item?.itemId
+
+        when(id){
+            medic_report -> startActivity(Intent(this, MedicReportActivity::class.java))
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onLoaderReset(loader: Loader<ArrayList<ChatMessage>>?) {

@@ -26,4 +26,9 @@
     <string name="hospital_open_now">Open Now</string>
     <string name="hospital_closed">Closed</string>
     <string name="hospital_unknown">Unknown</string>
+    <string name="title_activity_medic_report">MedicReportActivity</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
+    <string name="tab_text_3">Tab 3</string>
+    <string name="section_format">Hello World from section: %1$d</string>
 </resources>

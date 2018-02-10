@@ -67,7 +67,16 @@
             android:name=".NearbyHospitalActivity"
             android:label="@string/title_activity_nearby_hospital"
             android:parentActivityName=".MainActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".MedicReportActivity"
+            android:label="@string/title_activity_medic_report"
+            android:parentActivityName=".ChatbotActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.lun.pocket_health_advisor.ChatbotActivity" />
+        </activity>
     </application>
 
 </manifest>
