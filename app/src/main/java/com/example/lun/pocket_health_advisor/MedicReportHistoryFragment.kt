@@ -62,7 +62,7 @@ class MedicReportHistoryFragment : ListFragment() {
                     .addOnCompleteListener { task ->
                         if (task.isSuccessful) {
                             for (i: DocumentSnapshot in task.result) {
-                                readDiagnoseCondition(i)
+                                readQuestions(i)
                                 doc.add(i)
                             }
                         } else {
@@ -141,6 +141,20 @@ class MedicReportHistoryFragment : ListFragment() {
     }
 
     private fun readQuestions(doc: DocumentSnapshot) {
+        val questionList = ArrayList<Question>()
+        val question = doc.get("questions") as ArrayList<*>
+        for (i in question){
+            questionList.add(
+                    Question(
+                            (i as HashMap<*, *>)["question"].toString(),
+                            i["symptom"].toString(),
+                            i["user_response"].toString()
+                    )
+            )
+        }
+        for (i in questionList){
+            toast(i.question)
+        }
 
     }
 

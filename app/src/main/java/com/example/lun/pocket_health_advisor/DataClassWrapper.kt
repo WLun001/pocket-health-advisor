@@ -64,4 +64,10 @@ class DataClassWrapper {
             val name: String,
             val choice: String
     )
+
+    data class Question(
+            val question: String,
+            val symptom: String,
+            val userResponse: String
+    )
 }
