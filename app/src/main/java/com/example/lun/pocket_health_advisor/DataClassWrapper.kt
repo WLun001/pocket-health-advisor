@@ -54,9 +54,10 @@ class DataClassWrapper {
     data class PossibleCondition(var name: String, var probability: Double) : Serializable
 
     data class MedicReport(
-            var condition: Condition,
-            var initialSymptoms: ArrayList<Map<String, String>>?,
+            var diagnoseCondition: Condition,
+            var initialSymptoms: ArrayList<InitialSyndrome>?,
             var possibleConditions: ArrayList<PossibleCondition>?,
+            var questions: ArrayList<Question>?,
             var timestamp: String
     ) : Serializable
 

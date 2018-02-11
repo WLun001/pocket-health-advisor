@@ -26,10 +26,10 @@ class MedicReportAdapter(private var context: Context, private var medicReportLi
             view = convertView
             viewHolder = view.tag as ViewHolder
         }
-        Log.d("adater", "populating list")
-        viewHolder.condition.text = medicReportList[position].condition.name
+        Log.d("adapter", "populating list")
+        viewHolder.condition.text = medicReportList[position].diagnoseCondition.name
         viewHolder.timestamp.text = medicReportList[position].timestamp
-        viewHolder.triageLevel.text = medicReportList[position].condition.triageLevel
+        viewHolder.triageLevel.text = medicReportList[position].diagnoseCondition.triageLevel
 
         return view
     }

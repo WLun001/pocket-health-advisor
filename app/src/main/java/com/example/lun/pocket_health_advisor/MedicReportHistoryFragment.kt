@@ -11,33 +11,18 @@ import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import org.jetbrains.anko.support.v4.toast
 import org.jetbrains.anko.toast
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 /**
  * Created by wlun on 2/10/18.
  */
 class MedicReportHistoryFragment : ListFragment() {
+    private var medicReportList = ArrayList<MedicReport>()
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
-        val categories = ArrayList<String>()
-        categories.add("Neurology")
-        val condition = Condition(
-                "Concussion",
-                "Concussion",
-                "acute",
-                categories,
-                "Please visit a neurologist as soon as possible.",
-                "very rare",
-                "moderate",
-                "emergency")
-        val medicReport = ArrayList<MedicReport>()
-
-        medicReport.add(MedicReport(condition, null, null, "2017"))
-
-        val adapter = MedicReportAdapter(context, medicReport)
-        listAdapter = adapter
 
 //        var authUser = activity.intent.getSerializableExtra(USER_DETAILS) as AuthUser
 //        activity.toast(authUser.name)
@@ -51,7 +36,6 @@ class MedicReportHistoryFragment : ListFragment() {
     }
 
     private fun getReportFromDb(uid: String?) {
-        val doc: ArrayList<DocumentSnapshot> = ArrayList()
         uid?.let {
             val db = FirebaseFirestore.getInstance()
                     .collection(getString(R.string.first_col))
@@ -62,9 +46,17 @@ class MedicReportHistoryFragment : ListFragment() {
                     .addOnCompleteListener { task ->
                         if (task.isSuccessful) {
                             for (i: DocumentSnapshot in task.result) {
-                                readQuestions(i)
-                                doc.add(i)
+                                medicReportList.add(
+                                        MedicReport(
+                                                readDiagnoseCondition(i),
+                                                readInitialSyndrome(i),
+                                                readPossibleConditions(i),
+                                                readQuestions(i),
+                                                i.get("timestamp").toString()
+                                        )
+                                )
                             }
+                            setUpListFragment(medicReportList)
                         } else {
                             activity.toast(task.exception.toString())
                         }
@@ -72,14 +64,9 @@ class MedicReportHistoryFragment : ListFragment() {
         }
     }
 
-    private fun readReportFromJson(i: DocumentSnapshot) {
-
-
-    }
-
-    private fun readInitialSyndrome(doc: DocumentSnapshot) {
+    private fun readInitialSyndrome(doc: DocumentSnapshot): ArrayList<InitialSyndrome> {
         val initialSyndromeList = ArrayList<InitialSyndrome>()
-        val initialSyndrome = (doc.get("initial") as HashMap<*, *>)["initial"] as ArrayList<*>
+        val initialSyndrome = (doc["initial"] as HashMap<*, *>)["initial"] as ArrayList<*>
         for (initial in initialSyndrome){
             initialSyndromeList.add(
                     InitialSyndrome(
@@ -88,14 +75,12 @@ class MedicReportHistoryFragment : ListFragment() {
                     )
             )
         }
-        for (i in initialSyndromeList) {
-            toast(i.name)
-        }
+     return initialSyndromeList
     }
 
-    private fun readPossibleConditions(doc: DocumentSnapshot) {
+    private fun readPossibleConditions(doc: DocumentSnapshot): ArrayList<PossibleCondition> {
         val possibleConditionsList = ArrayList<PossibleCondition>()
-        val possibleConditions = doc.get("possible_conditions") as HashMap<*, *>
+        val possibleConditions = doc["possible_conditions"] as HashMap<*, *>
         val conditions = possibleConditions["conditions"] as ArrayList<*>
         for (cond in conditions) {
             possibleConditionsList.add(
@@ -105,10 +90,11 @@ class MedicReportHistoryFragment : ListFragment() {
                     )
             )
         }
+        return possibleConditionsList
     }
 
-    private fun readDiagnoseCondition(doc: DocumentSnapshot) {
-        val diagnoseCondition = doc.get("diagnose_condition") as HashMap<*, *>
+    private fun readDiagnoseCondition(doc: DocumentSnapshot) : Condition{
+        val diagnoseCondition = doc["diagnose_condition"] as HashMap<*, *>
         val name = diagnoseCondition["name"].toString()
         val commonName = diagnoseCondition["common_name"].toString()
         val acuteness = diagnoseCondition["acuteness"].toString()
@@ -126,9 +112,7 @@ class MedicReportHistoryFragment : ListFragment() {
         for (cat in categories){
             categoriesList.add(cat.toString())
         }
-
-
-        val condition = Condition(
+        return Condition(
                 name,
                 commonName,
                 acuteness,
@@ -140,9 +124,9 @@ class MedicReportHistoryFragment : ListFragment() {
         )
     }
 
-    private fun readQuestions(doc: DocumentSnapshot) {
+    private fun readQuestions(doc: DocumentSnapshot): ArrayList<Question> {
         val questionList = ArrayList<Question>()
-        val question = doc.get("questions") as ArrayList<*>
+        val question = doc["questions"] as ArrayList<*>
         for (i in question){
             questionList.add(
                     Question(
@@ -152,15 +136,15 @@ class MedicReportHistoryFragment : ListFragment() {
                     )
             )
         }
-        for (i in questionList){
-            toast(i.question)
-        }
-
+        return questionList
     }
 
     private fun formatString(s: String) : String{
         return s.replace('_', ' ')
     }
 
-
+    private fun setUpListFragment(medicReport: ArrayList<MedicReport>){
+        val adapter = MedicReportAdapter(context, medicReport)
+        listAdapter = adapter
+    }
 }
