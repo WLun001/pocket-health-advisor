@@ -62,7 +62,7 @@ class MedicReportHistoryFragment : ListFragment() {
                     .addOnCompleteListener { task ->
                         if (task.isSuccessful) {
                             for (i: DocumentSnapshot in task.result) {
-                                readPossibleConditions(i)
+                                readDiagnoseCondition(i)
                                 doc.add(i)
                             }
                         } else {
@@ -108,11 +108,44 @@ class MedicReportHistoryFragment : ListFragment() {
     }
 
     private fun readDiagnoseCondition(doc: DocumentSnapshot) {
+        val diagnoseCondition = doc.get("diagnose_condition") as HashMap<*, *>
+        val name = diagnoseCondition["name"].toString()
+        val commonName = diagnoseCondition["common_name"].toString()
+        val acuteness = diagnoseCondition["acuteness"].toString()
+        val categories = diagnoseCondition["categories"] as ArrayList<*>
+        val hints = (diagnoseCondition["extras"] as HashMap<*, *>)["hint"].toString()
+        var prevalence = diagnoseCondition["prevalence"].toString()
+        var severity = diagnoseCondition["severity"].toString()
+        var triageLevel = diagnoseCondition["triage_level"].toString()
 
+        prevalence = formatString(prevalence)
+        severity = formatString(severity)
+        triageLevel = formatString(triageLevel)
+
+        val categoriesList = ArrayList<String>()
+        for (cat in categories){
+            categoriesList.add(cat.toString())
+        }
+
+
+        val condition = Condition(
+                name,
+                commonName,
+                acuteness,
+                categoriesList,
+                hints,
+                prevalence,
+                severity,
+                triageLevel
+        )
     }
 
     private fun readQuestions(doc: DocumentSnapshot) {
 
+    }
+
+    private fun formatString(s: String) : String{
+        return s.replace('_', ' ')
     }
 
 
