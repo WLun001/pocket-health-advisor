@@ -2,18 +2,13 @@ package com.example.lun.pocket_health_advisor
 
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.support.v4.app.ListFragment
-import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ListView
-import org.jetbrains.anko.support.v4.toast
-import android.widget.ArrayAdapter
-import com.example.lun.pocket_health_advisor.MainActivity.Companion.USER_DETAILS
-import com.example.lun.pocket_health_advisor.MainActivity.AuthUser
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.FirebaseFirestore
+import org.jetbrains.anko.support.v4.toast
 import org.jetbrains.anko.toast
 
 
@@ -45,12 +40,39 @@ class MedicReportHistoryFragment : ListFragment(){
 
 //        var authUser = activity.intent.getSerializableExtra(USER_DETAILS) as AuthUser
 //        activity.toast(authUser.name)
-        var auth = FirebaseAuth.getInstance().currentUser
-        activity.toast(auth?.displayName.toString())
+        val authUid = FirebaseAuth.getInstance().currentUser?.uid
+        getReportFromDb(authUid)
+
     }
 
     override fun onListItemClick(l: ListView?, v: View?, position: Int, id: Long) {
         toast("Clicked item " + position.toString())
     }
-//
+
+    override fun onResume() {
+        super.onResume()
+
+    }
+
+    private fun getReportFromDb(uid: String?) : DocumentSnapshot?{
+        val doc: ArrayList<DocumentSnapshot> = ArrayList()
+        uid?.let {
+            val db = FirebaseFirestore.getInstance()
+                    .collection(getString(R.string.first_col))
+                    .document(uid)
+                    .collection("medic_report")
+                    .orderBy("timestamp")
+                    .get()
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            for (i: DocumentSnapshot in task.result) {
+                                doc.add(i)
+                            }
+                        } else {
+                            activity.toast(task.exception.toString())
+                        }
+                    }
+            return doc
+        }
+    }
 }
