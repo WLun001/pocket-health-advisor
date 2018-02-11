@@ -11,6 +11,8 @@ import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.View.GONE
 import android.widget.LinearLayout
+import com.example.lun.pocket_health_advisor.DataClassWrapper.MapsHospital
+import com.example.lun.pocket_health_advisor.DataClassWrapper.MapsHospitalDetails
 import com.example.lun.pocket_health_advisor.NearbyHospitalAdapter.OnItemClickListerner
 import kotlinx.android.synthetic.main.activity_nearby_hospital.*
 import kotlinx.android.synthetic.main.content_nearby_hospital.*
@@ -18,7 +20,6 @@ import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.toast
 import org.jetbrains.anko.uiThread
 import org.json.JSONObject
-import java.io.Serializable
 import java.net.URL
 
 class NearbyHospitalActivity : AppCompatActivity() {
@@ -30,29 +31,14 @@ class NearbyHospitalActivity : AppCompatActivity() {
         val detailsPlaceURL = "https://maps.googleapis.com/maps/api/place/details/json?"
     }
 
-    data class Hospital(
-            var name: String,
-            var openingStatus: String,
-            var placeId: String,
-            var distance: String? = null) : Serializable
 
-    data class HospitalDetails(
-            var name: String,
-            var placeId: String,
-            var phoneNo: String,
-            var address: String,
-            var weekdayText: String,
-            var rating: Double,
-            var website: String,
-            var url: String
-    )
-
-    var listener = object : OnItemClickListerner {
-        override fun onItemClick(hospital: Hospital) {
+    private var listener = object : OnItemClickListerner {
+        override fun onItemClick(hospital: MapsHospital) {
             getHospitalDetails(hospital)
         }
+
     }
-    private var hospitals = ArrayList<Hospital>()
+    private var hospitals = ArrayList<MapsHospital>()
     private var adapter = NearbyHospitalAdapter(hospitals, listener)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -84,7 +70,7 @@ class NearbyHospitalActivity : AppCompatActivity() {
     private fun getNearbyHospital() {
         doAsync {
             var location = Uri.encode("3.041803,101.793075")
-            var tempHospital = ArrayList<Hospital>()
+            var tempHospital = ArrayList<MapsHospital>()
             var uriBuilder = Uri.parse(searchPlaceURL)
                     .buildUpon()
                     .encodedQuery("location=$location")
@@ -118,7 +104,7 @@ class NearbyHospitalActivity : AppCompatActivity() {
                         statusDes = getString(R.string.hospital_unknown)
                     }
                 }
-                tempHospital.add(Hospital(name, statusDes, placeId))
+                tempHospital.add(MapsHospital(name, statusDes, placeId))
             }
 
             uiThread {
@@ -127,7 +113,7 @@ class NearbyHospitalActivity : AppCompatActivity() {
         }
     }
 
-    private fun getHospitalDistance(tempHospital: ArrayList<Hospital>) {
+    private fun getHospitalDistance(tempHospital: ArrayList<MapsHospital>) {
         doAsync {
             for (i in tempHospital) {
                 var location = Uri.encode("3.041803,101.793075")
@@ -147,7 +133,7 @@ class NearbyHospitalActivity : AppCompatActivity() {
 
                 Log.d("Distance", distance.toString())
 
-                hospitals.add(Hospital(i.name, i.openingStatus, i.placeId, distance))
+                hospitals.add(MapsHospital(i.name, i.openingStatus, i.placeId, distance))
 
             }
             uiThread {
@@ -158,7 +144,7 @@ class NearbyHospitalActivity : AppCompatActivity() {
         }
     }
 
-    private fun getHospitalDetails(hospital: Hospital) {
+    private fun getHospitalDetails(hospital: MapsHospital) {
         doAsync {
             var uriBuilder = Uri.parse(detailsPlaceURL)
                     .buildUpon()
@@ -178,7 +164,7 @@ class NearbyHospitalActivity : AppCompatActivity() {
             var url = result.getString("url")
             //var website = result.getString("website")
 
-            var hospitalDetails = HospitalDetails(name, placeId, phoneNo, address, "", 0.0, "", url)
+            var hospitalDetails = MapsHospitalDetails(name, placeId, phoneNo, address, "", 0.0, "", url)
 
             uiThread {
                 AlertDialog.Builder(this@NearbyHospitalActivity)

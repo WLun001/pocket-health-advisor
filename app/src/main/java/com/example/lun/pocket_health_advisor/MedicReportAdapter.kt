@@ -7,13 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
-import org.jetbrains.anko.toast
+import com.example.lun.pocket_health_advisor.DataClassWrapper.MedicReport
 
 /**
  * Created by wlun on 2/10/18.
  */
-class MedicReportAdapter (private var context: Context, private var medicReportList: ArrayList<MedicReportActivity.MedicReport>)
-        : BaseAdapter() {
+class MedicReportAdapter(private var context: Context, private var medicReportList: ArrayList<MedicReport>)
+    : BaseAdapter() {
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View? {
         val view: View?
         val viewHolder: ViewHolder
@@ -35,19 +35,19 @@ class MedicReportAdapter (private var context: Context, private var medicReportL
     }
 
 
-        override fun getItem(position: Int): Any {
-            return medicReportList[position]
-        }
+    override fun getItem(position: Int): Any {
+        return medicReportList[position]
+    }
 
-        override fun getItemId(position: Int): Long {
-            return position.toLong()
-        }
+    override fun getItemId(position: Int): Long {
+        return position.toLong()
+    }
 
-        override fun getCount(): Int {
-            return medicReportList.size
-        }
+    override fun getCount(): Int {
+        return medicReportList.size
+    }
 
-    private class ViewHolder(view: View?){
+    private class ViewHolder(view: View?) {
         val condition: TextView = view?.findViewById<TextView>(R.id.hospital_name) as TextView
         val timestamp: TextView = view?.findViewById<TextView>(R.id.hospital_distance) as TextView
         val triageLevel: TextView = view?.findViewById<TextView>(R.id.hospital_opening_status) as TextView

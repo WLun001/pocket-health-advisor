@@ -5,31 +5,25 @@ import android.os.Bundle
 import android.support.v4.app.ListFragment
 import android.view.View
 import android.widget.ListView
+import com.example.lun.pocket_health_advisor.DataClassWrapper.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
-import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.support.v4.longToast
-import org.jetbrains.anko.support.v4.onUiThread
 import org.jetbrains.anko.support.v4.toast
-import org.jetbrains.anko.support.v4.uiThread
 import org.jetbrains.anko.toast
-import org.json.JSONObject
-import com.example.lun.pocket_health_advisor.MedicReportActivity.PossibleCondition
-import com.example.lun.pocket_health_advisor.MedicReportActivity.Condition
 
 
 /**
  * Created by wlun on 2/10/18.
  */
-class MedicReportHistoryFragment : ListFragment(){
+class MedicReportHistoryFragment : ListFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        var categories = ArrayList<String>()
+        val categories = ArrayList<String>()
         categories.add("Neurology")
-        var condition = MedicReportActivity.Condition(
+        val condition = Condition(
                 "Concussion",
                 "Concussion",
                 "acute",
@@ -38,11 +32,11 @@ class MedicReportHistoryFragment : ListFragment(){
                 "very rare",
                 "moderate",
                 "emergency")
-        var medicReport = ArrayList<MedicReportActivity.MedicReport>()
+        val medicReport = ArrayList<MedicReport>()
 
-        medicReport.add(MedicReportActivity.MedicReport(condition,null, null,"2017"))
+        medicReport.add(MedicReport(condition, null, null, "2017"))
 
-        val adapter = MedicReportAdapter(context ,medicReport)
+        val adapter = MedicReportAdapter(context, medicReport)
         listAdapter = adapter
 
 //        var authUser = activity.intent.getSerializableExtra(USER_DETAILS) as AuthUser
@@ -54,11 +48,6 @@ class MedicReportHistoryFragment : ListFragment(){
 
     override fun onListItemClick(l: ListView?, v: View?, position: Int, id: Long) {
         toast("Clicked item " + position.toString())
-    }
-
-    override fun onResume() {
-        super.onResume()
-
     }
 
     private fun getReportFromDb(uid: String?) {
@@ -83,20 +72,32 @@ class MedicReportHistoryFragment : ListFragment(){
         }
     }
 
-    private fun readReportFromJson(i: DocumentSnapshot){
+    private fun readReportFromJson(i: DocumentSnapshot) {
 
 
     }
 
-    private fun readInitialSyndrome(doc: DocumentSnapshot){
-
+    private fun readInitialSyndrome(doc: DocumentSnapshot) {
+        val initialSyndromeList = ArrayList<InitialSyndrome>()
+        val initialSyndrome = (doc.get("initial") as HashMap<*, *>)["initial"] as ArrayList<*>
+        for (initial in initialSyndrome){
+            initialSyndromeList.add(
+                    InitialSyndrome(
+                            (initial as HashMap<*, *>)["name"].toString(),
+                            initial["choice_id"].toString()
+                    )
+            )
+        }
+        for (i in initialSyndromeList) {
+            toast(i.name)
+        }
     }
 
-    private fun readPossibleConditions(doc: DocumentSnapshot){
+    private fun readPossibleConditions(doc: DocumentSnapshot) {
         val possibleConditionsList = ArrayList<PossibleCondition>()
         val possibleConditions = doc.get("possible_conditions") as HashMap<*, *>
         val conditions = possibleConditions["conditions"] as ArrayList<*>
-        for (cond in conditions){
+        for (cond in conditions) {
             possibleConditionsList.add(
                     PossibleCondition(
                             (cond as HashMap<*, *>)["name"].toString(),
@@ -104,18 +105,13 @@ class MedicReportHistoryFragment : ListFragment(){
                     )
             )
         }
-        for (i in possibleConditionsList){
-            toast(i.name)
-        }
+    }
 
+    private fun readDiagnoseCondition(doc: DocumentSnapshot) {
 
     }
 
-    private fun readDiagnoseCondition(doc: DocumentSnapshot){
-
-    }
-
-    private fun readQuestions(doc: DocumentSnapshot){
+    private fun readQuestions(doc: DocumentSnapshot) {
 
     }
 

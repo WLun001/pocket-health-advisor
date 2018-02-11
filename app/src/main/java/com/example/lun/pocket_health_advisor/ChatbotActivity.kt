@@ -19,8 +19,8 @@ import android.view.*
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
+import com.example.lun.pocket_health_advisor.DataClassWrapper.AuthUser
 import com.example.lun.pocket_health_advisor.DialogflowAsyncWorker.Companion.BOT
-import com.example.lun.pocket_health_advisor.MainActivity.AuthUser
 import com.example.lun.pocket_health_advisor.MainActivity.Companion.USER_DETAILS
 import com.example.lun.pocket_health_advisor.R.id.medic_report
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
@@ -211,7 +211,7 @@ class ChatbotActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Array
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         var id = item?.itemId
 
-        when(id){
+        when (id) {
             medic_report -> {
                 val intent = Intent(this, MedicReportActivity::class.java)
                 intent.putExtra(USER_DETAILS, authUser as Serializable)

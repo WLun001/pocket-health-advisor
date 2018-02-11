@@ -9,8 +9,7 @@ import android.view.*
 import android.widget.BaseAdapter
 import android.widget.ListView
 import android.widget.TextView
-import com.example.lun.pocket_health_advisor.MainActivity.AuthUser
-import com.example.lun.pocket_health_advisor.MainActivity.HospitalUser
+import com.example.lun.pocket_health_advisor.DataClassWrapper.*
 import com.example.lun.pocket_health_advisor.R.id.check_appointment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -21,9 +20,6 @@ class CheckAppointmentActivity : AppCompatActivity() {
     lateinit var authUser: AuthUser
     lateinit var hospitalUser: HospitalUser
 
-    data class HospitalDetails(
-            var name: String = ""
-    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,7 +58,7 @@ class CheckAppointmentActivity : AppCompatActivity() {
                         result?.let {
                             if (result.size() > 0) {
                                 for (i in result) {
-                                    hospitalUser = MainActivity.HospitalUser(
+                                    hospitalUser = HospitalUser(
                                             i.getString("ic"),
                                             i.getString("id"),
                                             i.getString("name"),
@@ -81,8 +77,8 @@ class CheckAppointmentActivity : AppCompatActivity() {
                 .addOnFailureListener { toast("No matches found") }
     }
 
-    fun getHospitalDetails(hospitalUser: HospitalUser) {
-        var hospitalDetails = HospitalDetails()
+    fun getHospitalDetails(hospitalUser: DataClassWrapper.HospitalUser) {
+        var hospitalDetails = AppointmentHospitalDetails()
         var firestore = FirebaseFirestore.getInstance()
                 .collection("hospitals")
                 .whereEqualTo("id", hospitalUser.hospitalId)

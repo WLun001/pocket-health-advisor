@@ -14,6 +14,8 @@ import android.view.View
 import android.widget.EditText
 import android.widget.GridLayout
 import android.widget.Toast
+import com.example.lun.pocket_health_advisor.DataClassWrapper.AuthUser
+import com.example.lun.pocket_health_advisor.DataClassWrapper.HospitalUser
 import com.example.lun.pocket_health_advisor.R.id.*
 import com.firebase.ui.auth.AuthUI
 import com.google.firebase.auth.FirebaseAuth
@@ -22,7 +24,6 @@ import com.google.firebase.auth.UserProfileChangeRequest
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import org.jetbrains.anko.toast
-import java.io.Serializable
 import java.util.*
 
 
@@ -33,19 +34,11 @@ class MainActivity : AppCompatActivity() {
         val USER_DETAILS: String = "com.example.lun.pocket_health_advisor.USER_DETAILS"
     }
 
-    data class AuthUser(var id: String, var name: String = "") : Serializable
-    data class HospitalUser(
-            var ic: String,
-            var id: String,
-            var name: String,
-            var hospitalId: String,
-            var age: String
-    )
 
     lateinit var auth: FirebaseAuth
-    lateinit var authListener: FirebaseAuth.AuthStateListener
-    lateinit var firebaseUser: FirebaseUser
-    lateinit var authUser: AuthUser
+    private lateinit var authListener: FirebaseAuth.AuthStateListener
+    private lateinit var firebaseUser: FirebaseUser
+    private lateinit var authUser: AuthUser
     lateinit var hospitalUser: HospitalUser
 
     val RC_SIGN_IN = 1
@@ -116,7 +109,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun setSingleEvent(gridLayout: GridLayout) {
+    private fun setSingleEvent(gridLayout: GridLayout) {
         for (count in 0..4) {
 
             var cardView = gridLayout.getChildAt(count) as? CardView
@@ -168,14 +161,14 @@ class MainActivity : AppCompatActivity() {
                         .setPositiveButton(R.string.button_ok,
                                 { dialogInterface, i ->
                                     val dialog = dialogInterface as Dialog
-                                    var newName = dialog.findViewById<EditText>(R.id.display_name)
+                                    val newName = dialog.findViewById<EditText>(R.id.display_name)
                                             .text.toString()
                                     if (newName.isNotEmpty()) {
                                         updateAuthUser(newName)
                                     }
                                 })
                         .setNegativeButton(R.string.button_cancel,
-                                { dialogInterface, i ->
+                                { _, _ ->
                                     toast("cancel")
                                 })
                         .setTitle(authUser.name)
@@ -192,7 +185,7 @@ class MainActivity : AppCompatActivity() {
         startActivity(Intent(this, PaymentActivity::class.java))
     }
 
-    fun updateAuthUser(newName: String) {
+    private fun updateAuthUser(newName: String) {
         val userProfile = UserProfileChangeRequest.Builder()
                 .setDisplayName(newName)
                 .build()

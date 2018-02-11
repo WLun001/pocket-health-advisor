@@ -20,8 +20,6 @@ import javax.net.ssl.HttpsURLConnection
 class DialogflowAsyncWorker(context: Context, private var url: String)
     : AsyncTaskLoader<ArrayList<ChatbotActivity.ChatMessage>>(context) {
 
-    data class Response(var response: JSONObject)
-
     companion object {
         val BOT = "bot"
         val ACCESS_TOKEN = ("47836bc8e2494eabb7ea945d1b227d29").toByteArray(Charset.defaultCharset())

@@ -6,18 +6,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import com.example.lun.pocket_health_advisor.NearbyHospitalActivity.Hospital
+import com.example.lun.pocket_health_advisor.DataClassWrapper.MapsHospital
 import kotlinx.android.synthetic.main.hospital_list_item.view.*
 
 /**
  * Created by Wei Lun on 1/22/2018.
  */
-class NearbyHospitalAdapter(var hospitalList: ArrayList<Hospital>,
+class NearbyHospitalAdapter(var hospitalList: ArrayList<MapsHospital>,
                             var listener: OnItemClickListerner)
     : RecyclerView.Adapter<NearbyHospitalAdapter.ViewHolder>() {
 
     interface OnItemClickListerner {
-        fun onItemClick(hospital: Hospital)
+        fun onItemClick(hospital: MapsHospital)
     }
 
     override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
@@ -34,7 +34,7 @@ class NearbyHospitalAdapter(var hospitalList: ArrayList<Hospital>,
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        fun bindView(hospital: Hospital, listener: OnItemClickListerner) {
+        fun bindView(hospital: MapsHospital, listener: OnItemClickListerner) {
             var hospitalStatus = itemView.hospital_opening_status as TextView
 
             itemView.hospital_name.text = hospital.name

@@ -1,50 +1,20 @@
 package com.example.lun.pocket_health_advisor
 
-import android.content.Context
-import android.support.design.widget.TabLayout
+import android.os.Bundle
 import android.support.design.widget.Snackbar
-import android.support.v7.app.AppCompatActivity
-
+import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
-import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
-import android.widget.BaseAdapter
-import android.widget.TextView
-
+import com.example.lun.pocket_health_advisor.DataClassWrapper.AuthUser
 import kotlinx.android.synthetic.main.activity_medic_report.*
-import kotlinx.android.synthetic.main.fragment_medic_report.view.*
-import java.io.Serializable
-import java.sql.Timestamp
-import com.example.lun.pocket_health_advisor.MainActivity.AuthUser
 
 class MedicReportActivity : AppCompatActivity() {
 
-    data class Condition(
-            var name: String,
-            var commonName: String,
-            var acuteness: String,
-            var categories: ArrayList<String>,
-            var hints: String,
-            var prevalence: String,
-            var severity: String,
-            var triageLevel: String
-    ) : Serializable
-
-    data class PossibleCondition(var name: String, var probability: Double ) : Serializable
-
-    data class MedicReport(
-            var condition: Condition,
-            var initialSymptoms: ArrayList<Map<String, String>>?,
-            var possibleConditions: ArrayList<PossibleCondition>?,
-            var timestamp: String
-    ) : Serializable
 
     /**
      * The [android.support.v4.view.PagerAdapter] that will provide
@@ -115,7 +85,7 @@ class MedicReportActivity : AppCompatActivity() {
             Log.d("fragment position", position.toString())
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            when(position){
+            when (position) {
                 0 -> return MedicReportHistoryFragment()
                 else -> return null
             }
@@ -126,7 +96,6 @@ class MedicReportActivity : AppCompatActivity() {
             return 1
         }
     }
-
 
 
     /**
