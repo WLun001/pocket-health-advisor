@@ -17,7 +17,6 @@ class MedicReportAdapter (private var context: Context, private var medicReportL
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View? {
         val view: View?
         val viewHolder: ViewHolder
-        parent?.context?.toast("hello from adapter")
         if (convertView == null) {
             view = LayoutInflater.from(context).inflate(R.layout.hospital_list_item, parent, false)
             viewHolder = ViewHolder(view)

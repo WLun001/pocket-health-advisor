@@ -8,8 +8,15 @@ import android.widget.ListView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.support.v4.longToast
+import org.jetbrains.anko.support.v4.onUiThread
 import org.jetbrains.anko.support.v4.toast
+import org.jetbrains.anko.support.v4.uiThread
 import org.jetbrains.anko.toast
+import org.json.JSONObject
+import com.example.lun.pocket_health_advisor.MedicReportActivity.PossibleCondition
+import com.example.lun.pocket_health_advisor.MedicReportActivity.Condition
 
 
 /**
@@ -54,7 +61,7 @@ class MedicReportHistoryFragment : ListFragment(){
 
     }
 
-    private fun getReportFromDb(uid: String?) : DocumentSnapshot?{
+    private fun getReportFromDb(uid: String?) {
         val doc: ArrayList<DocumentSnapshot> = ArrayList()
         uid?.let {
             val db = FirebaseFirestore.getInstance()
@@ -66,13 +73,51 @@ class MedicReportHistoryFragment : ListFragment(){
                     .addOnCompleteListener { task ->
                         if (task.isSuccessful) {
                             for (i: DocumentSnapshot in task.result) {
+                                readPossibleConditions(i)
                                 doc.add(i)
                             }
                         } else {
                             activity.toast(task.exception.toString())
                         }
                     }
-            return doc
         }
     }
+
+    private fun readReportFromJson(i: DocumentSnapshot){
+
+
+    }
+
+    private fun readInitialSyndrome(doc: DocumentSnapshot){
+
+    }
+
+    private fun readPossibleConditions(doc: DocumentSnapshot){
+        val possibleConditionsList = ArrayList<PossibleCondition>()
+        val possibleConditions = doc.get("possible_conditions") as HashMap<*, *>
+        val conditions = possibleConditions["conditions"] as ArrayList<*>
+        for (cond in conditions){
+            possibleConditionsList.add(
+                    PossibleCondition(
+                            (cond as HashMap<*, *>)["name"].toString(),
+                            cond["probability"].toString().toDouble()
+                    )
+            )
+        }
+        for (i in possibleConditionsList){
+            toast(i.name)
+        }
+
+
+    }
+
+    private fun readDiagnoseCondition(doc: DocumentSnapshot){
+
+    }
+
+    private fun readQuestions(doc: DocumentSnapshot){
+
+    }
+
+
 }
