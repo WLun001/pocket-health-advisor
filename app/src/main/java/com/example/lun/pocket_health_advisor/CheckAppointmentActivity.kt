@@ -17,8 +17,8 @@ import org.jetbrains.anko.toast
 
 class CheckAppointmentActivity : AppCompatActivity() {
 
-    lateinit var authUser: AuthUser
-    lateinit var hospitalUser: HospitalUser
+    private lateinit var authUser: AuthUser
+    private lateinit var hospitalUser: HospitalUser
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
