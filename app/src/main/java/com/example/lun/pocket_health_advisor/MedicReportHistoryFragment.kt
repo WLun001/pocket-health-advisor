@@ -3,16 +3,18 @@ package com.example.lun.pocket_health_advisor
 
 import android.os.Bundle
 import android.support.v4.app.ListFragment
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.widget.ListView
 import com.example.lun.pocket_health_advisor.DataClassWrapper.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
+import com.sinch.gson.JsonParser
 import org.jetbrains.anko.support.v4.toast
 import org.jetbrains.anko.toast
-import java.util.*
-import kotlin.collections.ArrayList
 
 
 /**
@@ -20,15 +22,55 @@ import kotlin.collections.ArrayList
  */
 class MedicReportHistoryFragment : ListFragment() {
     private var medicReportList = ArrayList<MedicReport>()
+    val mapList = ArrayList<HashMap<*,*>>()
+    private var displayName: String? = ""
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        setHasOptionsMenu(true)
 
 //        var authUser = activity.intent.getSerializableExtra(USER_DETAILS) as AuthUser
 //        activity.toast(authUser.name)
-        val authUid = FirebaseAuth.getInstance().currentUser?.uid
+        val auth = FirebaseAuth.getInstance()
+        val authUid = auth.currentUser?.uid
+        displayName = auth.currentUser?.displayName
         getReportFromDb(authUid)
 
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        inflater?.inflate(R.menu.menu_medic_report_fragment, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        val id = item?.itemId
+        when(id){
+            R.id.send_to_hospital -> {
+                val db = FirebaseFirestore.getInstance()
+                        .collection("patients")
+                        .whereEqualTo("name",displayName)
+                        .get()
+                        .addOnCompleteListener { task ->
+                            if (task.isSuccessful) {
+                                val doc = task.result
+                                for (i in doc) {
+                                    val docId = i.id
+                                    val jsonParse = JsonParser()
+                                    FirebaseFirestore.getInstance()
+                                            .collection("patients")
+                                            .document(docId)
+                                            .update(
+                                                    "diagnosis_history",
+                                                    (listAdapter.getItem(0) as MedicReport).generateMap()
+                                            )
+                                }
+
+                            }
+                        }
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onListItemClick(l: ListView?, v: View?, position: Int, id: Long) {
@@ -67,15 +109,15 @@ class MedicReportHistoryFragment : ListFragment() {
     private fun readInitialSyndrome(doc: DocumentSnapshot): ArrayList<InitialSyndrome> {
         val initialSyndromeList = ArrayList<InitialSyndrome>()
         val initialSyndrome = (doc["initial"] as HashMap<*, *>)["initial"] as ArrayList<*>
-        for (initial in initialSyndrome){
+        for (initial in initialSyndrome) {
             initialSyndromeList.add(
                     InitialSyndrome(
                             (initial as HashMap<*, *>)["name"].toString(),
-                            initial["choice_id"].toString()
-                    )
+                            initial["choice_id"].toString(),
+                            initial)
             )
         }
-     return initialSyndromeList
+        return initialSyndromeList
     }
 
     private fun readPossibleConditions(doc: DocumentSnapshot): ArrayList<PossibleCondition> {
@@ -86,7 +128,8 @@ class MedicReportHistoryFragment : ListFragment() {
             possibleConditionsList.add(
                     PossibleCondition(
                             (cond as HashMap<*, *>)["name"].toString(),
-                            cond["probability"].toString().toDouble()
+                            cond["probability"].toString().toDouble(),
+                            cond
                     )
             )
         }
@@ -120,7 +163,8 @@ class MedicReportHistoryFragment : ListFragment() {
                 hints,
                 prevalence,
                 severity,
-                triageLevel
+                triageLevel,
+                diagnoseCondition
         )
     }
 
@@ -132,7 +176,8 @@ class MedicReportHistoryFragment : ListFragment() {
                     Question(
                             (i as HashMap<*, *>)["question"].toString(),
                             i["symptom"].toString(),
-                            i["user_response"].toString()
+                            i["user_response"].toString(),
+                            i
                     )
             )
         }
@@ -146,5 +191,9 @@ class MedicReportHistoryFragment : ListFragment() {
     private fun setUpListFragment(medicReport: ArrayList<MedicReport>){
         val adapter = MedicReportAdapter(context, medicReport)
         listAdapter = adapter
+    }
+
+
+    private fun objectToMap(obj: Object){
     }
 }

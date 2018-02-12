@@ -48,27 +48,40 @@ class DataClassWrapper {
             var hints: String,
             var prevalence: String,
             var severity: String,
-            var triageLevel: String
+            var triageLevel: String,
+            var map: HashMap<*,*>
     ) : Serializable
 
-    data class PossibleCondition(var name: String, var probability: Double) : Serializable
+    data class PossibleCondition(var name: String, var probability: Double, var map: HashMap<*,*>) : Serializable
 
     data class MedicReport(
             var diagnoseCondition: Condition,
-            var initialSymptoms: ArrayList<InitialSyndrome>?,
-            var possibleConditions: ArrayList<PossibleCondition>?,
-            var questions: ArrayList<Question>?,
+            var initialSymptoms: ArrayList<InitialSyndrome>,
+            var possibleConditions: ArrayList<PossibleCondition>,
+            var questions: ArrayList<Question>,
             var timestamp: String
-    ) : Serializable
+    ) : Serializable{
+        fun generateMap(): HashMap<*,*>{
+            val map = HashMap<Any,Any>()
+            map.put("diagnose_condition", diagnoseCondition.map)
+            map.put("initial_symptoms", initialSymptoms[0].map as Any)
+            map.put("possible_conditions", possibleConditions[0].map as Any)
+            map.put("questions", questions[0].map as Any)
+            map.put("timestamp", timestamp)
+            return map
+        }
+    }
 
     data class InitialSyndrome(
             val name: String,
-            val choice: String
+            val choice: String,
+            var map: HashMap<*,*>
     )
 
     data class Question(
             val question: String,
             val symptom: String,
-            val userResponse: String
+            val userResponse: String,
+            var map: HashMap<*,*>
     )
 }

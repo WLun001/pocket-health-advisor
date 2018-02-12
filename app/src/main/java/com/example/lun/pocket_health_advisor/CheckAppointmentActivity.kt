@@ -77,7 +77,7 @@ class CheckAppointmentActivity : AppCompatActivity() {
                 .addOnFailureListener { toast("No matches found") }
     }
 
-    fun getHospitalDetails(hospitalUser: DataClassWrapper.HospitalUser) {
+    fun getHospitalDetails(hospitalUser: HospitalUser) {
         var hospitalDetails = AppointmentHospitalDetails()
         var firestore = FirebaseFirestore.getInstance()
                 .collection("hospitals")
