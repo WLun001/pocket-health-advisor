@@ -64,6 +64,7 @@ class MedicReportHistoryFragment : ListFragment() {
                                                     "diagnosis_history",
                                                     (listAdapter.getItem(0) as MedicReport).generateMap()
                                             )
+                                    // TODO: let user select which report to be sent
                                 }
 
                             }

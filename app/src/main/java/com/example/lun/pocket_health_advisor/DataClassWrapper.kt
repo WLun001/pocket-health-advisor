@@ -61,6 +61,7 @@ class DataClassWrapper {
             var questions: ArrayList<Question>,
             var timestamp: String
     ) : Serializable{
+        // TODO: find better way to implement this
         fun generateMap(): HashMap<*,*>{
             val map = HashMap<Any,Any>()
             map.put("diagnose_condition", diagnoseCondition.map)
