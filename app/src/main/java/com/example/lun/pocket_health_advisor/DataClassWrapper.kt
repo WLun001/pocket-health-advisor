@@ -6,6 +6,10 @@ import java.io.Serializable
 /**
  * Created by wlun on 2/11/18.
  */
+
+/**
+ * A class that wrap all the data classes
+ */
 class DataClassWrapper {
 
     data class AuthUser(var id: String, var name: String = "") : Serializable
@@ -49,10 +53,10 @@ class DataClassWrapper {
             var prevalence: String,
             var severity: String,
             var triageLevel: String,
-            var map: HashMap<*,*>
+            var map: HashMap<*, *>
     ) : Serializable
 
-    data class PossibleCondition(var name: String, var probability: Double, var map: HashMap<*,*>) : Serializable
+    data class PossibleCondition(var name: String, var probability: Double, var map: HashMap<*, *>) : Serializable
 
     data class MedicReport(
             var diagnoseCondition: Condition,
@@ -60,10 +64,10 @@ class DataClassWrapper {
             var possibleConditions: ArrayList<PossibleCondition>,
             var questions: ArrayList<Question>,
             var timestamp: String
-    ) : Serializable{
+    ) : Serializable {
         // TODO: find better way to implement this
-        fun generateMap(): HashMap<*,*>{
-            val map = HashMap<Any,Any>()
+        fun generateMap(): HashMap<*, *> {
+            val map = HashMap<Any, Any>()
             map.put("diagnose_condition", diagnoseCondition.map)
             map.put("initial_symptoms", initialSymptoms[0].map as Any)
             map.put("possible_conditions", possibleConditions[0].map as Any)
@@ -76,7 +80,7 @@ class DataClassWrapper {
     data class InitialSyndrome(
             val name: String,
             val choice: String,
-            var map: HashMap<*,*>
+            var map: HashMap<*, *>
     )
 
     data class Question(

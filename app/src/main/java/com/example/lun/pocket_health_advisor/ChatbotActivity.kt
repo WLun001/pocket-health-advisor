@@ -4,7 +4,6 @@ import android.app.LoaderManager
 import android.content.Context
 import android.content.Intent
 import android.content.Loader
-import android.content.pm.ActivityInfo
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
@@ -66,11 +65,12 @@ class ChatbotActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Array
 
         recyclerView.setHasFixedSize(true)
         val linearLayoutManager = LinearLayoutManager(this)
-        linearLayoutManager.stackFromEnd = true
+        linearLayoutManager.stackFromEnd = true // to add new chat to bottom of recycleview
         linearLayoutManager.isAutoMeasureEnabled = true
         recyclerView.layoutManager = linearLayoutManager
-        recyclerView.addOnLayoutChangeListener { view, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom ->
-            if (bottom < oldBottom){
+        //make recycleview scroll to bottom when keyboard shows
+        recyclerView.addOnLayoutChangeListener { _, _, _, _, bottom, _, _, _, oldBottom ->
+            if (bottom < oldBottom) {
                 recyclerView.smoothScrollToPosition(recyclerView.adapter.itemCount - 1)
             }
         }
@@ -133,6 +133,7 @@ class ChatbotActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Array
                 .collection(getString(R.string.second_col))
                 .limit(100)
                 .orderBy(getString(R.string.timestamp))
+        // TODO: make user to load previous message
 
         val options = FirestoreRecyclerOptions.Builder<ChatMessage>()
                 .setQuery(query, ChatMessage::class.java)

@@ -20,7 +20,6 @@ class CheckAppointmentActivity : AppCompatActivity() {
     private lateinit var authUser: AuthUser
     private lateinit var hospitalUser: HospitalUser
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_check_appointment)
@@ -47,14 +46,14 @@ class CheckAppointmentActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    fun getHospitalUser() {
+    private fun getHospitalUser() {
         var firestore = FirebaseFirestore.getInstance()
                 .collection("patients")
                 .whereEqualTo("name", authUser.name)
                 .get()
                 .addOnCompleteListener({ task ->
                     if (task.isSuccessful) {
-                        var result = task.result
+                        val result = task.result
                         result?.let {
                             if (result.size() > 0) {
                                 for (i in result) {
@@ -77,8 +76,8 @@ class CheckAppointmentActivity : AppCompatActivity() {
                 .addOnFailureListener { toast("No matches found") }
     }
 
-    fun getHospitalDetails(hospitalUser: HospitalUser) {
-        var hospitalDetails = AppointmentHospitalDetails()
+    private fun getHospitalDetails(hospitalUser: HospitalUser) {
+        val hospitalDetails = AppointmentHospitalDetails()
         var firestore = FirebaseFirestore.getInstance()
                 .collection("hospitals")
                 .whereEqualTo("id", hospitalUser.hospitalId)
@@ -91,7 +90,7 @@ class CheckAppointmentActivity : AppCompatActivity() {
                                 for (i in result) {
                                     hospitalDetails.name = i.getString("name")
                                 }
-                                var message = """
+                                val message = """
                                     Name : ${hospitalUser.name}
                                     Hospital : ${hospitalDetails.name}
                                     """
@@ -123,17 +122,6 @@ class CheckAppointmentActivity : AppCompatActivity() {
             return position.toLong()
         }
 
-//        override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-//            var view: View = convertView as View
-//            val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-//
-//            view = inflater.inflate(R.layout.list_row, parent, false)
-//            val tvTitle = view.findViewById<TextView>(R.id.label)
-//            tvTitle.setText("Monday Appointment")
-//
-//
-//        }
-
         override fun getView(position: Int, convertView: View?, parent: ViewGroup): View? {
             val view: View?
             val viewHolder: ListRowHolder
@@ -160,13 +148,10 @@ class CheckAppointmentActivity : AppCompatActivity() {
     }
 
     private class ListRowHolder(row: View?) {
-
         public val label: TextView
 
         init {
             this.label = row?.findViewById<TextView>(R.id.title) as TextView
         }
     }
-
-
 }

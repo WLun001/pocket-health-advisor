@@ -1,6 +1,5 @@
 package com.example.lun.pocket_health_advisor
 
-import android.app.ProgressDialog
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.Uri
@@ -10,15 +9,16 @@ import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
-import android.view.View.GONE
 import android.widget.LinearLayout
-import android.widget.ProgressBar
 import com.example.lun.pocket_health_advisor.DataClassWrapper.MapsHospital
 import com.example.lun.pocket_health_advisor.DataClassWrapper.MapsHospitalDetails
 import com.example.lun.pocket_health_advisor.NearbyHospitalAdapter.OnItemClickListerner
 import kotlinx.android.synthetic.main.activity_nearby_hospital.*
 import kotlinx.android.synthetic.main.content_nearby_hospital.*
-import org.jetbrains.anko.*
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.progressDialog
+import org.jetbrains.anko.toast
+import org.jetbrains.anko.uiThread
 import org.json.JSONObject
 import java.net.URL
 
@@ -46,12 +46,12 @@ class NearbyHospitalActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        var linearLayout = LinearLayoutManager(this, LinearLayout.VERTICAL, false)
+        val linearLayout = LinearLayoutManager(this, LinearLayout.VERTICAL, false)
         linearLayout.isAutoMeasureEnabled = true
         nearby_hospital_recycleview.layoutManager = linearLayout
         nearby_hospital_recycleview.adapter = adapter
 
-        var networkInfo = (getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager)
+        val networkInfo = (getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager)
                 .activeNetworkInfo
         networkInfo?.let {
             if (networkInfo.isConnected)
@@ -70,9 +70,9 @@ class NearbyHospitalActivity : AppCompatActivity() {
         val progress = progressDialog("Fetching hospital")
         progress.show()
         doAsync {
-            var location = Uri.encode("3.041803,101.793075")
-            var tempHospital = ArrayList<MapsHospital>()
-            var uriBuilder = Uri.parse(searchPlaceURL)
+            val location = Uri.encode("3.041803,101.793075")
+            val tempHospital = ArrayList<MapsHospital>()
+            val uriBuilder = Uri.parse(searchPlaceURL)
                     .buildUpon()
                     .encodedQuery("location=$location")
                     .appendQueryParameter("rankby", "distance")
@@ -80,31 +80,30 @@ class NearbyHospitalActivity : AppCompatActivity() {
                     .appendQueryParameter("key", googleApiKey)
             Log.d("Nearby", uriBuilder.toString())
 
-            var result = URL(uriBuilder.toString()).readText()
-            var array = JSONObject(result).getJSONArray("results")
+            val result = URL(uriBuilder.toString()).readText()
+            val array = JSONObject(result).getJSONArray("results")
             progress.max = array.length()
             var status: Boolean?
             for (i in 0 until array.length()) {
-                var name = array.getJSONObject(i).getString("name")
-                var placeId = array.getJSONObject(i).getString("place_id")
+                val name = array.getJSONObject(i).getString("name")
+                val placeId = array.getJSONObject(i).getString("place_id")
                 progress.incrementProgressBy(1)
                 Log.d("placeId", placeId)
 
-                if (array.getJSONObject(i).has("opening_hours")) {
-                    status = array.getJSONObject(i).getJSONObject("opening_hours")
+                status = if (array.getJSONObject(i).has("opening_hours")) {
+                    array.getJSONObject(i).getJSONObject("opening_hours")
                             .getBoolean("open_now")
-                } else status = null
+                } else null
 
-                var statusDes: String
-                when (status) {
+                val statusDes: String = when (status) {
                     true -> {
-                        statusDes = getString(R.string.hospital_open_now)
+                        getString(R.string.hospital_open_now)
                     }
                     false -> {
-                        statusDes = getString(R.string.hospital_closed)
+                        getString(R.string.hospital_closed)
                     }
                     null -> {
-                        statusDes = getString(R.string.hospital_unknown)
+                        getString(R.string.hospital_unknown)
                     }
                 }
                 tempHospital.add(MapsHospital(name, statusDes, placeId))
@@ -123,7 +122,7 @@ class NearbyHospitalActivity : AppCompatActivity() {
         progress.show()
         doAsync {
             for (i in tempHospital) {
-                var location = Uri.encode("3.041803,101.793075")
+                val location = Uri.encode("3.041803,101.793075")
                 val uriBuilder = Uri.parse(distanceURL)
                         .buildUpon()
                         .encodedQuery("""origins=$location&destinations=place_id:${i.placeId}&key=$googleApiKey
@@ -154,25 +153,25 @@ class NearbyHospitalActivity : AppCompatActivity() {
 
     private fun getHospitalDetails(hospital: MapsHospital) {
         doAsync {
-            var uriBuilder = Uri.parse(detailsPlaceURL)
+            val uriBuilder = Uri.parse(detailsPlaceURL)
                     .buildUpon()
                     .appendQueryParameter("placeid", hospital.placeId)
                     .appendQueryParameter("key", googleApiKey)
 
             Log.d("URL", uriBuilder.toString())
 
-            var response = URL(uriBuilder.toString()).readText()
+            val response = URL(uriBuilder.toString()).readText()
             val result = JSONObject(response).getJSONObject("result")
-            var address = result.getString("formatted_address")
-            var phoneNo = result.getString("formatted_phone_number")
-            var name = result.getString("name")
+            val address = result.getString("formatted_address")
+            val phoneNo = result.getString("formatted_phone_number")
+            val name = result.getString("name")
             // var weekdayText = result.getJSONObject("opening_hours").getJSONArray()
-            var placeId = result.getString("place_id")
+            val placeId = result.getString("place_id")
             // var rating = result.getDouble("rating")
-            var url = result.getString("url")
+            val url = result.getString("url")
             //var website = result.getString("website")
 
-            var hospitalDetails = MapsHospitalDetails(name, placeId, phoneNo, address, "", 0.0, "", url)
+            val hospitalDetails = MapsHospitalDetails(name, placeId, phoneNo, address, "", 0.0, "", url)
 
             uiThread {
                 AlertDialog.Builder(this@NearbyHospitalActivity)
@@ -186,7 +185,7 @@ class NearbyHospitalActivity : AppCompatActivity() {
                                 Website : ${hospitalDetails.website}
                                 """
                         )
-                        .setPositiveButton(R.string.button_ok, { dialogInterface, i ->
+                        .setPositiveButton(R.string.button_ok, { _, i ->
                         })
                         .create()
                         .show()

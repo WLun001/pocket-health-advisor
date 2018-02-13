@@ -12,8 +12,8 @@ import kotlinx.android.synthetic.main.custom_list_item.view.*
 /**
  * Created by Wei Lun on 1/22/2018.
  */
-class NearbyHospitalAdapter(var hospitalList: ArrayList<MapsHospital>,
-                            var listener: OnItemClickListerner)
+class NearbyHospitalAdapter(private var hospitalList: ArrayList<MapsHospital>,
+                            private var listener: OnItemClickListerner)
     : RecyclerView.Adapter<NearbyHospitalAdapter.ViewHolder>() {
 
     interface OnItemClickListerner {
@@ -29,13 +29,13 @@ class NearbyHospitalAdapter(var hospitalList: ArrayList<MapsHospital>,
     }
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
-        var v = LayoutInflater.from(parent?.context).inflate(R.layout.custom_list_item, parent, false)
+        val v = LayoutInflater.from(parent?.context).inflate(R.layout.custom_list_item, parent, false)
         return ViewHolder(v)
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         fun bindView(hospital: MapsHospital, listener: OnItemClickListerner) {
-            var hospitalStatus = itemView.tv_1 as TextView
+            val hospitalStatus = itemView.tv_1 as TextView
 
             itemView.tv_title.text = hospital.name
             itemView.tv_2.text = hospital.distance
@@ -47,8 +47,6 @@ class NearbyHospitalAdapter(var hospitalList: ArrayList<MapsHospital>,
                 hospitalStatus.setTextColor(Color.parseColor("#FFE22315"))
 
             itemView.setOnClickListener { listener.onItemClick(hospital) }
-
         }
-
     }
 }

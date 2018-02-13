@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 public class ChatRecord extends RecyclerView.ViewHolder {
 
-
     TextView leftText, rightText;
 
     public ChatRecord(View itemView) {
@@ -18,7 +17,5 @@ public class ChatRecord extends RecyclerView.ViewHolder {
 
         leftText = itemView.findViewById(R.id.leftText);
         rightText = itemView.findViewById(R.id.rightText);
-
-
     }
 }

@@ -34,14 +34,13 @@ class MainActivity : AppCompatActivity() {
         val USER_DETAILS: String = "com.example.lun.pocket_health_advisor.USER_DETAILS"
     }
 
-
     lateinit var auth: FirebaseAuth
     private lateinit var authListener: FirebaseAuth.AuthStateListener
     private lateinit var firebaseUser: FirebaseUser
     private lateinit var authUser: AuthUser
     lateinit var hospitalUser: HospitalUser
 
-    val RC_SIGN_IN = 1
+    private val RC_SIGN_IN = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,7 +60,7 @@ class MainActivity : AppCompatActivity() {
 
         authListener = FirebaseAuth.AuthStateListener { auth ->
 
-            var firebaseUser: FirebaseUser? = auth.currentUser
+            val firebaseUser: FirebaseUser? = auth.currentUser
             if (firebaseUser == null) {
                 startActivityForResult(
                         AuthUI.getInstance()
@@ -114,25 +113,22 @@ class MainActivity : AppCompatActivity() {
 
             var cardView = gridLayout.getChildAt(count) as? CardView
             //val finalI: Int = count
-            cardView?.setOnClickListener(object : View.OnClickListener {
-                override fun onClick(v: View?) {
-                    when (count) {
-                        0 -> {
-                            val intent = Intent(applicationContext, ChatbotActivity::class.java)
-                            startActivity(intent)
-                        }
+            cardView?.setOnClickListener {
+                when (count) {
+                    0 -> {
+                        val intent = Intent(applicationContext, ChatbotActivity::class.java)
+                        startActivity(intent)
+                    }
 
-                        1 -> {
-                            startActivity(Intent(applicationContext, NearbyHospitalActivity::class.java))
-                        }
-                        3 -> {
-                            val intent = Intent(applicationContext, CheckAppointmentActivity::class.java)
-                            startActivity(intent)
-                        }
+                    1 -> {
+                        startActivity(Intent(applicationContext, NearbyHospitalActivity::class.java))
+                    }
+                    3 -> {
+                        val intent = Intent(applicationContext, CheckAppointmentActivity::class.java)
+                        startActivity(intent)
                     }
                 }
-
-            })
+            }
         }
 
 
@@ -159,7 +155,7 @@ class MainActivity : AppCompatActivity() {
                 var builder = AlertDialog.Builder(this)
                         .setView(R.layout.auth_user_details_dialog)
                         .setPositiveButton(R.string.button_ok,
-                                { dialogInterface, i ->
+                                { dialogInterface, _ ->
                                     val dialog = dialogInterface as Dialog
                                     val newName = dialog.findViewById<EditText>(R.id.display_name)
                                             .text.toString()
@@ -192,5 +188,4 @@ class MainActivity : AppCompatActivity() {
         firebaseUser.updateProfile(userProfile)
         toast(R.string.updated_display_name)
     }
-
 }

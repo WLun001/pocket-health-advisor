@@ -27,18 +27,15 @@ class MedicReportHistoryFragment : ListFragment() {
         super.onActivityCreated(savedInstanceState)
         setHasOptionsMenu(true)
 
-//        var authUser = activity.intent.getSerializableExtra(USER_DETAILS) as AuthUser
-//        activity.toast(authUser.name)
-
-       val listener = AdapterView.OnItemLongClickListener { p0, p1, position, p3 ->
-           val options = listOf("Send report to hospital")
-           selector("Choose an option to perform", options, { dialogInterface, i ->
-               when(i){
-                   0 -> sendReport(position)
-               }
-           })
-           false
-       }
+        val listener = AdapterView.OnItemLongClickListener { p0, p1, position, p3 ->
+            val options = listOf("Send report to hospital")
+            selector("Choose an option to perform", options, { _, i ->
+                when (i) {
+                    0 -> sendReport(position)
+                }
+            })
+            false
+        }
         listView.onItemLongClickListener = listener
         val auth = FirebaseAuth.getInstance()
         val authUid = auth.currentUser?.uid
@@ -65,7 +62,7 @@ class MedicReportHistoryFragment : ListFragment() {
                     progress.incrementProgressBy(1)
                 }
                 progress.dismiss()
-                selector("Please choose one report to send", reportList, { dialogInterface, i ->
+                selector("Please choose one report to send", reportList, { _, i ->
                     sendReport(i)
                 })
             }
@@ -97,11 +94,13 @@ class MedicReportHistoryFragment : ListFragment() {
                                             "diagnosis_history",
                                             (listAdapter.getItem(choice) as MedicReport).generateMap()
                                     )
-                                    .addOnCompleteListener { task -> if (task.isComplete){
-                                        progress.dismiss()}
-                                    alert("Successfully sent report to hospital"){
-                                        yesButton { dialog -> dialog.dismiss() }
-                                    }.show()
+                                    .addOnCompleteListener { task ->
+                                        if (task.isComplete) {
+                                            progress.dismiss()
+                                        }
+                                        alert("Successfully sent report to hospital") {
+                                            yesButton { dialog -> dialog.dismiss() }
+                                        }.show()
                                     }
                                     .addOnFailureListener { task ->
                                         progress.dismiss()
