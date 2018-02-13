@@ -1,5 +1,6 @@
 package com.example.lun.pocket_health_advisor
 
+import android.app.ProgressDialog
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.Uri
@@ -11,14 +12,13 @@ import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.View.GONE
 import android.widget.LinearLayout
+import android.widget.ProgressBar
 import com.example.lun.pocket_health_advisor.DataClassWrapper.MapsHospital
 import com.example.lun.pocket_health_advisor.DataClassWrapper.MapsHospitalDetails
 import com.example.lun.pocket_health_advisor.NearbyHospitalAdapter.OnItemClickListerner
 import kotlinx.android.synthetic.main.activity_nearby_hospital.*
 import kotlinx.android.synthetic.main.content_nearby_hospital.*
-import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.toast
-import org.jetbrains.anko.uiThread
+import org.jetbrains.anko.*
 import org.json.JSONObject
 import java.net.URL
 
@@ -30,7 +30,6 @@ class NearbyHospitalActivity : AppCompatActivity() {
         const val distanceURL = "https://maps.googleapis.com/maps/api/distancematrix/json?"
         val detailsPlaceURL = "https://maps.googleapis.com/maps/api/place/details/json?"
     }
-
 
     private var listener = object : OnItemClickListerner {
         override fun onItemClick(hospital: MapsHospital) {
@@ -68,6 +67,8 @@ class NearbyHospitalActivity : AppCompatActivity() {
     }
 
     private fun getNearbyHospital() {
+        val progress = progressDialog("Fetching hospital")
+        progress.show()
         doAsync {
             var location = Uri.encode("3.041803,101.793075")
             var tempHospital = ArrayList<MapsHospital>()
@@ -81,10 +82,12 @@ class NearbyHospitalActivity : AppCompatActivity() {
 
             var result = URL(uriBuilder.toString()).readText()
             var array = JSONObject(result).getJSONArray("results")
+            progress.max = array.length()
             var status: Boolean?
             for (i in 0 until array.length()) {
                 var name = array.getJSONObject(i).getString("name")
                 var placeId = array.getJSONObject(i).getString("place_id")
+                progress.incrementProgressBy(1)
                 Log.d("placeId", placeId)
 
                 if (array.getJSONObject(i).has("opening_hours")) {
@@ -108,12 +111,16 @@ class NearbyHospitalActivity : AppCompatActivity() {
             }
 
             uiThread {
+                progress.dismiss()
                 getHospitalDistance(tempHospital)
             }
         }
     }
 
     private fun getHospitalDistance(tempHospital: ArrayList<MapsHospital>) {
+        val progress = progressDialog("Calculating distances")
+        progress.max = tempHospital.size
+        progress.show()
         doAsync {
             for (i in tempHospital) {
                 var location = Uri.encode("3.041803,101.793075")
@@ -134,12 +141,13 @@ class NearbyHospitalActivity : AppCompatActivity() {
                 Log.d("Distance", distance.toString())
 
                 hospitals.add(MapsHospital(i.name, i.openingStatus, i.placeId, distance))
+                progress.incrementProgressBy(1)
 
             }
             uiThread {
                 hospitals.sortBy { hospital -> hospital.distance }
                 adapter.notifyDataSetChanged()
-                hospital_progress_bar.visibility = GONE
+                progress.dismiss()
             }
         }
     }

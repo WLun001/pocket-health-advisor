@@ -1,6 +1,5 @@
 package com.example.lun.pocket_health_advisor
 
-
 import android.os.Bundle
 import android.support.v4.app.ListFragment
 import android.view.Menu
@@ -12,17 +11,15 @@ import com.example.lun.pocket_health_advisor.DataClassWrapper.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
-import com.sinch.gson.JsonParser
-import org.jetbrains.anko.support.v4.toast
+import org.jetbrains.anko.support.v4.*
 import org.jetbrains.anko.toast
-
+import org.jetbrains.anko.yesButton
 
 /**
  * Created by wlun on 2/10/18.
  */
 class MedicReportHistoryFragment : ListFragment() {
     private var medicReportList = ArrayList<MedicReport>()
-    val mapList = ArrayList<HashMap<*, *>>()
     private var displayName: String? = ""
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -47,28 +44,18 @@ class MedicReportHistoryFragment : ListFragment() {
         val id = item?.itemId
         when (id) {
             R.id.send_to_hospital -> {
-                val db = FirebaseFirestore.getInstance()
-                        .collection("patients")
-                        .whereEqualTo("name", displayName)
-                        .get()
-                        .addOnCompleteListener { task ->
-                            if (task.isSuccessful) {
-                                val doc = task.result
-                                for (i in doc) {
-                                    val docId = i.id
-                                    val jsonParse = JsonParser()
-                                    FirebaseFirestore.getInstance()
-                                            .collection("patients")
-                                            .document(docId)
-                                            .update(
-                                                    "diagnosis_history",
-                                                    (listAdapter.getItem(0) as MedicReport).generateMap()
-                                            )
-                                    // TODO: let user select which report to be sent
-                                }
-
-                            }
-                        }
+                val progress = progressDialog("Please wait", "Getting report")
+                progress.show()
+                progress.max = listAdapter.count
+                val reportList = ArrayList<String>()
+                for (i in 0 until listAdapter.count) {
+                    reportList.add((listAdapter.getItem(i) as MedicReport).diagnoseCondition.commonName)
+                    progress.incrementProgressBy(1)
+                }
+                progress.dismiss()
+                selector("Please choose one report to send", reportList, { dialogInterface, i ->
+                    sendReport(i)
+                })
             }
         }
         return super.onOptionsItemSelected(item)
@@ -76,6 +63,42 @@ class MedicReportHistoryFragment : ListFragment() {
 
     override fun onListItemClick(l: ListView?, v: View?, position: Int, id: Long) {
         toast("Clicked item " + position.toString())
+    }
+
+    private fun sendReport(choice: Int) {
+        val progress = indeterminateProgressDialog("sending report...")
+        progress.show()
+        val db = FirebaseFirestore.getInstance()
+                .collection("patients")
+                .whereEqualTo("name", displayName)
+                .get()
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        val doc = task.result
+                        for (i in doc) {
+                            val docId = i.id
+                            FirebaseFirestore.getInstance()
+                                    .collection("patients")
+                                    .document(docId)
+                                    .update(
+                                            "diagnosis_history",
+                                            (listAdapter.getItem(choice) as MedicReport).generateMap()
+                                    )
+                                    .addOnCompleteListener { task -> if (task.isComplete){
+                                        progress.dismiss()}
+                                    alert("Successfully sent report to hospital"){
+                                        yesButton { dialog -> dialog.dismiss() }
+                                    }.show()
+                                    }
+                                    .addOnFailureListener { task ->
+                                        progress.dismiss()
+                                        toast("error sending report".plus(task.message))
+                                    }
+                        }
+
+                    }
+
+                }
     }
 
     private fun getReportFromDb(uid: String?) {
@@ -179,7 +202,7 @@ class MedicReportHistoryFragment : ListFragment() {
                             (i as HashMap<*, *>)["question"].toString(),
                             i["symptom"].toString(),
                             i["user_response"].toString(),
-                            i
+                            question
                     )
             )
         }

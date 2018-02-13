@@ -67,7 +67,7 @@ class DataClassWrapper {
             map.put("diagnose_condition", diagnoseCondition.map)
             map.put("initial_symptoms", initialSymptoms[0].map as Any)
             map.put("possible_conditions", possibleConditions[0].map as Any)
-            map.put("questions", questions[0].map as Any)
+            map.put("questions", questions[0].questionList as Any)
             map.put("timestamp", timestamp)
             return map
         }
@@ -83,6 +83,6 @@ class DataClassWrapper {
             val question: String,
             val symptom: String,
             val userResponse: String,
-            var map: HashMap<*,*>
+            var questionList: ArrayList<*>
     )
 }
