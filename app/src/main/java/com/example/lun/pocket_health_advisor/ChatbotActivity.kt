@@ -4,6 +4,7 @@ import android.app.LoaderManager
 import android.content.Context
 import android.content.Intent
 import android.content.Loader
+import android.content.pm.ActivityInfo
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
@@ -68,6 +69,11 @@ class ChatbotActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Array
         linearLayoutManager.stackFromEnd = true
         linearLayoutManager.isAutoMeasureEnabled = true
         recyclerView.layoutManager = linearLayoutManager
+        recyclerView.addOnLayoutChangeListener { view, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom ->
+            if (bottom < oldBottom){
+                recyclerView.smoothScrollToPosition(recyclerView.adapter.itemCount - 1)
+            }
+        }
 
         val auth = FirebaseAuth.getInstance().currentUser
         auth?.displayName?.let { authUser = AuthUser(auth.uid, auth.displayName as String) }
