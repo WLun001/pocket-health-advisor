@@ -6,6 +6,7 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import android.widget.AdapterView
 import android.widget.ListView
 import com.example.lun.pocket_health_advisor.DataClassWrapper.*
 import com.google.firebase.auth.FirebaseAuth
@@ -28,6 +29,17 @@ class MedicReportHistoryFragment : ListFragment() {
 
 //        var authUser = activity.intent.getSerializableExtra(USER_DETAILS) as AuthUser
 //        activity.toast(authUser.name)
+
+       val listener = AdapterView.OnItemLongClickListener { p0, p1, position, p3 ->
+           val options = listOf("Send report to hospital")
+           selector("Choose an option to perform", options, { dialogInterface, i ->
+               when(i){
+                   0 -> sendReport(position)
+               }
+           })
+           false
+       }
+        listView.onItemLongClickListener = listener
         val auth = FirebaseAuth.getInstance()
         val authUid = auth.currentUser?.uid
         displayName = auth.currentUser?.displayName
@@ -64,6 +76,7 @@ class MedicReportHistoryFragment : ListFragment() {
     override fun onListItemClick(l: ListView?, v: View?, position: Int, id: Long) {
         toast("Clicked item " + position.toString())
     }
+
 
     private fun sendReport(choice: Int) {
         val progress = indeterminateProgressDialog("sending report...")
