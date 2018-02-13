@@ -71,7 +71,10 @@ class ChatbotActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Array
         //make recycleview scroll to bottom when keyboard shows
         recyclerView.addOnLayoutChangeListener { _, _, _, _, bottom, _, _, _, oldBottom ->
             if (bottom < oldBottom) {
-                recyclerView.smoothScrollToPosition(recyclerView.adapter.itemCount - 1)
+                //to avoid clash when adapter doesn't have item
+                if (recyclerView.adapter.itemCount != 0) {
+                    recyclerView.smoothScrollToPosition(recyclerView.adapter.itemCount - 1)
+                }
             }
         }
 
