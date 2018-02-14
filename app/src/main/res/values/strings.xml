@@ -5,7 +5,7 @@
     <string name="title_activity_sinch_login">SinchLoginActivity</string>
     <string name="title_activity_nearby_hospital">NearbyHospitalActivity</string>
 
-    <!--firestore name - users-->
+    <!--firesthospitalNamename - users-->
     <string name="first_col">users</string>
     <string name="second_col">chat_data</string>
     <string name="timestamp">timestamp</string>

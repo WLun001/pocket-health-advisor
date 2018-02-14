@@ -65,7 +65,7 @@ public class SinchLoginActivity extends BaseActivity implements SinchService.Sta
         String userName = mLoginName.getText().toString();
 
         if (userName.isEmpty()) {
-            Toast.makeText(this, "Please enter a name", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Please enter a hospitalName", Toast.LENGTH_LONG).show();
             return;
         }
 

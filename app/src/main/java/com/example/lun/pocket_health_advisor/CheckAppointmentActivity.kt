@@ -67,7 +67,7 @@ class CheckAppointmentActivity : AppCompatActivity() {
                                     )
                                 }
                                 getHospitalDetails(hospitalUser)
-                                //toast(name.name)
+                                //toast(hospitalName.hospitalName)
                             } else toast("no matches found")
                         }
 
@@ -78,7 +78,6 @@ class CheckAppointmentActivity : AppCompatActivity() {
     }
 
     private fun getHospitalDetails(hospitalUser: HospitalUser) {
-        val hospitalDetails = AppointmentHospitalDetails()
         var firestore = FirebaseFirestore.getInstance()
                 .collection("hospitals")
                 .whereEqualTo("id", hospitalUser.hospitalId)
@@ -89,11 +88,9 @@ class CheckAppointmentActivity : AppCompatActivity() {
                         result?.let {
                             if (result.size() > 0) {
                                 for (i in result) {
-                                    hospitalDetails.name = i.getString("name")
                                 }
                                 val message = """
                                     Name : ${hospitalUser.name}
-                                    Hospital : ${hospitalDetails.name}
                                     """
                                 AlertDialog.Builder(this)
                                         .setTitle("Appointment")

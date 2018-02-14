@@ -1,33 +1,31 @@
 package com.example.lun.pocket_health_advisor
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.support.v4.app.ListFragment
-import android.support.v7.app.AlertDialog
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import org.jetbrains.anko.support.v4.toast
 import org.jetbrains.anko.toast
+import com.example.lun.pocket_health_advisor.DataClassWrapper.*
 
 /**
  * Created by wlun on 2/14/18.
  */
 class ComingAppointmentFragment : ListFragment() {
 
-    private lateinit var authUser: DataClassWrapper.AuthUser
-    private lateinit var hospitalUser: DataClassWrapper.HospitalUser
+    private lateinit var authUser: AuthUser
+    private lateinit var hospitalUser: HospitalUser
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
         //get firebase user
         val auth = FirebaseAuth.getInstance().currentUser
-        auth?.displayName?.let { authUser = DataClassWrapper.AuthUser(auth.uid, auth.displayName as String) }
-
-        context.toast("hello from current appointment fragment")
+        auth?.displayName?.let { authUser = AuthUser(auth.uid, auth.displayName.toString()) }
+        searchPatient()
     }
 
-    private fun getHospitalUser() {
+    private fun searchPatient() {
         var firestore = FirebaseFirestore.getInstance()
                 .collection("patients")
                 .whereEqualTo("name", authUser.name)
@@ -37,17 +35,9 @@ class ComingAppointmentFragment : ListFragment() {
                         val result = task.result
                         result?.let {
                             if (result.size() > 0) {
-                                for (i in result) {
-                                    hospitalUser = DataClassWrapper.HospitalUser(
-                                            i.getString("ic"),
-                                            i.getString("id"),
-                                            i.getString("name"),
-                                            i.getString("hospital_id"),
-                                            i.getString("age")
-                                    )
+                                result.forEach {
+                                    searchAppointment(it.getString("id"))
                                 }
-                                getHospitalDetails(hospitalUser)
-                                //toast(name.name)
                             } else toast("no matches found")
                         }
 
@@ -57,33 +47,33 @@ class ComingAppointmentFragment : ListFragment() {
                 .addOnFailureListener { toast("No matches found") }
     }
 
-    private fun getHospitalDetails(hospitalUser: DataClassWrapper.HospitalUser) {
-        val hospitalDetails = DataClassWrapper.AppointmentHospitalDetails()
+    private fun searchAppointment(id: String) {
+        val appointmentList = ArrayList<Appointment>()
         var firestore = FirebaseFirestore.getInstance()
-                .collection("hospitals")
-                .whereEqualTo("id", hospitalUser.hospitalId)
+                .collection("appointments")
+                .whereEqualTo("patient_id", id)
                 .get()
                 .addOnCompleteListener({ task ->
                     if (task.isSuccessful) {
                         val result = task.result
                         result?.let {
                             if (result.size() > 0) {
-                                for (i in result) {
-                                    hospitalDetails.name = i.getString("name")
+                                result.forEach {
+                                    appointmentList.add(
+                                            Appointment(
+                                                    it.getString("doctor_name"),
+                                                    it.getString("doctor_id"),
+                                                    it.getString("hospital_id"),
+                                                    it.getString("patient_id"),
+                                                    it.get("time").toString()
+                                            )
+                                    )
                                 }
-                                val message = """
-                                    Name : ${hospitalUser.name}
-                                    Hospital : ${hospitalDetails.name}
-                                    """
-                                AlertDialog.Builder(context)
-                                        .setTitle("Appointment")
-                                        .setMessage(message)
-                                        .create()
-                                        .show()
-                            } else toast("No hospital found")
+                            } else toast("No appointments found")
                         }
                     }
+                    listAdapter = AppointmentAdapter(context, appointmentList)
                 })
-                .addOnFailureListener { toast("No hospital found!") }
+                .addOnFailureListener { toast("No appointments found!") }
     }
 }

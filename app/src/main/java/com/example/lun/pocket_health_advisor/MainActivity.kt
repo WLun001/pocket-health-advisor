@@ -124,7 +124,7 @@ class MainActivity : AppCompatActivity() {
                         startActivity(Intent(applicationContext, NearbyHospitalActivity::class.java))
                     }
                     3 -> {
-                        val intent = Intent(applicationContext, CheckAppointmentActivity::class.java)
+                        val intent = Intent(applicationContext, AppointmentActivity::class.java)
                         startActivity(intent)
                     }
                 }

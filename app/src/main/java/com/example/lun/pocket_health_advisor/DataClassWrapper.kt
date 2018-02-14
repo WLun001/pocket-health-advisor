@@ -21,8 +21,13 @@ class DataClassWrapper {
             var age: String
     )
 
-    data class AppointmentHospitalDetails(
-            var name: String = ""
+    data class Appointment(
+            val doctorName: String,
+            val doctorId:String,
+            val hospitalId: String,
+            val patientId:String,
+            val time:String
+
     )
 
     data class Response(var response: JSONObject)

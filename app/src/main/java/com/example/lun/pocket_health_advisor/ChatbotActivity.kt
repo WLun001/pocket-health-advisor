@@ -32,6 +32,7 @@ import com.google.firebase.firestore.FirebaseFirestoreSettings
 import kotlinx.android.synthetic.main.activity_chatbot_acvitity.*
 import java.io.Serializable
 
+// TODO: solve the chat wont get response when in background
 class ChatbotActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<ArrayList<ChatbotActivity.ChatMessage>> {
     companion object {
         val DIALOGFLOW_URL = "https://api.dialogflow.com/v1/query?v=20170712&lang=en"
