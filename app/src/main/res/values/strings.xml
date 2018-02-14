@@ -33,4 +33,5 @@
     <string name="tab_text_2">Starred</string>
     <string name="tab_text_3">Statistic</string>
     <string name="section_format">Hello World from section: %1$d</string>
+    <string name="title_activity_appointment">AppointmentActivity</string>
 </resources>

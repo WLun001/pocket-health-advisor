@@ -77,6 +77,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.lun.pocket_health_advisor.ChatbotActivity" />
         </activity>
+        <activity
+            android:name=".AppointmentActivity"
+            android:label="@string/title_activity_appointment"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

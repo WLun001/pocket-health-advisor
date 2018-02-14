@@ -40,7 +40,8 @@ class CheckAppointmentActivity : AppCompatActivity() {
         val id = item?.itemId
         when (id) {
             check_appointment -> {
-                getHospitalUser()
+//                getHospitalUser()
+                startActivity(Intent(this, AppointmentActivity::class.java))
             }
         }
         return super.onOptionsItemSelected(item)
