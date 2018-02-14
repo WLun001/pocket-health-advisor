@@ -28,19 +28,12 @@ import org.jetbrains.anko.toast
 
 class AppointmentActivity : AppCompatActivity() {
 
-    private lateinit var authUser: AuthUser
-    private lateinit var hospitalUser: HospitalUser
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_appointment)
 
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
-
-        //get firebase user
-        val auth = FirebaseAuth.getInstance().currentUser
-        auth?.displayName?.let { authUser = AuthUser(auth.uid, auth.displayName as String) }
 
         // Setup spinner
         spinner.adapter = MyAdapter(
@@ -51,11 +44,14 @@ class AppointmentActivity : AppCompatActivity() {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                 // When the given dropdown item is selected, show its contents in the
                 // container view.
+                val fragment = when(position){
+                    0 -> ComingAppointmentFragment()
+                    else -> null
+                }
                 supportFragmentManager.beginTransaction()
-                        .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
+                        .replace(R.id.container, fragment)
                         .commit()
             }
-
             override fun onNothingSelected(parent: AdapterView<*>) {}
         }
 
@@ -63,9 +59,7 @@ class AppointmentActivity : AppCompatActivity() {
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
         }
-
     }
-
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -80,72 +74,12 @@ class AppointmentActivity : AppCompatActivity() {
         val id = item.itemId
 
         if (id == R.id.action_settings) {
-            getHospitalUser()
             return true
         }
 
         return super.onOptionsItemSelected(item)
     }
 
-    private fun getHospitalUser() {
-        var firestore = FirebaseFirestore.getInstance()
-                .collection("patients")
-                .whereEqualTo("name", authUser.name)
-                .get()
-                .addOnCompleteListener({ task ->
-                    if (task.isSuccessful) {
-                        val result = task.result
-                        result?.let {
-                            if (result.size() > 0) {
-                                for (i in result) {
-                                    hospitalUser = DataClassWrapper.HospitalUser(
-                                            i.getString("ic"),
-                                            i.getString("id"),
-                                            i.getString("name"),
-                                            i.getString("hospital_id"),
-                                            i.getString("age")
-                                    )
-                                }
-                                getHospitalDetails(hospitalUser)
-                                //toast(name.name)
-                            } else toast("no matches found")
-                        }
-
-                    } else toast("No matches found")
-
-                })
-                .addOnFailureListener { toast("No matches found") }
-    }
-
-    private fun getHospitalDetails(hospitalUser: DataClassWrapper.HospitalUser) {
-        val hospitalDetails = DataClassWrapper.AppointmentHospitalDetails()
-        var firestore = FirebaseFirestore.getInstance()
-                .collection("hospitals")
-                .whereEqualTo("id", hospitalUser.hospitalId)
-                .get()
-                .addOnCompleteListener({ task ->
-                    if (task.isSuccessful) {
-                        val result = task.result
-                        result?.let {
-                            if (result.size() > 0) {
-                                for (i in result) {
-                                    hospitalDetails.name = i.getString("name")
-                                }
-                                val message = """
-                                    Name : ${hospitalUser.name}
-                                    Hospital : ${hospitalDetails.name}
-                                    """
-                                AlertDialog.Builder(this)
-                                        .setTitle("Appointment")
-                                        .setMessage(message)
-                                        .create()
-                                        .show()
-                            } else toast("No hospital found")
-                        }
-                    }
-                })
-                .addOnFailureListener { toast("No hospital found!") }
-    }
 
     private class MyAdapter(context: Context, objects: Array<String>) : ArrayAdapter<String>(context, R.layout.list_item, objects), ThemedSpinnerAdapter {
         private val mDropDownHelper: ThemedSpinnerAdapter.Helper = ThemedSpinnerAdapter.Helper(context)
@@ -172,40 +106,6 @@ class AppointmentActivity : AppCompatActivity() {
 
         override fun setDropDownViewTheme(theme: Theme?) {
             mDropDownHelper.dropDownViewTheme = theme
-        }
-    }
-
-
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    class PlaceholderFragment : Fragment() {
-
-        override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                                  savedInstanceState: Bundle?): View? {
-            val rootView = inflater.inflate(R.layout.fragment_appointment, container, false)
-            rootView.section_label.text = getString(R.string.section_format, arguments.getInt(ARG_SECTION_NUMBER))
-            return rootView
-        }
-
-        companion object {
-            /**
-             * The fragment argument representing the section number for this
-             * fragment.
-             */
-            private val ARG_SECTION_NUMBER = "section_number"
-
-            /**
-             * Returns a new instance of this fragment for the given section
-             * number.
-             */
-            fun newInstance(sectionNumber: Int): PlaceholderFragment {
-                val fragment = PlaceholderFragment()
-                val args = Bundle()
-                args.putInt(ARG_SECTION_NUMBER, sectionNumber)
-                fragment.arguments = args
-                return fragment
-            }
         }
     }
 }
