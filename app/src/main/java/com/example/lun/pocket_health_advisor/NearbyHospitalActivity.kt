@@ -22,6 +22,10 @@ import java.net.URL
 
 class NearbyHospitalActivity : AppCompatActivity() {
 
+    //TODO: get lat and long for each place
+    //TODO: encode with PolyUlti
+    //TODO: Send all distination in a single HTTP request
+
     companion object {
         const val googleApiKey = "AIzaSyAg3W8vlilMkGYNSpdlceSxCzZtGUlKrx8"
         const val searchPlaceURL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?"
