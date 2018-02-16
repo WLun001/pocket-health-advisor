@@ -1,5 +1,6 @@
 package com.example.lun.pocket_health_advisor
 
+import android.app.ProgressDialog
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.Uri
@@ -15,10 +16,7 @@ import com.example.lun.pocket_health_advisor.DataClassWrapper.MapsHospitalDetail
 import com.example.lun.pocket_health_advisor.NearbyHospitalAdapter.OnItemClickListerner
 import kotlinx.android.synthetic.main.activity_nearby_hospital.*
 import kotlinx.android.synthetic.main.content_nearby_hospital.*
-import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.progressDialog
-import org.jetbrains.anko.toast
-import org.jetbrains.anko.uiThread
+import org.jetbrains.anko.*
 import org.json.JSONObject
 import java.net.URL
 
@@ -39,12 +37,15 @@ class NearbyHospitalActivity : AppCompatActivity() {
     }
     private var hospitals = ArrayList<MapsHospital>()
     private var adapter = NearbyHospitalAdapter(hospitals, listener)
+    private lateinit var progress: ProgressDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_nearby_hospital)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        progress = progressDialog("fetching hospitals")
 
         val linearLayout = LinearLayoutManager(this, LinearLayout.VERTICAL, false)
         linearLayout.isAutoMeasureEnabled = true
@@ -67,11 +68,9 @@ class NearbyHospitalActivity : AppCompatActivity() {
     }
 
     private fun getNearbyHospital() {
-        val progress = progressDialog("Fetching hospital")
         progress.show()
         doAsync {
             val location = Uri.encode("3.041803,101.793075")
-            val tempHospital = ArrayList<MapsHospital>()
             val uriBuilder = Uri.parse(searchPlaceURL)
                     .buildUpon()
                     .encodedQuery("location=$location")
@@ -87,7 +86,6 @@ class NearbyHospitalActivity : AppCompatActivity() {
             for (i in 0 until array.length()) {
                 val name = array.getJSONObject(i).getString("name")
                 val placeId = array.getJSONObject(i).getString("place_id")
-                progress.incrementProgressBy(1)
                 Log.d("placeId", placeId)
 
                 status = if (array.getJSONObject(i).has("opening_hours")) {
@@ -106,26 +104,20 @@ class NearbyHospitalActivity : AppCompatActivity() {
                         getString(R.string.hospital_unknown)
                     }
                 }
-                tempHospital.add(MapsHospital(name, statusDes, placeId))
-            }
-
-            uiThread {
-                progress.dismiss()
-                getHospitalDistance(tempHospital)
+                getHospitalDistance(MapsHospital(name, statusDes, placeId))
             }
         }
     }
 
-    private fun getHospitalDistance(tempHospital: ArrayList<MapsHospital>) {
-        val progress = progressDialog("Calculating distances")
-        progress.max = tempHospital.size
-        progress.show()
+    private fun getHospitalDistance(mapsHospital: MapsHospital) {
+//        val progress = progressDialog("Calculating distances")
+//        progress.max = tempHospital.size
+//        progress.show()
         doAsync {
-            for (i in tempHospital) {
                 val location = Uri.encode("3.041803,101.793075")
                 val uriBuilder = Uri.parse(distanceURL)
                         .buildUpon()
-                        .encodedQuery("""origins=$location&destinations=place_id:${i.placeId}&key=$googleApiKey
+                        .encodedQuery("""origins=$location&destinations=place_id:${mapsHospital.placeId}&key=$googleApiKey
                     """.trimIndent())
 
 
@@ -139,12 +131,12 @@ class NearbyHospitalActivity : AppCompatActivity() {
 
                 Log.d("Distance", distance.toString())
 
-                hospitals.add(MapsHospital(i.name, i.openingStatus, i.placeId, distance))
+            onComplete {
+                hospitals.add(MapsHospital(mapsHospital.name, mapsHospital.openingStatus, mapsHospital.placeId, distance))
+                hospitals.sortedWith(compareBy { it.distance })
                 progress.incrementProgressBy(1)
-
             }
             uiThread {
-                hospitals.sortBy { hospital -> hospital.distance }
                 adapter.notifyDataSetChanged()
                 progress.dismiss()
             }

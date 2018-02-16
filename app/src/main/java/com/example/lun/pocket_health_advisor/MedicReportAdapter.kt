@@ -48,8 +48,8 @@ class MedicReportAdapter(private var context: Context, private var medicReportLi
     }
 
     private class ViewHolder(view: View?) {
-        val condition: TextView = view?.findViewById<TextView>(R.id.tv_title) as TextView
-        val timestamp: TextView = view?.findViewById<TextView>(R.id.tv_1) as TextView
-        val triageLevel: TextView = view?.findViewById<TextView>(R.id.tv_2) as TextView
+        val condition: TextView = view?.findViewById(R.id.tv_title) as TextView
+        val timestamp: TextView = view?.findViewById(R.id.tv_1) as TextView
+        val triageLevel: TextView = view?.findViewById(R.id.tv_2) as TextView
     }
 }
