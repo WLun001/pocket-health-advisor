@@ -133,12 +133,15 @@ class NearbyHospitalActivity : AppCompatActivity() {
 
             onComplete {
                 hospitals.add(MapsHospital(mapsHospital.name, mapsHospital.openingStatus, mapsHospital.placeId, distance))
-                hospitals.sortedWith(compareBy { it.distance })
                 progress.incrementProgressBy(1)
+                uiThread {
+                    if (progress.isShowing && progress.progress == progress.max) {
+                        hospitals.sortedWith(compareBy { it.distance })
+                        adapter.notifyDataSetChanged()
+                        progress.dismiss()
+                    }
             }
-            uiThread {
-                adapter.notifyDataSetChanged()
-                progress.dismiss()
+
             }
         }
     }
