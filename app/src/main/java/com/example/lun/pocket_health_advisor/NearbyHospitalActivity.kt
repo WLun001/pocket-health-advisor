@@ -136,7 +136,7 @@ class NearbyHospitalActivity : AppCompatActivity() {
                 progress.incrementProgressBy(1)
                 uiThread {
                     if (progress.isShowing && progress.progress == progress.max) {
-                        hospitals.sortedWith(compareBy { it.distance })
+                        hospitals.sortWith(compareBy { it.distance })
                         adapter.notifyDataSetChanged()
                         progress.dismiss()
                     }
