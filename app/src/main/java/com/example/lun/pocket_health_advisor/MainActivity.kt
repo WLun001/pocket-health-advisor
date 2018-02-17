@@ -21,10 +21,16 @@ import com.firebase.ui.auth.AuthUI
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
+import com.sinch.android.rtc.Sinch
+import com.sinch.android.rtc.SinchClientListener
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import org.jetbrains.anko.toast
 import java.util.*
+import com.sinch.android.rtc.ClientRegistration
+import com.sinch.android.rtc.SinchClient
+import com.sinch.android.rtc.SinchError
+import org.jetbrains.anko.intentFor
 
 
 class MainActivity : AppCompatActivity() {
@@ -32,6 +38,9 @@ class MainActivity : AppCompatActivity() {
     companion object {
         @JvmStatic
         val USER_DETAILS: String = "com.example.lun.pocket_health_advisor.USER_DETAILS"
+        private const val APP_KEY = "cc277e12-542f-4612-97d7-f67e7b2f85e5"
+        private const val APP_SECRET = "XIcRHW3cm06Nba+n6UMmuQ=="
+        private const val ENVIRONMENT = "sandbox.sinch.com"
     }
 
     lateinit var auth: FirebaseAuth
@@ -123,6 +132,11 @@ class MainActivity : AppCompatActivity() {
                     1 -> {
                         startActivity(Intent(applicationContext, NearbyHospitalActivity::class.java))
                     }
+
+                    2 -> {
+                        val intent = Intent(applicationContext, SinchLoginActivity::class.java)
+                        startActivity(intent)
+                    }
                     3 -> {
                         val intent = Intent(applicationContext, AppointmentActivity::class.java)
                         startActivity(intent)
@@ -188,4 +202,19 @@ class MainActivity : AppCompatActivity() {
         firebaseUser.updateProfile(userProfile)
         toast(R.string.updated_display_name)
     }
+
+//    private fun sinchTester(){
+//        val sinchClient = Sinch.getSinchClientBuilder().context(applicationContext)
+//                .applicationKey(APP_KEY)
+//                .applicationSecret(APP_SECRET)
+//                .environmentHost(ENVIRONMENT)
+//                .userId(authUser.name)
+//                .build()
+//
+//        sinchClient.setSupportCalling(true)
+//        sinchClient.startListeningOnActiveConnection()
+//        sinchClient.addSinchClientListener(MySinch)
+//        sinchClient.start()
+//
+//    }
 }
