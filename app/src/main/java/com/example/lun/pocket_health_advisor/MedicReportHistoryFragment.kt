@@ -74,7 +74,7 @@ class MedicReportHistoryFragment : ListFragment() {
         toast("Clicked item " + position.toString())
     }
 
-
+    // TODO: match with ic instead of name
     private fun sendReport(choice: Int) {
         val progress = indeterminateProgressDialog("sending report...")
         progress.show()
