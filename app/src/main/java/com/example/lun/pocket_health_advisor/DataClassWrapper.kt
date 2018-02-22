@@ -12,6 +12,9 @@ import java.io.Serializable
  */
 class DataClassWrapper {
 
+    //create empty constructor for firestore recycleview
+    data class ChatMessage(var message: String = "", var user: String = "", var endMessage: Boolean = false)
+
     data class AuthUser(var id: String, var name: String = "") : Serializable
     data class HospitalUser(
             var ic: String,

@@ -13,12 +13,13 @@ import java.lang.StringBuilder
 import java.net.URL
 import java.nio.charset.Charset
 import javax.net.ssl.HttpsURLConnection
+import com.example.lun.pocket_health_advisor.DataClassWrapper.ChatMessage
 
 /**
  * Created by Lun on 14/01/2018.
  */
 class DialogflowAsyncWorker(context: Context, private var url: String)
-    : AsyncTaskLoader<ArrayList<ChatbotActivity.ChatMessage>>(context) {
+    : AsyncTaskLoader<ArrayList<ChatMessage>>(context) {
 
     companion object {
         val BOT = "bot"
@@ -37,8 +38,8 @@ class DialogflowAsyncWorker(context: Context, private var url: String)
         onStopLoading()
     }
 
-    override fun loadInBackground(): ArrayList<ChatbotActivity.ChatMessage>? {
-        var chatMessage: ArrayList<ChatbotActivity.ChatMessage> = ArrayList()
+    override fun loadInBackground(): ArrayList<ChatMessage>? {
+        var chatMessage: ArrayList<ChatMessage> = ArrayList()
         var requestUrl = URL(url)
         try {
             var inputStream: InputStream? = null
@@ -55,7 +56,7 @@ class DialogflowAsyncWorker(context: Context, private var url: String)
             if (connection.responseCode == 200) {
                 inputStream = connection.inputStream
                 var jsonResponse = readInput(inputStream)
-                chatMessage = extractFromJson(jsonResponse) as ArrayList<ChatbotActivity.ChatMessage>
+                chatMessage = extractFromJson(jsonResponse)
 
                 Log.d("loadInBackground", chatMessage.toString())
             }
@@ -83,15 +84,15 @@ class DialogflowAsyncWorker(context: Context, private var url: String)
         return builder.toString()
     }
 
-    fun extractFromJson(json: String): ArrayList<ChatbotActivity.ChatMessage> {
-        var chatMessage: ArrayList<ChatbotActivity.ChatMessage> = ArrayList()
+    fun extractFromJson(json: String): ArrayList<ChatMessage> {
+        var chatMessage: ArrayList<ChatMessage> = ArrayList()
         var root = JSONObject(json)
         var result = root.getJSONObject("result")
         var fulfillment = result.getJSONObject("fulfillment")
         var messages = fulfillment.getJSONArray("messages")
         for (i in 0 until messages.length()) {
             var message = messages.getJSONObject(i)
-            chatMessage.add(ChatbotActivity.ChatMessage(message.getString("speech"), BOT))
+            chatMessage.add(ChatMessage(message.getString("speech"), BOT))
         }
         return chatMessage
     }

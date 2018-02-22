@@ -31,16 +31,16 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import kotlinx.android.synthetic.main.activity_chatbot_acvitity.*
 import java.io.Serializable
+import com.example.lun.pocket_health_advisor.DataClassWrapper.ChatMessage
 
 // TODO: solve the chat wont get response when in background
-class ChatbotActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<ArrayList<ChatbotActivity.ChatMessage>> {
+class ChatbotActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<ArrayList<ChatMessage>> {
     companion object {
         val DIALOGFLOW_URL = "https://api.dialogflow.com/v1/query?v=20170712&lang=en"
         val LOADER_ID = 1
     }
 
-    //create empty constructor for firestore recycleview
-    data class ChatMessage(var message: String = "", var user: String = "")
+
 
     private lateinit var authUser: AuthUser
     private lateinit var db: FirebaseFirestore
