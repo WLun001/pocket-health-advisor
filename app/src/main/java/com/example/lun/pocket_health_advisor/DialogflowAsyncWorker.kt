@@ -90,6 +90,7 @@ class DialogflowAsyncWorker(context: Context, private var url: String)
         var result = root.getJSONObject("result")
         var fulfillment = result.getJSONObject("fulfillment")
         var messages = fulfillment.getJSONArray("messages")
+
         for (i in 0 until messages.length()) {
             var message = messages.getJSONObject(i)
             chatMessage.add(ChatMessage(message.getString("speech"), BOT))
