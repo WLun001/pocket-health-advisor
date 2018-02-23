@@ -51,7 +51,6 @@
             android:label="@string/title_activity_sinch_login"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".CheckAppointmentActivity" />
         <activity android:name=".CallScreenActivity" />
         <activity
             android:name=".IncomingCallScreenActivity"
