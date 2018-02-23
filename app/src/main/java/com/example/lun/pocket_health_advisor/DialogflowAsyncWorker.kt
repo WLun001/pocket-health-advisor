@@ -44,22 +44,16 @@ class DialogflowAsyncWorker(
 
     override fun loadInBackground(): ArrayList<ChatMessage>? {
         var chatMessage: ArrayList<ChatMessage> = ArrayList()
-        var requestUrl = URL(url)
         try {
             var inputStream: InputStream? = null
-
-            var connection = requestUrl.openConnection() as HttpsURLConnection
-            connection.readTimeout = 10000
-            connection.connectTimeout = 15000
-            connection.requestMethod = "GET"
-            connection.setRequestProperty("Authorization", "Bearer 47836bc8e2494eabb7ea945d1b227d29")
-            connection.connect()
+            val connection = httpRequestBuilder(url,requestMethod)
 
             Log.d("Response Code", connection.responseCode.toString() + connection.responseMessage)
 
             if (connection.responseCode == 200) {
                 inputStream = connection.inputStream
                 var jsonResponse = readInput(inputStream)
+                Log.d("Json response", jsonResponse)
                 chatMessage = extractFromJson(jsonResponse)
 
                 Log.d("loadInBackground", chatMessage.toString())
@@ -70,7 +64,8 @@ class DialogflowAsyncWorker(
             }
 
         } catch (e: Exception) {
-            Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
+//            Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
+            Log.e("loader error", e.message)
         }
         return chatMessage
 
@@ -82,20 +77,20 @@ class DialogflowAsyncWorker(
         connection.readTimeout = 10000
         connection.connectTimeout = 15000
         connection.setRequestProperty("Authorization", "Bearer 47836bc8e2494eabb7ea945d1b227d29")
-        connection.connect()
         when(request){
              GET -> {
-                connection.requestMethod = "GET"
+                 connection.requestMethod = "GET"
+                 connection.connect()
             }
             POST -> {
                 connection.requestMethod = "POST"
                 connection.doOutput = true
+                connection.connect()
                 val bufferedWriter = BufferedWriter(OutputStreamWriter(connection.outputStream, "UTF-8"))
-                bufferedWriter.write()
+                bufferedWriter.write(postData)
                 bufferedWriter.flush()
                 bufferedWriter.close()
                 connection.outputStream.close()
-
             }
         }
         return connection

@@ -33,6 +33,9 @@ import kotlinx.android.synthetic.main.activity_chatbot_acvitity.*
 import java.io.Serializable
 import com.example.lun.pocket_health_advisor.DataClassWrapper.ChatMessage
 import com.example.lun.pocket_health_advisor.DialogflowAsyncWorker.Companion.GET
+import com.example.lun.pocket_health_advisor.DialogflowAsyncWorker.Companion.POST
+import org.jetbrains.anko.alert
+import org.jetbrains.anko.yesButton
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -42,9 +45,7 @@ class ChatbotActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Array
         val DIALOGFLOW_URL = "https://api.dialogflow.com/v1/query?v=20170712"
         val LOADER_ID = 1
     }
-
-
-
+    private  var requestMethod = GET
     private lateinit var authUser: AuthUser
     private lateinit var db: FirebaseFirestore
     private lateinit var adapter: FirestoreRecyclerAdapter<ChatMessage, ChatRecord>
@@ -184,6 +185,14 @@ class ChatbotActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Array
             }
         })
         recyclerView.adapter = adapter
+
+        alert("post"){
+            yesButton { restartLoader() }
+        }.show()
+    }
+    private fun restartLoader(){
+        requestMethod = POST
+        loaderManager.restartLoader(LOADER_ID, null, this)
     }
 
     fun ImageViewAnimatedChange(c: Context, v: ImageView, new_image: Bitmap) {
@@ -225,6 +234,16 @@ class ChatbotActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Array
                 .toString()
     }
 
+    private fun constructUrl(): String{
+        val baseUri = Uri.parse(DIALOGFLOW_URL)
+        val uriBuilder = baseUri.buildUpon()
+        return uriBuilder.appendQueryParameter("lang", "en")
+                .appendQueryParameter("query", queryText)
+                .appendQueryParameter("sessionId", authUser.id)
+                .build()
+                .toString()
+    }
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.chatbot_menu, menu)
         return true
@@ -250,13 +269,11 @@ class ChatbotActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Array
 
     override fun onCreateLoader(id: Int, args: Bundle?): Loader<ArrayList<ChatMessage>> {
         Log.d("onCreateLoader", "loader created")
-        var baseUri = Uri.parse(DIALOGFLOW_URL)
-        var uriBuilder = baseUri.buildUpon()
-        uriBuilder.appendQueryParameter("query", queryText)
-                .appendQueryParameter("sessionId", authUser.id)
-                .appendQueryParameter("lang", "en")
-
-        return DialogflowAsyncWorker(applicationContext, uriBuilder.build().toString(), GET)
+        return if (requestMethod == GET){
+            DialogflowAsyncWorker(applicationContext, constructUrl(), GET)
+        } else {
+            DialogflowAsyncWorker(applicationContext, DIALOGFLOW_URL, POST, constructPostData())
+        }
     }
 
     override fun onLoadFinished(loader: Loader<ArrayList<ChatMessage>>?, data: ArrayList<ChatMessage>?) {
