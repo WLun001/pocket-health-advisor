@@ -32,11 +32,14 @@ import com.google.firebase.firestore.FirebaseFirestoreSettings
 import kotlinx.android.synthetic.main.activity_chatbot_acvitity.*
 import java.io.Serializable
 import com.example.lun.pocket_health_advisor.DataClassWrapper.ChatMessage
+import com.example.lun.pocket_health_advisor.DialogflowAsyncWorker.Companion.GET
+import org.json.JSONArray
+import org.json.JSONObject
 
 // TODO: solve the chat wont get response when in background
 class ChatbotActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<ArrayList<ChatMessage>> {
     companion object {
-        val DIALOGFLOW_URL = "https://api.dialogflow.com/v1/query?v=20170712&lang=en"
+        val DIALOGFLOW_URL = "https://api.dialogflow.com/v1/query?v=20170712"
         val LOADER_ID = 1
     }
 
@@ -214,6 +217,14 @@ class ChatbotActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Array
         return data
     }
 
+    private fun constructPostData(): String{
+        return JSONObject()
+                .put("lang","en")
+                .put("event",JSONObject().put("name", "WELCOME"))
+                .put("sessionId", authUser.id)
+                .toString()
+    }
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.chatbot_menu, menu)
         return true
@@ -243,8 +254,9 @@ class ChatbotActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Array
         var uriBuilder = baseUri.buildUpon()
         uriBuilder.appendQueryParameter("query", queryText)
                 .appendQueryParameter("sessionId", authUser.id)
+                .appendQueryParameter("lang", "en")
 
-        return DialogflowAsyncWorker(applicationContext, uriBuilder.build().toString())
+        return DialogflowAsyncWorker(applicationContext, uriBuilder.build().toString(), GET)
     }
 
     override fun onLoadFinished(loader: Loader<ArrayList<ChatMessage>>?, data: ArrayList<ChatMessage>?) {

@@ -6,25 +6,29 @@ import android.util.Base64
 import android.util.Log
 import android.widget.Toast
 import org.json.JSONObject
-import java.io.BufferedReader
-import java.io.InputStream
-import java.io.InputStreamReader
 import java.lang.StringBuilder
 import java.net.URL
 import java.nio.charset.Charset
 import javax.net.ssl.HttpsURLConnection
 import com.example.lun.pocket_health_advisor.DataClassWrapper.ChatMessage
+import java.io.*
 
 /**
  * Created by Lun on 14/01/2018.
  */
-class DialogflowAsyncWorker(context: Context, private var url: String)
+class DialogflowAsyncWorker(
+        context: Context,
+        private var url: String,
+        private val requestMethod: Int,
+        private val postData: String = "")
     : AsyncTaskLoader<ArrayList<ChatMessage>>(context) {
 
     companion object {
         val BOT = "bot"
         val ACCESS_TOKEN = ("47836bc8e2494eabb7ea945d1b227d29").toByteArray(Charset.defaultCharset())
         var encodedAuth = "Bearer " + Base64.encode(ACCESS_TOKEN, Base64.DEFAULT)
+        const val GET = 0
+        const val POST = 1
     }
 
     override fun onStartLoading() {
@@ -71,6 +75,30 @@ class DialogflowAsyncWorker(context: Context, private var url: String)
         return chatMessage
 
 
+    }
+
+    private fun httpRequestBuilder(url: String, request: Int): HttpsURLConnection{
+        val connection = URL(url).openConnection() as HttpsURLConnection
+        connection.readTimeout = 10000
+        connection.connectTimeout = 15000
+        connection.setRequestProperty("Authorization", "Bearer 47836bc8e2494eabb7ea945d1b227d29")
+        connection.connect()
+        when(request){
+             GET -> {
+                connection.requestMethod = "GET"
+            }
+            POST -> {
+                connection.requestMethod = "POST"
+                connection.doOutput = true
+                val bufferedWriter = BufferedWriter(OutputStreamWriter(connection.outputStream, "UTF-8"))
+                bufferedWriter.write()
+                bufferedWriter.flush()
+                bufferedWriter.close()
+                connection.outputStream.close()
+
+            }
+        }
+        return connection
     }
 
     fun readInput(inputStream: InputStream): String {
