@@ -35,7 +35,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:hint="Type the amount to pay"
+                android:hint="The amount to be paid"
                 android:imeOptions="actionDone"
                 android:enabled="false"
                 android:inputType="text" />
