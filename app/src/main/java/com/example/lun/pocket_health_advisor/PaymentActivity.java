@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -29,6 +30,12 @@ import com.braintreepayments.api.dropin.DropInResult;
 import com.braintreepayments.api.interfaces.HttpResponseCallback;
 import com.braintreepayments.api.internal.HttpClient;
 import com.braintreepayments.api.models.PaymentMethodNonce;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -53,17 +60,34 @@ public class PaymentActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //TODO: read amount from firestore
         llHolder = (LinearLayout) findViewById(R.id.llHolder);
         etAmount = (EditText) findViewById(R.id.etPrice);
-//        btnPay = (Button) findViewById(R.id.btnPay);
-//        btnPay.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                onBraintreeSubmit();
-//            }
-//        });
-        //new HttpRequest().execute();
+        btnPay = (Button) findViewById(R.id.btnPay);
+
+        //TODO: read amount from firestore
+
+        DocumentReference docRef = FirebaseFirestore.getInstance()
+                .collection("hospitals").document("sPUrcUDgx0hb6hmFgCbfqJi3b2f1");
+        docRef.get()
+        .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()){
+                    DocumentSnapshot doc = task.getResult();
+                    if (doc != null){
+                        etAmount.setText(doc.getString("consultation_fee"));
+                    }
+                }
+            }
+        });
+
+        btnPay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBraintreeSubmit();
+            }
+        });
+        new HttpRequest().execute();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -121,6 +145,10 @@ public class PaymentActivity extends AppCompatActivity {
                         if (response.contains("Successful")) {
                             Toast.makeText(PaymentActivity.this, "Transaction successful", Toast.LENGTH_LONG).show();
                             llHolder.setVisibility(View.GONE);
+
+                            Intent intent = new Intent(PaymentActivity.this, MainActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
                         } else
                             Toast.makeText(PaymentActivity.this, "Transaction failed", Toast.LENGTH_LONG).show();
                         Log.d("mylog", "Final Response: " + response.toString());

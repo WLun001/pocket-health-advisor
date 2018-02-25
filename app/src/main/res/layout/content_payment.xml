@@ -37,6 +37,7 @@
                 android:gravity="center"
                 android:hint="Type the amount to pay"
                 android:imeOptions="actionDone"
+                android:enabled="false"
                 android:inputType="text" />
 
         </android.support.design.widget.TextInputLayout>

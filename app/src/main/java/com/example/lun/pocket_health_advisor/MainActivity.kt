@@ -202,17 +202,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun checkSinchClient(){
-        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
-        var sinchClientStatus = sharedPreferences.getBoolean("sinch_client", false)
-        if (!sinchClientStatus){
-            alert("Enable Video call feature?"){
-                yesButton {
+//        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+//        var sinchClientStatus = sharedPreferences.getBoolean("sinch_client", false)
+//        if (!sinchClientStatus){
+//            alert("Enable Video call feature?"){
+//                yesButton {
                     startActivity(Intent(applicationContext, SinchLoginActivity::class.java))
-                    sharedPreferences.edit().putBoolean("sinch_client", true).apply()
-                    toast("registered sinch client")
-                }
-                noButton { }
-            }.show()
-        }
+//                    sharedPreferences.edit().putBoolean("sinch_client", true).apply()
+//                    toast("registered sinch client")
+//                }
+//                noButton { }
+//            }.show()
+//        }
     }
 }

@@ -1,5 +1,6 @@
 package com.example.lun.pocket_health_advisor;
 
+import android.content.Intent;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.util.Log;
@@ -136,6 +137,7 @@ public class CallScreenActivity extends BaseActivity {
             call.hangup();
         }
         finish();
+        startActivity(new Intent(this, PaymentActivity.class));
     }
 
     private String formatTimespan(int totalSeconds) {
