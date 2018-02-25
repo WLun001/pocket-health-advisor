@@ -26,7 +26,7 @@ class AppointmentAdapter(private val context: Context, private val appointmentLi
             viewHolder = view.tag as ViewHolder
         }
         Log.d("adapter", "populating list")
-        viewHolder.hospitalName.text = appointmentList[position].hospitalId
+        viewHolder.hospitalName.text = appointmentList[position].hospitalName.capitalize()
         viewHolder.doctorName.text = appointmentList[position].doctorName
         viewHolder.time.text = appointmentList[position].time
 

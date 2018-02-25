@@ -28,6 +28,7 @@ class DataClassWrapper {
             val doctorName: String,
             val doctorId:String,
             val hospitalId: String,
+            val hospitalName: String,
             val patientId:String,
             val time:String
 
