@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -30,11 +31,14 @@ import com.braintreepayments.api.dropin.DropInResult;
 import com.braintreepayments.api.interfaces.HttpResponseCallback;
 import com.braintreepayments.api.internal.HttpClient;
 import com.braintreepayments.api.models.PaymentMethodNonce;
+import com.firebase.ui.auth.ui.ProgressDialogHolder;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
@@ -52,6 +56,8 @@ public class PaymentActivity extends AppCompatActivity {
     private Button btnPay;
     private EditText etAmount;
     private LinearLayout llHolder;
+    private Boolean paymentAvailability = false;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,19 +70,22 @@ public class PaymentActivity extends AppCompatActivity {
         etAmount = (EditText) findViewById(R.id.etPrice);
         btnPay = (Button) findViewById(R.id.btnPay);
 
-        //TODO: read amount from firestore
+        //TODO: read amount from appointment
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle("Waiting for amount");
+        progressDialog.setMessage("Please wait for doctor to key in amount, do not close the app");
+        progressDialog.setIndeterminate(true);
+        progressDialog.show();
 
         DocumentReference docRef = FirebaseFirestore.getInstance()
                 .collection("hospitals").document("sPUrcUDgx0hb6hmFgCbfqJi3b2f1");
-        docRef.get()
-        .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()){
-                    DocumentSnapshot doc = task.getResult();
-                    if (doc != null){
-                        etAmount.setText(doc.getString("consultation_fee"));
-                    }
+            public void onEvent(DocumentSnapshot documentSnapshot, FirebaseFirestoreException e) {
+                if (documentSnapshot.get("consultation_fee") != null){
+                    etAmount.setText(documentSnapshot.getString("consultation_fee"));
+                    progressDialog.dismiss();
+                    paymentAvailability = true;
                 }
             }
         });
@@ -97,6 +106,25 @@ public class PaymentActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+    }
+
+    private void getAmount(final DocumentReference docRef) {
+        docRef.get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot doc = task.getResult();
+                            if (doc != null) {
+                                if (doc.get("consultation_fee") != null) {
+                                    etAmount.setText(doc.getString("consultation_fee"));
+                                    progressDialog.dismiss();
+                                    paymentAvailability = true;
+                                }
+                            }
+                        }
+                    }
+                });
     }
 
     @Override
