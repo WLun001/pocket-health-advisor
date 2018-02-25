@@ -39,6 +39,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
@@ -70,25 +71,28 @@ public class PaymentActivity extends AppCompatActivity {
         etAmount = (EditText) findViewById(R.id.etPrice);
         btnPay = (Button) findViewById(R.id.btnPay);
 
-        //TODO: read amount from appointment
+        //TODO: get patient id from db
         progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Waiting for amount");
         progressDialog.setMessage("Please wait for doctor to key in amount, do not close the app");
         progressDialog.setIndeterminate(true);
         progressDialog.show();
 
-        DocumentReference docRef = FirebaseFirestore.getInstance()
-                .collection("hospitals").document("sPUrcUDgx0hb6hmFgCbfqJi3b2f1");
-        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(DocumentSnapshot documentSnapshot, FirebaseFirestoreException e) {
-                if (documentSnapshot.get("consultation_fee") != null){
-                    etAmount.setText(documentSnapshot.getString("consultation_fee"));
-                    progressDialog.dismiss();
-                    paymentAvailability = true;
-                }
-            }
-        });
+        FirebaseFirestore db =   FirebaseFirestore.getInstance();
+        db.collection("appointments")
+                .whereEqualTo("patient_id", "b341e3dc-1959-4996-c6c8-720b004021cd")
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
+                        DocumentSnapshot doc = documentSnapshots.getDocuments().get(0);
+                        Log.d("doc", doc.getData().toString());
+                        if (doc.get("diagnosis_price") != null) {
+                            etAmount.setText(doc.get("diagnosis_price").toString());
+                            progressDialog.dismiss();
+                            paymentAvailability = true;
+                        }
+                    }
+                });
 
         btnPay.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,25 +110,6 @@ public class PaymentActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
-    }
-
-    private void getAmount(final DocumentReference docRef) {
-        docRef.get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot doc = task.getResult();
-                            if (doc != null) {
-                                if (doc.get("consultation_fee") != null) {
-                                    etAmount.setText(doc.getString("consultation_fee"));
-                                    progressDialog.dismiss();
-                                    paymentAvailability = true;
-                                }
-                            }
-                        }
-                    }
-                });
     }
 
     @Override
