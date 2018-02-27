@@ -33,10 +33,12 @@ import com.braintreepayments.api.internal.HttpClient;
 import com.braintreepayments.api.models.PaymentMethodNonce;
 import com.firebase.ui.auth.ui.ProgressDialogHolder;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
@@ -59,7 +61,7 @@ public class PaymentActivity extends AppCompatActivity {
     private LinearLayout llHolder;
     private Boolean paymentAvailability = false;
     private ProgressDialog progressDialog;
-
+    private FirebaseFirestore db;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,7 +80,7 @@ public class PaymentActivity extends AppCompatActivity {
         progressDialog.setIndeterminate(true);
         progressDialog.show();
 
-        FirebaseFirestore db =   FirebaseFirestore.getInstance();
+        db =   FirebaseFirestore.getInstance();
         db.collection("appointments")
                 .whereEqualTo("patient_id", "b341e3dc-1959-4996-c6c8-720b004021cd")
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -142,6 +144,36 @@ public class PaymentActivity extends AppCompatActivity {
         }
     }
 
+    /*
+     * This method to write payment details to Firestore
+     */
+    private void recordPayment(){
+         db.collection("appointments")
+                .whereEqualTo("patient_id", "b341e3dc-1959-4996-c6c8-720b004021cd")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        DocumentSnapshot doc = task.getResult().getDocuments().get(0);
+                        Map<String, Object> data = new HashMap<>();
+                        data.put("hospital_id", doc.getString("hospital_id"));
+                        data.put("patient_id", doc.getString("patient_id"));
+                        data.put("patient_name", doc.getString("patient_name"));
+                        data.put("diagnosis_price", doc.getDouble("diagnosis_price"));
+                        data.put("appointment_id", doc.getId());
+                        data.put("timestmap", FieldValue.serverTimestamp());
+
+                        db.collection("payments").add(data)
+                                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                    @Override
+                                    public void onSuccess(DocumentReference documentReference) {
+                                        Toast.makeText(PaymentActivity.this, "recorded payment", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                    }
+                });
+    }
+
     public void onBraintreeSubmit() {
         DropInRequest dropInRequest = new DropInRequest()
                 .clientToken(token);
@@ -156,6 +188,7 @@ public class PaymentActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         if (response.contains("Successful")) {
+                            recordPayment();
                             Toast.makeText(PaymentActivity.this, "Transaction successful", Toast.LENGTH_LONG).show();
                             llHolder.setVisibility(View.GONE);
 

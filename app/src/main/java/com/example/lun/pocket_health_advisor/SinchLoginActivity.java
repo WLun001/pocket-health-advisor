@@ -39,7 +39,9 @@ public class SinchLoginActivity extends BaseActivity implements SinchService.Sta
     protected void onServiceConnected() {
         //mLoginButton.setEnabled(true);
         getSinchServiceInterface().setStartListener(this);
-        loginClicked(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            loginClicked(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
+        }
     }
 
     @Override
