@@ -27,6 +27,7 @@ import java.util.TimerTask;
 
 public class CallScreenActivity extends BaseActivity {
 
+    public static final String REMOTE_CALLER_ID_EXTRA = CallScreenActivity.class.getPackage() + ".REMOTE_CALLER_ID";
     static final String TAG = CallScreenActivity.class.getSimpleName();
     static final String ADDED_LISTENER = "addedListener";
 
@@ -42,6 +43,8 @@ public class CallScreenActivity extends BaseActivity {
     private TextView mCallDuration;
     private TextView mCallState;
     private TextView mCallerName;
+
+    private String remoteCallerId;
 
     @Override
     protected void onSaveInstanceState(Bundle savedInstanceState) {
@@ -99,6 +102,7 @@ public class CallScreenActivity extends BaseActivity {
         if (call != null) {
             mCallerName.setText(call.getRemoteUserId());
             mCallState.setText(call.getState().toString());
+            remoteCallerId = call.getRemoteUserId();
             if (call.getDetails().isVideoOffered()) {
                 addLocalView();
                 if (call.getState() == CallState.ESTABLISHED) {
@@ -137,7 +141,9 @@ public class CallScreenActivity extends BaseActivity {
             call.hangup();
         }
         finish();
-        startActivity(new Intent(this, PaymentActivity.class));
+        Intent intent = new Intent(this, PaymentActivity.class);
+        intent.putExtra("remote_id", remoteCallerId);
+        startActivity(intent);
     }
 
     private String formatTimespan(int totalSeconds) {

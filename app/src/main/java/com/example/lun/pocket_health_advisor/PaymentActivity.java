@@ -44,6 +44,8 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import org.jetbrains.anko.ToastsKt;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -63,6 +65,7 @@ public class PaymentActivity extends AppCompatActivity {
     private ProgressDialog progressDialog;
     private FirebaseFirestore db;
     private String appointmentId;
+    private String remoteCallerId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,6 +77,25 @@ public class PaymentActivity extends AppCompatActivity {
         etAmount = (EditText) findViewById(R.id.etPrice);
         btnPay = (Button) findViewById(R.id.btnPay);
 
+        Intent intent = getIntent();
+        remoteCallerId = intent.getStringExtra("remote_id");
+
+        db =   FirebaseFirestore.getInstance();
+
+        //TODO: Match doctor
+        db.collection("appointments")
+                .whereEqualTo("patient_id", "b341e3dc-1959-4996-c6c8-720b004021cd")
+                .whereEqualTo("doctor_name", remoteCallerId)
+                .whereEqualTo("date", "30/09/1997")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        DocumentSnapshot doc = task.getResult().getDocuments().get(0);
+                        Toast.makeText(PaymentActivity.this, doc.getString("hospital_name"), Toast.LENGTH_SHORT).show();
+                    }
+                });
+
         //TODO: get patient id from db
         progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Waiting for amount");
@@ -81,7 +103,7 @@ public class PaymentActivity extends AppCompatActivity {
         progressDialog.setIndeterminate(true);
         progressDialog.show();
 
-        db =   FirebaseFirestore.getInstance();
+
         db.collection("appointments")
                 .whereEqualTo("patient_id", "b341e3dc-1959-4996-c6c8-720b004021cd")
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
