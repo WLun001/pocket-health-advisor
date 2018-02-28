@@ -62,6 +62,7 @@ public class PaymentActivity extends AppCompatActivity {
     private Boolean paymentAvailability = false;
     private ProgressDialog progressDialog;
     private FirebaseFirestore db;
+    private String appointmentId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,6 +93,7 @@ public class PaymentActivity extends AppCompatActivity {
                             etAmount.setText(doc.get("diagnosis_price").toString());
                             progressDialog.dismiss();
                             paymentAvailability = true;
+                            appointmentId = doc.getId();
                         }
                     }
                 });
@@ -148,6 +150,7 @@ public class PaymentActivity extends AppCompatActivity {
      * This method to write payment details to Firestore
      */
     private void recordPayment(){
+        //TODO: update patients and appointment payment status
          db.collection("appointments")
                 .whereEqualTo("patient_id", "b341e3dc-1959-4996-c6c8-720b004021cd")
                 .get()
@@ -174,6 +177,28 @@ public class PaymentActivity extends AppCompatActivity {
                 });
     }
 
+    /*
+     * This method change the payment status in patients collection
+     */
+    private void recordPatientPaymentStatus() {
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("payment_status", true);
+        db.collection("patients").document("b341e3dc-1959-4996-c6c8-720b004021cd")
+                .update(data);
+    }
+
+    /*
+     * This method change the payment status in appointment collection
+     */
+    private void recordAppointmentPaymentStatus() {
+        if (appointmentId != null) {
+            HashMap<String, Object> data = new HashMap<>();
+            data.put("payment_status", true);
+            db.collection("appointments").document(appointmentId)
+                    .update(data);
+        }
+    }
+
     public void onBraintreeSubmit() {
         DropInRequest dropInRequest = new DropInRequest()
                 .clientToken(token);
@@ -189,6 +214,8 @@ public class PaymentActivity extends AppCompatActivity {
                     public void onResponse(String response) {
                         if (response.contains("Successful")) {
                             recordPayment();
+                            recordPatientPaymentStatus();
+                            recordAppointmentPaymentStatus();
                             Toast.makeText(PaymentActivity.this, "Transaction successful", Toast.LENGTH_LONG).show();
                             llHolder.setVisibility(View.GONE);
 
