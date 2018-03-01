@@ -46,7 +46,12 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import org.jetbrains.anko.ToastsKt;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class PaymentActivity extends AppCompatActivity {
@@ -83,16 +88,19 @@ public class PaymentActivity extends AppCompatActivity {
         db =   FirebaseFirestore.getInstance();
 
         //TODO: Match doctor
+        Log.d("date", new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).format(Calendar.getInstance().getTime()));
         db.collection("appointments")
                 .whereEqualTo("patient_id", "b341e3dc-1959-4996-c6c8-720b004021cd")
                 .whereEqualTo("doctor_name", remoteCallerId)
-                .whereEqualTo("date", "30/09/1997")
+                .whereEqualTo("date", new SimpleDateFormat("dd/MM/yyyy",Locale.ENGLISH).format(Calendar.getInstance().getTime()))
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        DocumentSnapshot doc = task.getResult().getDocuments().get(0);
-                        Toast.makeText(PaymentActivity.this, doc.getString("hospital_name"), Toast.LENGTH_SHORT).show();
+                        if (task.getResult().size() > 0) {
+                            DocumentSnapshot doc = task.getResult().getDocuments().get(0);
+                            Toast.makeText(PaymentActivity.this, doc.getString("hospital_name"), Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
 
