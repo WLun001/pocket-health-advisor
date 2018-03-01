@@ -1,11 +1,11 @@
 package com.example.lun.pocket_health_advisor
 
+import android.content.Context
+import android.content.res.Resources.Theme
+import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
-
-import android.support.v4.app.Fragment
-import android.os.Bundle
-import android.view.LayoutInflater
+import android.support.v7.widget.ThemedSpinnerAdapter
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -13,18 +13,8 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
-import android.content.Context
-import android.support.v7.widget.ThemedSpinnerAdapter
-import android.content.res.Resources.Theme
-import android.support.v7.app.AlertDialog
-import com.google.firebase.firestore.FirebaseFirestore
-import com.example.lun.pocket_health_advisor.DataClassWrapper.*
-import com.google.firebase.auth.FirebaseAuth
-
 import kotlinx.android.synthetic.main.activity_appointment.*
-import kotlinx.android.synthetic.main.fragment_appointment.view.*
 import kotlinx.android.synthetic.main.list_item.view.*
-import org.jetbrains.anko.toast
 
 class AppointmentActivity : AppCompatActivity() {
 
@@ -44,7 +34,7 @@ class AppointmentActivity : AppCompatActivity() {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                 // When the given dropdown item is selected, show its contents in the
                 // container view.
-                val fragment = when(position){
+                val fragment = when (position) {
                     0 -> ComingAppointmentFragment()
                     else -> null
                 }
@@ -52,6 +42,7 @@ class AppointmentActivity : AppCompatActivity() {
                         .replace(R.id.container, fragment)
                         .commit()
             }
+
             override fun onNothingSelected(parent: AdapterView<*>) {}
         }
 

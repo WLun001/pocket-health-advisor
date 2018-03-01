@@ -2,11 +2,10 @@ package com.example.lun.pocket_health_advisor
 
 import android.os.Bundle
 import android.support.v4.app.ListFragment
+import com.example.lun.pocket_health_advisor.DataClassWrapper.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import org.jetbrains.anko.support.v4.toast
-import org.jetbrains.anko.toast
-import com.example.lun.pocket_health_advisor.DataClassWrapper.*
 
 /**
  * Created by wlun on 2/14/18.

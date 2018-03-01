@@ -4,14 +4,13 @@ import android.content.AsyncTaskLoader
 import android.content.Context
 import android.util.Base64
 import android.util.Log
-import android.widget.Toast
+import com.example.lun.pocket_health_advisor.DataClassWrapper.ChatMessage
 import org.json.JSONObject
+import java.io.*
 import java.lang.StringBuilder
 import java.net.URL
 import java.nio.charset.Charset
 import javax.net.ssl.HttpsURLConnection
-import com.example.lun.pocket_health_advisor.DataClassWrapper.ChatMessage
-import java.io.*
 
 /**
  * Created by Lun on 14/01/2018.
@@ -46,7 +45,7 @@ class DialogflowAsyncWorker(
         var chatMessage: ArrayList<ChatMessage> = ArrayList()
         try {
             var inputStream: InputStream? = null
-            val connection = httpRequestBuilder(url,requestMethod)
+            val connection = httpRequestBuilder(url, requestMethod)
 
             Log.d("Response Code", connection.responseCode.toString() + connection.responseMessage)
 
@@ -72,18 +71,18 @@ class DialogflowAsyncWorker(
 
     }
 
-    private fun httpRequestBuilder(url: String, request: Int): HttpsURLConnection{
+    private fun httpRequestBuilder(url: String, request: Int): HttpsURLConnection {
         val connection = URL(url).openConnection() as HttpsURLConnection
         connection.readTimeout = 10000
         connection.connectTimeout = 15000
         connection.setRequestProperty("Authorization", "Bearer 47836bc8e2494eabb7ea945d1b227d29")
-        when(request){
-             GET -> {
-                 connection.requestMethod = "GET"
-                 connection.connect()
+        when (request) {
+            GET -> {
+                connection.requestMethod = "GET"
+                connection.connect()
             }
             POST -> {
-                connection.setRequestProperty("Content-Type", "application/json" )
+                connection.setRequestProperty("Content-Type", "application/json")
                 connection.requestMethod = "POST"
                 connection.doOutput = true
                 connection.connect()

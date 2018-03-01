@@ -5,7 +5,6 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.Uri
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
@@ -59,7 +58,7 @@ class NearbyHospitalActivity : AppCompatActivity() {
                 toast("connected")
         }
 
-        networkInfo?: kotlin.run { toast("not connected") }
+        networkInfo ?: kotlin.run { toast("not connected") }
         getNearbyHospital()
     }
 
@@ -110,22 +109,22 @@ class NearbyHospitalActivity : AppCompatActivity() {
 //        progress.max = tempHospital.size
 //        progress.show()
         doAsync {
-                val location = Uri.encode("3.041803,101.793075")
-                val uriBuilder = Uri.parse(distanceURL)
-                        .buildUpon()
-                        .encodedQuery("""origins=$location&destinations=place_id:${mapsHospital.placeId}&key=$googleApiKey
+            val location = Uri.encode("3.041803,101.793075")
+            val uriBuilder = Uri.parse(distanceURL)
+                    .buildUpon()
+                    .encodedQuery("""origins=$location&destinations=place_id:${mapsHospital.placeId}&key=$googleApiKey
                     """.trimIndent())
 
 
-                Log.d("URL", uriBuilder.toString())
+            Log.d("URL", uriBuilder.toString())
 
-                val result = URL(uriBuilder.toString()).readText()
-                val distance = JSONObject(result).getJSONArray("rows")
-                        .getJSONObject(0).getJSONArray("elements")
-                        .getJSONObject(0).getJSONObject("distance")
-                        .getString("text")
+            val result = URL(uriBuilder.toString()).readText()
+            val distance = JSONObject(result).getJSONArray("rows")
+                    .getJSONObject(0).getJSONArray("elements")
+                    .getJSONObject(0).getJSONObject("distance")
+                    .getString("text")
 
-                Log.d("Distance", distance.toString())
+            Log.d("Distance", distance.toString())
 
             onComplete {
                 hospitals.add(MapsHospital(mapsHospital.name, mapsHospital.openingStatus, mapsHospital.placeId, distance))
@@ -136,7 +135,7 @@ class NearbyHospitalActivity : AppCompatActivity() {
                         adapter.notifyDataSetChanged()
                         progress.dismiss()
                     }
-            }
+                }
 
             }
         }

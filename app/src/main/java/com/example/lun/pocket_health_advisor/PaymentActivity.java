@@ -15,7 +15,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -31,7 +30,6 @@ import com.braintreepayments.api.dropin.DropInResult;
 import com.braintreepayments.api.interfaces.HttpResponseCallback;
 import com.braintreepayments.api.internal.HttpClient;
 import com.braintreepayments.api.models.PaymentMethodNonce;
-import com.firebase.ui.auth.ui.ProgressDialogHolder;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -41,15 +39,10 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import org.jetbrains.anko.ToastsKt;
-
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -84,7 +77,7 @@ public class PaymentActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String remoteCallerId = intent.getStringExtra("remote_id");
 
-        db =   FirebaseFirestore.getInstance();
+        db = FirebaseFirestore.getInstance();
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Waiting for amount");
@@ -141,29 +134,32 @@ public class PaymentActivity extends AppCompatActivity {
         }
     }
 
-    private void searchAppointment(String remoteCallerId){
+    private void searchAppointment(String remoteCallerId) {
         //TODO: Change to patient ic and doctor ic
         db.collection("appointments")
                 .whereEqualTo("patient_id", "b341e3dc-1959-4996-c6c8-720b004021cd")
                 .whereEqualTo("doctor_name", remoteCallerId)
-                .whereEqualTo("date", new SimpleDateFormat("dd/MM/yyyy",Locale.ENGLISH).format(Calendar.getInstance().getTime()))
+                .whereEqualTo("date", new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).format(Calendar.getInstance().getTime()))
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.getResult().size() > 0) {
                             DocumentSnapshot doc = task.getResult().getDocuments().get(0);
+                            //get appointment id
                             getPaymentAmount(doc.getId());
                             appointmentId = doc.getId();
                         }
                     }
                 });
     }
+
     /**
      * This method attached a listener to get diagnosis fee from appointments collection
+     *
      * @param appointmentId id of an appointment
      */
-    private void getPaymentAmount(String appointmentId){
+    private void getPaymentAmount(String appointmentId) {
         db.collection("appointments")
                 .whereEqualTo("id", appointmentId)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -178,12 +174,13 @@ public class PaymentActivity extends AppCompatActivity {
                     }
                 });
     }
+
     /**
      * This method to write payment details to Firestore
      */
-    private void recordPayment(){
+    private void recordPayment() {
         //TODO: get patient id from intent or db
-         db.collection("appointments")
+        db.collection("appointments")
                 .whereEqualTo("patient_id", "b341e3dc-1959-4996-c6c8-720b004021cd")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {

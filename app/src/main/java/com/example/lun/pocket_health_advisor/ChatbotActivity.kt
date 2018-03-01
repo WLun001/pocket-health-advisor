@@ -20,7 +20,10 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import com.example.lun.pocket_health_advisor.DataClassWrapper.AuthUser
+import com.example.lun.pocket_health_advisor.DataClassWrapper.ChatMessage
 import com.example.lun.pocket_health_advisor.DialogflowAsyncWorker.Companion.BOT
+import com.example.lun.pocket_health_advisor.DialogflowAsyncWorker.Companion.GET
+import com.example.lun.pocket_health_advisor.DialogflowAsyncWorker.Companion.POST
 import com.example.lun.pocket_health_advisor.MainActivity.Companion.USER_DETAILS
 import com.example.lun.pocket_health_advisor.R.id.medic_report
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
@@ -30,14 +33,10 @@ import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import kotlinx.android.synthetic.main.activity_chatbot_acvitity.*
-import java.io.Serializable
-import com.example.lun.pocket_health_advisor.DataClassWrapper.ChatMessage
-import com.example.lun.pocket_health_advisor.DialogflowAsyncWorker.Companion.GET
-import com.example.lun.pocket_health_advisor.DialogflowAsyncWorker.Companion.POST
 import org.jetbrains.anko.alert
 import org.jetbrains.anko.yesButton
-import org.json.JSONArray
 import org.json.JSONObject
+import java.io.Serializable
 
 // TODO: solve the chat wont get response when in background
 class ChatbotActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<ArrayList<ChatMessage>> {
@@ -45,7 +44,8 @@ class ChatbotActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Array
         val DIALOGFLOW_URL = "https://api.dialogflow.com/v1/query?v=20170712"
         val LOADER_ID = 1
     }
-    private  var requestMethod = GET
+
+    private var requestMethod = GET
     private lateinit var authUser: AuthUser
     private lateinit var db: FirebaseFirestore
     private lateinit var adapter: FirestoreRecyclerAdapter<ChatMessage, ChatRecord>
@@ -186,11 +186,12 @@ class ChatbotActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Array
         })
         recyclerView.adapter = adapter
 
-        alert("post"){
+        alert("post") {
             yesButton { restartLoader() }
         }.show()
     }
-    private fun restartLoader(){
+
+    private fun restartLoader() {
         requestMethod = POST
         loaderManager.restartLoader(LOADER_ID, null, this)
     }
@@ -226,15 +227,15 @@ class ChatbotActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Array
         return data
     }
 
-    private fun constructPostData(): String{
+    private fun constructPostData(): String {
         return JSONObject()
-                .put("lang","en")
-                .put("event",JSONObject().put("name", "WELCOME"))
+                .put("lang", "en")
+                .put("event", JSONObject().put("name", "WELCOME"))
                 .put("sessionId", authUser.id)
                 .toString()
     }
 
-    private fun constructUrl(): String{
+    private fun constructUrl(): String {
         val baseUri = Uri.parse(DIALOGFLOW_URL)
         val uriBuilder = baseUri.buildUpon()
         return uriBuilder.appendQueryParameter("lang", "en")
@@ -269,7 +270,7 @@ class ChatbotActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Array
 
     override fun onCreateLoader(id: Int, args: Bundle?): Loader<ArrayList<ChatMessage>> {
         Log.d("onCreateLoader", "loader created")
-        return if (requestMethod == GET){
+        return if (requestMethod == GET) {
             DialogflowAsyncWorker(applicationContext, constructUrl(), GET)
         } else {
             DialogflowAsyncWorker(applicationContext, DIALOGFLOW_URL, POST, constructPostData())

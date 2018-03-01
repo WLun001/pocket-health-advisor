@@ -3,10 +3,8 @@ package com.example.lun.pocket_health_advisor
 import android.app.Activity
 import android.app.AlertDialog
 import android.app.Dialog
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.preference.PreferenceManager
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.CardView
@@ -23,15 +21,10 @@ import com.firebase.ui.auth.AuthUI
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
-import com.sinch.android.rtc.Sinch
-import com.sinch.android.rtc.SinchClientListener
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
+import org.jetbrains.anko.toast
 import java.util.*
-import com.sinch.android.rtc.ClientRegistration
-import com.sinch.android.rtc.SinchClient
-import com.sinch.android.rtc.SinchError
-import org.jetbrains.anko.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -201,13 +194,13 @@ class MainActivity : AppCompatActivity() {
         toast(R.string.updated_display_name)
     }
 
-    private fun checkSinchClient(){
+    private fun checkSinchClient() {
 //        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
 //        var sinchClientStatus = sharedPreferences.getBoolean("sinch_client", false)
 //        if (!sinchClientStatus){
 //            alert("Enable Video call feature?"){
 //                yesButton {
-                    startActivity(Intent(applicationContext, SinchLoginActivity::class.java))
+        startActivity(Intent(applicationContext, SinchLoginActivity::class.java))
 //                    sharedPreferences.edit().putBoolean("sinch_client", true).apply()
 //                    toast("registered sinch client")
 //                }

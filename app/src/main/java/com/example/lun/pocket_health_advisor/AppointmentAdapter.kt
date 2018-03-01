@@ -12,7 +12,7 @@ import com.example.lun.pocket_health_advisor.DataClassWrapper.Appointment
 /**
  * Created by wlun on 2/14/18.
  */
-class AppointmentAdapter(private val context: Context, private val appointmentList: ArrayList<Appointment>) : BaseAdapter(){
+class AppointmentAdapter(private val context: Context, private val appointmentList: ArrayList<Appointment>) : BaseAdapter() {
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View? {
         val view: View?
         val viewHolder: ViewHolder
@@ -38,14 +38,14 @@ class AppointmentAdapter(private val context: Context, private val appointmentLi
     }
 
     override fun getItemId(position: Int): Long {
-      return position.toLong()
+        return position.toLong()
     }
 
     override fun getCount(): Int {
         return appointmentList.size
     }
 
-    private class ViewHolder(view: View?){
+    private class ViewHolder(view: View?) {
         val hospitalName: TextView = view?.findViewById<TextView>(R.id.tv_title) as TextView
         val doctorName: TextView = view?.findViewById<TextView>(R.id.tv_1) as TextView
         val time: TextView = view?.findViewById<TextView>(R.id.tv_2) as TextView
