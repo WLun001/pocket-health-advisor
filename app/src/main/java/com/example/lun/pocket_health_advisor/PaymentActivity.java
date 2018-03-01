@@ -66,11 +66,10 @@ public class PaymentActivity extends AppCompatActivity {
     private Button btnPay;
     private EditText etAmount;
     private LinearLayout llHolder;
-    private Boolean paymentAvailability = false;
     private ProgressDialog progressDialog;
     private FirebaseFirestore db;
     private String appointmentId;
-    private String remoteCallerId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,12 +82,18 @@ public class PaymentActivity extends AppCompatActivity {
         btnPay = (Button) findViewById(R.id.btnPay);
 
         Intent intent = getIntent();
-        remoteCallerId = intent.getStringExtra("remote_id");
+        String remoteCallerId = intent.getStringExtra("remote_id");
 
         db =   FirebaseFirestore.getInstance();
 
         //TODO: Change to patient ic and doctor ic
-        Log.d("date", new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).format(Calendar.getInstance().getTime()));
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle("Waiting for amount");
+        progressDialog.setMessage("Please wait for doctor to key in amount, do not close the app");
+        progressDialog.setIndeterminate(true);
+        progressDialog.show();
+
+        //TODO: get patient id from intent
         db.collection("appointments")
                 .whereEqualTo("patient_id", "b341e3dc-1959-4996-c6c8-720b004021cd")
                 .whereEqualTo("doctor_name", remoteCallerId)
@@ -99,30 +104,7 @@ public class PaymentActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.getResult().size() > 0) {
                             DocumentSnapshot doc = task.getResult().getDocuments().get(0);
-                            Toast.makeText(PaymentActivity.this, doc.getString("hospital_name"), Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-
-        //TODO: get patient id from db
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setTitle("Waiting for amount");
-        progressDialog.setMessage("Please wait for doctor to key in amount, do not close the app");
-        progressDialog.setIndeterminate(true);
-        progressDialog.show();
-
-
-        db.collection("appointments")
-                .whereEqualTo("patient_id", "b341e3dc-1959-4996-c6c8-720b004021cd")
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @Override
-                    public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
-                        DocumentSnapshot doc = documentSnapshots.getDocuments().get(0);
-                        Log.d("doc", doc.getData().toString());
-                        if (doc.get("diagnosis_price") != null) {
-                            etAmount.setText(doc.get("diagnosis_price").toString());
-                            progressDialog.dismiss();
-                            paymentAvailability = true;
+                            getPaymentAmount(doc.getId());
                             appointmentId = doc.getId();
                         }
                     }
@@ -176,6 +158,21 @@ public class PaymentActivity extends AppCompatActivity {
         }
     }
 
+    private void getPaymentAmount(String appointmentId){
+        db.collection("appointments")
+                .whereEqualTo("id", appointmentId)
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
+                        DocumentSnapshot doc = documentSnapshots.getDocuments().get(0);
+                        Log.d("doc", doc.getData().toString());
+                        if (doc.get("diagnosis_price") != null) {
+                            etAmount.setText(doc.get("diagnosis_price").toString());
+                            progressDialog.dismiss();
+                        }
+                    }
+                });
+    }
     /*
      * This method to write payment details to Firestore
      */
@@ -335,5 +332,4 @@ public class PaymentActivity extends AppCompatActivity {
             progress.dismiss();
         }
     }
-
 }
