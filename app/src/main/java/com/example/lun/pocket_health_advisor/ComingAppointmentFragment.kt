@@ -34,9 +34,7 @@ class ComingAppointmentFragment : ListFragment() {
                         val result = task.result
                         result?.let {
                             if (result.size() > 0) {
-                                result.forEach {
-                                    searchAppointment(it.getString("id"))
-                                }
+                                searchAppointment(result.documents[0].id)
                             } else toast("no matches found")
                         }
 
