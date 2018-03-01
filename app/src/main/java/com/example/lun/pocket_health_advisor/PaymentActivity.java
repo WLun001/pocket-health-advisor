@@ -80,35 +80,18 @@ public class PaymentActivity extends AppCompatActivity {
         llHolder = (LinearLayout) findViewById(R.id.llHolder);
         etAmount = (EditText) findViewById(R.id.etPrice);
         btnPay = (Button) findViewById(R.id.btnPay);
-
+        //TODO: get patient id from intent
         Intent intent = getIntent();
         String remoteCallerId = intent.getStringExtra("remote_id");
 
         db =   FirebaseFirestore.getInstance();
 
-        //TODO: Change to patient ic and doctor ic
         progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Waiting for amount");
         progressDialog.setMessage("Please wait for doctor to key in amount, do not close the app");
         progressDialog.setIndeterminate(true);
         progressDialog.show();
-
-        //TODO: get patient id from intent
-        db.collection("appointments")
-                .whereEqualTo("patient_id", "b341e3dc-1959-4996-c6c8-720b004021cd")
-                .whereEqualTo("doctor_name", remoteCallerId)
-                .whereEqualTo("date", new SimpleDateFormat("dd/MM/yyyy",Locale.ENGLISH).format(Calendar.getInstance().getTime()))
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.getResult().size() > 0) {
-                            DocumentSnapshot doc = task.getResult().getDocuments().get(0);
-                            getPaymentAmount(doc.getId());
-                            appointmentId = doc.getId();
-                        }
-                    }
-                });
+        searchAppointment(remoteCallerId);
 
         btnPay.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -158,6 +141,28 @@ public class PaymentActivity extends AppCompatActivity {
         }
     }
 
+    private void searchAppointment(String remoteCallerId){
+        //TODO: Change to patient ic and doctor ic
+        db.collection("appointments")
+                .whereEqualTo("patient_id", "b341e3dc-1959-4996-c6c8-720b004021cd")
+                .whereEqualTo("doctor_name", remoteCallerId)
+                .whereEqualTo("date", new SimpleDateFormat("dd/MM/yyyy",Locale.ENGLISH).format(Calendar.getInstance().getTime()))
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.getResult().size() > 0) {
+                            DocumentSnapshot doc = task.getResult().getDocuments().get(0);
+                            getPaymentAmount(doc.getId());
+                            appointmentId = doc.getId();
+                        }
+                    }
+                });
+    }
+    /**
+     * This method attached a listener to get diagnosis fee from appointments collection
+     * @param appointmentId id of an appointment
+     */
     private void getPaymentAmount(String appointmentId){
         db.collection("appointments")
                 .whereEqualTo("id", appointmentId)
@@ -173,7 +178,7 @@ public class PaymentActivity extends AppCompatActivity {
                     }
                 });
     }
-    /*
+    /**
      * This method to write payment details to Firestore
      */
     private void recordPayment(){
@@ -204,7 +209,7 @@ public class PaymentActivity extends AppCompatActivity {
                 });
     }
 
-    /*
+    /**
      * This method change the payment status in patients collection
      */
     private void recordPatientPaymentStatus() {
@@ -214,7 +219,7 @@ public class PaymentActivity extends AppCompatActivity {
                 .update(data);
     }
 
-    /*
+    /**
      * This method change the payment status in appointment collection
      */
     private void recordAppointmentPaymentStatus() {
