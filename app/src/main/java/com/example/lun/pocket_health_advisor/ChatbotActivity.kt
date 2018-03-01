@@ -99,6 +99,7 @@ class ChatbotActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Array
             if (message != "") {
                 queryText = message
                 Log.d("Init loader", "loader initiated")
+                requestMethod = GET
                 loaderManager.restartLoader(LOADER_ID, null, this)
                 val chatMessage = ChatMessage(message, authUser.name)
                 db.collection(getString(R.string.first_col))
