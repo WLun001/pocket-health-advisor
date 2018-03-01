@@ -87,7 +87,7 @@ public class PaymentActivity extends AppCompatActivity {
 
         db =   FirebaseFirestore.getInstance();
 
-        //TODO: Match doctor
+        //TODO: Change to patient ic and doctor ic
         Log.d("date", new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).format(Calendar.getInstance().getTime()));
         db.collection("appointments")
                 .whereEqualTo("patient_id", "b341e3dc-1959-4996-c6c8-720b004021cd")
@@ -180,7 +180,7 @@ public class PaymentActivity extends AppCompatActivity {
      * This method to write payment details to Firestore
      */
     private void recordPayment(){
-        //TODO: update patients and appointment payment status
+        //TODO: get patient id from intent or db
          db.collection("appointments")
                 .whereEqualTo("patient_id", "b341e3dc-1959-4996-c6c8-720b004021cd")
                 .get()
