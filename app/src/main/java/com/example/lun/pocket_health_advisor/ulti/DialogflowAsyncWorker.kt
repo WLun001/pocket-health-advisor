@@ -1,10 +1,10 @@
-package com.example.lun.pocket_health_advisor
+package com.example.lun.pocket_health_advisor.ulti
 
 import android.content.AsyncTaskLoader
 import android.content.Context
 import android.util.Base64
 import android.util.Log
-import com.example.lun.pocket_health_advisor.DataClassWrapper.ChatMessage
+import com.example.lun.pocket_health_advisor.ulti.DataClassWrapper.ChatMessage
 import org.json.JSONObject
 import java.io.*
 import java.lang.StringBuilder

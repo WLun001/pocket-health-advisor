@@ -1,8 +1,9 @@
-package com.example.lun.pocket_health_advisor
+package com.example.lun.pocket_health_advisor.appointment
 
 import android.os.Bundle
 import android.support.v4.app.ListFragment
-import com.example.lun.pocket_health_advisor.DataClassWrapper.*
+import com.example.lun.pocket_health_advisor.ulti.DataClassWrapper.*
+import com.example.lun.pocket_health_advisor.adapter.AppointmentAdapter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import org.jetbrains.anko.support.v4.toast

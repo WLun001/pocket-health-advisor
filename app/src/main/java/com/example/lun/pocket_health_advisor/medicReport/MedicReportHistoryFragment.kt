@@ -1,4 +1,4 @@
-package com.example.lun.pocket_health_advisor
+package com.example.lun.pocket_health_advisor.medicReport
 
 import android.os.Bundle
 import android.support.v4.app.ListFragment
@@ -8,7 +8,9 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ListView
-import com.example.lun.pocket_health_advisor.DataClassWrapper.*
+import com.example.lun.pocket_health_advisor.R
+import com.example.lun.pocket_health_advisor.ulti.DataClassWrapper.*
+import com.example.lun.pocket_health_advisor.adapter.MedicReportAdapter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore

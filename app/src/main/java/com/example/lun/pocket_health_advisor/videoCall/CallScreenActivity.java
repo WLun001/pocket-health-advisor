@@ -1,4 +1,4 @@
-package com.example.lun.pocket_health_advisor;
+package com.example.lun.pocket_health_advisor.videoCall;
 
 import android.content.Intent;
 import android.media.AudioManager;
@@ -12,6 +12,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.lun.pocket_health_advisor.payment.PaymentActivity;
+import com.example.lun.pocket_health_advisor.R;
 import com.sinch.android.rtc.AudioController;
 import com.sinch.android.rtc.PushPair;
 import com.sinch.android.rtc.calling.Call;

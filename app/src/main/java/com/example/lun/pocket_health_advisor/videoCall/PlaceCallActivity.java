@@ -1,4 +1,4 @@
-package com.example.lun.pocket_health_advisor;
+package com.example.lun.pocket_health_advisor.videoCall;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.lun.pocket_health_advisor.R;
 import com.sinch.android.rtc.calling.Call;
 
 public class PlaceCallActivity extends BaseActivity {

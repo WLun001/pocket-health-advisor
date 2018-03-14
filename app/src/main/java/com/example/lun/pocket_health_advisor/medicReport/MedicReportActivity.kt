@@ -1,4 +1,4 @@
-package com.example.lun.pocket_health_advisor
+package com.example.lun.pocket_health_advisor.medicReport
 
 import android.os.Bundle
 import android.support.design.widget.Snackbar
@@ -10,7 +10,9 @@ import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import com.example.lun.pocket_health_advisor.DataClassWrapper.AuthUser
+import com.example.lun.pocket_health_advisor.MainActivity
+import com.example.lun.pocket_health_advisor.R
+import com.example.lun.pocket_health_advisor.ulti.DataClassWrapper.AuthUser
 import kotlinx.android.synthetic.main.activity_medic_report.*
 
 class MedicReportActivity : AppCompatActivity() {

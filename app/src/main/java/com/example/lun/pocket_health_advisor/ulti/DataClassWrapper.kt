@@ -1,4 +1,4 @@
-package com.example.lun.pocket_health_advisor
+package com.example.lun.pocket_health_advisor.ulti
 
 import org.json.JSONObject
 import java.io.Serializable

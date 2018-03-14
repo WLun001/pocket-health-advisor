@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/startbg"
     android:padding="0dip"
-    tools:context=".PlaceCallActivity">
+    tools:context=".videoCall.PlaceCallActivity">
 
     <LinearLayout
         android:id="@+id/numberInputLayout"

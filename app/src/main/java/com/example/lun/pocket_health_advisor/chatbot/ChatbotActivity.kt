@@ -1,4 +1,4 @@
-package com.example.lun.pocket_health_advisor
+package com.example.lun.pocket_health_advisor.chatbot
 
 import android.app.LoaderManager
 import android.content.Context
@@ -19,12 +19,15 @@ import android.view.*
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
-import com.example.lun.pocket_health_advisor.DataClassWrapper.AuthUser
-import com.example.lun.pocket_health_advisor.DataClassWrapper.ChatMessage
-import com.example.lun.pocket_health_advisor.DialogflowAsyncWorker.Companion.BOT
-import com.example.lun.pocket_health_advisor.DialogflowAsyncWorker.Companion.GET
-import com.example.lun.pocket_health_advisor.DialogflowAsyncWorker.Companion.POST
+import com.example.lun.pocket_health_advisor.ulti.DataClassWrapper.AuthUser
+import com.example.lun.pocket_health_advisor.ulti.DataClassWrapper.ChatMessage
+import com.example.lun.pocket_health_advisor.ulti.DialogflowAsyncWorker
+import com.example.lun.pocket_health_advisor.ulti.DialogflowAsyncWorker.Companion.BOT
+import com.example.lun.pocket_health_advisor.ulti.DialogflowAsyncWorker.Companion.GET
+import com.example.lun.pocket_health_advisor.ulti.DialogflowAsyncWorker.Companion.POST
 import com.example.lun.pocket_health_advisor.MainActivity.Companion.USER_DETAILS
+import com.example.lun.pocket_health_advisor.medicReport.MedicReportActivity
+import com.example.lun.pocket_health_advisor.R
 import com.example.lun.pocket_health_advisor.R.id.medic_report
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions

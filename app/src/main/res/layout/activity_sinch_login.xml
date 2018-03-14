@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/startbg"
     android:padding="0dip"
-    tools:context=".SinchLoginActivity">
+    tools:context=".videoCall.SinchLoginActivity">
 
     <LinearLayout
         android:layout_width="fill_parent"

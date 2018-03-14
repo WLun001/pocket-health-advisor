@@ -1,8 +1,10 @@
-package com.example.lun.pocket_health_advisor;
+package com.example.lun.pocket_health_advisor.chatbot;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
+
+import com.example.lun.pocket_health_advisor.R;
 
 /**
  * Created by Lun on 11/01/2018.

@@ -1,4 +1,4 @@
-package com.example.lun.pocket_health_advisor
+package com.example.lun.pocket_health_advisor.NearbyHospital
 
 import android.app.ProgressDialog
 import android.content.Context
@@ -10,9 +10,11 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.widget.LinearLayout
-import com.example.lun.pocket_health_advisor.DataClassWrapper.MapsHospital
-import com.example.lun.pocket_health_advisor.DataClassWrapper.MapsHospitalDetails
-import com.example.lun.pocket_health_advisor.NearbyHospitalAdapter.OnItemClickListener
+import com.example.lun.pocket_health_advisor.ulti.DataClassWrapper.MapsHospital
+import com.example.lun.pocket_health_advisor.ulti.DataClassWrapper.MapsHospitalDetails
+import com.example.lun.pocket_health_advisor.R
+import com.example.lun.pocket_health_advisor.adapter.NearbyHospitalAdapter
+import com.example.lun.pocket_health_advisor.adapter.NearbyHospitalAdapter.OnItemClickListener
 import kotlinx.android.synthetic.main.activity_nearby_hospital.*
 import kotlinx.android.synthetic.main.content_nearby_hospital.*
 import org.jetbrains.anko.*
@@ -112,7 +114,7 @@ class NearbyHospitalActivity : AppCompatActivity() {
             val location = Uri.encode("3.041803,101.793075")
             val uriBuilder = Uri.parse(distanceURL)
                     .buildUpon()
-                    .encodedQuery("""origins=$location&destinations=place_id:${mapsHospital.placeId}&key=$googleApiKey
+                    .encodedQuery("""origins=$location&destinations=place_id:${mapsHospital.placeId}&key=${googleApiKey}
                     """.trimIndent())
 
 

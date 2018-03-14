@@ -1,4 +1,4 @@
-package com.example.lun.pocket_health_advisor;
+package com.example.lun.pocket_health_advisor.videoCall;
 
 import android.app.Activity;
 import android.content.ComponentName;

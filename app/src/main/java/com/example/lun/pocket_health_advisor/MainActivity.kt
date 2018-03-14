@@ -14,9 +14,14 @@ import android.view.View
 import android.widget.EditText
 import android.widget.GridLayout
 import android.widget.Toast
-import com.example.lun.pocket_health_advisor.DataClassWrapper.AuthUser
-import com.example.lun.pocket_health_advisor.DataClassWrapper.HospitalUser
+import com.example.lun.pocket_health_advisor.ulti.DataClassWrapper.AuthUser
+import com.example.lun.pocket_health_advisor.ulti.DataClassWrapper.HospitalUser
+import com.example.lun.pocket_health_advisor.NearbyHospital.NearbyHospitalActivity
 import com.example.lun.pocket_health_advisor.R.id.*
+import com.example.lun.pocket_health_advisor.appointment.AppointmentActivity
+import com.example.lun.pocket_health_advisor.chatbot.ChatbotActivity
+import com.example.lun.pocket_health_advisor.payment.PaymentActivity
+import com.example.lun.pocket_health_advisor.videoCall.SinchLoginActivity
 import com.firebase.ui.auth.AuthUI
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser

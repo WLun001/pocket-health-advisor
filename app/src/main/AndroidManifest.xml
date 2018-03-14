@@ -28,10 +28,10 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".SinchService" />
+        <service android:name=".videoCall.SinchService" />
 
         <activity
-            android:name=".PaymentActivity"
+            android:name=".payment.PaymentActivity"
             android:label="@string/title_activity_payment"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
@@ -47,37 +47,37 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SinchLoginActivity"
+            android:name=".videoCall.SinchLoginActivity"
             android:label="@string/title_activity_sinch_login"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".CallScreenActivity" />
+        <activity android:name=".videoCall.CallScreenActivity" />
         <activity
-            android:name=".IncomingCallScreenActivity"
+            android:name=".videoCall.IncomingCallScreenActivity"
             android:noHistory="true"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".PlaceCallActivity"
+            android:name=".videoCall.PlaceCallActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ChatbotActivity"
+            android:name=".chatbot.ChatbotActivity"
             android:parentActivityName=".MainActivity" />
         <activity
-            android:name=".NearbyHospitalActivity"
+            android:name=".NearbyHospital.NearbyHospitalActivity"
             android:label="@string/title_activity_nearby_hospital"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".MedicReportActivity"
+            android:name=".medicReport.MedicReportActivity"
             android:label="@string/title_activity_medic_report"
-            android:parentActivityName=".ChatbotActivity"
+            android:parentActivityName=".chatbot.ChatbotActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.lun.pocket_health_advisor.ChatbotActivity" />
+                android:value="com.example.lun.pocket_health_advisor.chatbot.ChatbotActivity" />
         </activity>
         <activity
-            android:name=".AppointmentActivity"
+            android:name=".appointment.AppointmentActivity"
             android:label="@string/title_activity_appointment"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>

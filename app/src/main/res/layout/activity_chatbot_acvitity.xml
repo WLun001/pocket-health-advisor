@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.lun.pocket_health_advisor.ChatbotActivity">
+    tools:context="com.example.lun.pocket_health_advisor.chatbot.ChatbotActivity">
 
     <RelativeLayout
         android:layout_width="wrap_content"

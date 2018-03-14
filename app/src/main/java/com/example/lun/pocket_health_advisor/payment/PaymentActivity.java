@@ -1,4 +1,4 @@
-package com.example.lun.pocket_health_advisor;
+package com.example.lun.pocket_health_advisor.payment;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -30,6 +30,8 @@ import com.braintreepayments.api.dropin.DropInResult;
 import com.braintreepayments.api.interfaces.HttpResponseCallback;
 import com.braintreepayments.api.internal.HttpClient;
 import com.braintreepayments.api.models.PaymentMethodNonce;
+import com.example.lun.pocket_health_advisor.MainActivity;
+import com.example.lun.pocket_health_advisor.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;

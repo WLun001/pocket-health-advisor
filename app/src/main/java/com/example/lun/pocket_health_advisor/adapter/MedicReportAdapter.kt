@@ -1,4 +1,4 @@
-package com.example.lun.pocket_health_advisor
+package com.example.lun.pocket_health_advisor.adapter
 
 import android.content.Context
 import android.util.Log
@@ -7,7 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
-import com.example.lun.pocket_health_advisor.DataClassWrapper.MedicReport
+import com.example.lun.pocket_health_advisor.ulti.DataClassWrapper.MedicReport
+import com.example.lun.pocket_health_advisor.R
 
 /**
  * Created by wlun on 2/10/18.

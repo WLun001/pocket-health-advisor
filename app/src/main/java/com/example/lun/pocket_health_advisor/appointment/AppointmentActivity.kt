@@ -1,4 +1,4 @@
-package com.example.lun.pocket_health_advisor
+package com.example.lun.pocket_health_advisor.appointment
 
 import android.content.Context
 import android.content.res.Resources.Theme
@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
+import com.example.lun.pocket_health_advisor.R
 import kotlinx.android.synthetic.main.activity_appointment.*
 import kotlinx.android.synthetic.main.list_item.view.*
 
