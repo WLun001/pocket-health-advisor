@@ -77,11 +77,11 @@ class DataClassWrapper {
         // TODO: find better way to implement this
         fun generateMap(): HashMap<*, *> {
             val map = HashMap<Any, Any>()
-            map.put("diagnose_condition", diagnoseCondition.map)
-            map.put("initial_symptoms", initialSymptoms[0].map as Any)
-            map.put("possible_conditions", possibleConditions[0].map as Any)
-            map.put("questions", questions[0].questionList as Any)
-            map.put("timestamp", timestamp)
+            map["diagnose_condition"] = diagnoseCondition.map
+            map["initial_symptoms"] = initialSymptoms[0].map as Any
+            map["possible_conditions"] = possibleConditions[0].map as Any
+            map["questions"] = questions[0].questionList as Any
+            map["timestamp"] = timestamp
             return map
         }
     }

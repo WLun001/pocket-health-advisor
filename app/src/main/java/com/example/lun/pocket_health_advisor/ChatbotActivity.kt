@@ -122,11 +122,11 @@ class ChatbotActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Array
 
 
                 if (s.toString().trim { it <= ' ' }.length != 0 && flagFab!!) {
-                    ImageViewAnimatedChange(this@ChatbotActivity, fab_img, img)
+                    imageViewAnimatedChange(this@ChatbotActivity, fab_img, img)
                     flagFab = false
 
                 } else if (s.toString().trim { it <= ' ' }.length == 0) {
-                    ImageViewAnimatedChange(this@ChatbotActivity, fab_img, img1)
+                    imageViewAnimatedChange(this@ChatbotActivity, fab_img, img1)
                     flagFab = true
                 }
             }
@@ -197,30 +197,30 @@ class ChatbotActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Array
         loaderManager.restartLoader(LOADER_ID, null, this)
     }
 
-    fun ImageViewAnimatedChange(c: Context, v: ImageView, new_image: Bitmap) {
-        val anim_out = AnimationUtils.loadAnimation(c, R.anim.zoom_out)
-        val anim_in = AnimationUtils.loadAnimation(c, R.anim.zoom_in)
-        anim_out.setAnimationListener(object : Animation.AnimationListener {
+    fun imageViewAnimatedChange(c: Context, v: ImageView, new_image: Bitmap) {
+        val animOut = AnimationUtils.loadAnimation(c, R.anim.zoom_out)
+        val animIn = AnimationUtils.loadAnimation(c, R.anim.zoom_in)
+        animOut.setAnimationListener(object : Animation.AnimationListener {
             override fun onAnimationStart(animation: Animation) {}
 
             override fun onAnimationRepeat(animation: Animation) {}
 
             override fun onAnimationEnd(animation: Animation) {
                 v.setImageBitmap(new_image)
-                anim_in.setAnimationListener(object : Animation.AnimationListener {
+                animIn.setAnimationListener(object : Animation.AnimationListener {
                     override fun onAnimationStart(animation: Animation) {}
 
                     override fun onAnimationRepeat(animation: Animation) {}
 
                     override fun onAnimationEnd(animation: Animation) {}
                 })
-                v.startAnimation(anim_in)
+                v.startAnimation(animIn)
             }
         })
-        v.startAnimation(anim_out)
+        v.startAnimation(animOut)
     }
 
-    fun getMap(chatMessage: ChatMessage): HashMap<String, Any> {
+    private fun getMap(chatMessage: ChatMessage): HashMap<String, Any> {
         val data = HashMap<String, Any>()
         data.put(getString(R.string.message_field), chatMessage.message)
         data.put(getString(R.string.user_field), chatMessage.user)
@@ -279,9 +279,8 @@ class ChatbotActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Array
     }
 
     override fun onLoadFinished(loader: Loader<ArrayList<ChatMessage>>?, data: ArrayList<ChatMessage>?) {
-        for (i in data.orEmpty()) {
-            Log.d("OnLoadFinish", i.message)
-            var chatMessage = i
+        for (chatMessage in data.orEmpty()) {
+            Log.d("OnLoadFinish", chatMessage.message)
             db.collection(getString(R.string.first_col))
                     .document(authUser.id)
                     .collection(getString(R.string.second_col))
