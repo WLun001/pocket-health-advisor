@@ -13,10 +13,10 @@ import kotlinx.android.synthetic.main.custom_list_item.view.*
  * Created by Wei Lun on 1/22/2018.
  */
 class NearbyHospitalAdapter(private var hospitalList: ArrayList<MapsHospital>,
-                            private var listener: OnItemClickListerner)
+                            private var listener: OnItemClickListener)
     : RecyclerView.Adapter<NearbyHospitalAdapter.ViewHolder>() {
 
-    interface OnItemClickListerner {
+    interface OnItemClickListener {
         fun onItemClick(hospital: MapsHospital)
     }
 
@@ -34,7 +34,7 @@ class NearbyHospitalAdapter(private var hospitalList: ArrayList<MapsHospital>,
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        fun bindView(hospital: MapsHospital, listener: OnItemClickListerner) {
+        fun bindView(hospital: MapsHospital, listener: OnItemClickListener) {
             val hospitalStatus = itemView.tv_1 as TextView
 
             itemView.tv_title.text = hospital.name

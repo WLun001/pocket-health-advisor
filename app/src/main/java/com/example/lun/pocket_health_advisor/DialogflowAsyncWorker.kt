@@ -51,24 +51,20 @@ class DialogflowAsyncWorker(
 
             if (connection.responseCode == 200) {
                 inputStream = connection.inputStream
-                var jsonResponse = readInput(inputStream)
+                val jsonResponse = readInput(inputStream)
                 Log.d("Json response", jsonResponse)
                 chatMessage = extractFromJson(jsonResponse)
 
                 Log.d("loadInBackground", chatMessage.toString())
             }
-
             if (inputStream != null) {
                 inputStream.close()
             }
-
         } catch (e: Exception) {
 //            Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
             Log.e("loader error", e.message)
         }
         return chatMessage
-
-
     }
 
     private fun httpRequestBuilder(url: String, request: Int): HttpsURLConnection {
@@ -96,9 +92,9 @@ class DialogflowAsyncWorker(
         return connection
     }
 
-    fun readInput(inputStream: InputStream): String {
-        var builder = StringBuilder()
-        var reader = BufferedReader(InputStreamReader(inputStream, "UTF-8"))
+    private fun readInput(inputStream: InputStream): String {
+        val builder = StringBuilder()
+        val reader = BufferedReader(InputStreamReader(inputStream, "UTF-8"))
         var json = reader.readLine()
         while (json != null) {
             builder.append(json)
@@ -107,15 +103,15 @@ class DialogflowAsyncWorker(
         return builder.toString()
     }
 
-    fun extractFromJson(json: String): ArrayList<ChatMessage> {
-        var chatMessage: ArrayList<ChatMessage> = ArrayList()
-        var root = JSONObject(json)
-        var result = root.getJSONObject("result")
-        var fulfillment = result.getJSONObject("fulfillment")
-        var messages = fulfillment.getJSONArray("messages")
+    private fun extractFromJson(json: String): ArrayList<ChatMessage> {
+        val chatMessage: ArrayList<ChatMessage> = ArrayList()
+        val root = JSONObject(json)
+        val result = root.getJSONObject("result")
+        val fulfillment = result.getJSONObject("fulfillment")
+        val messages = fulfillment.getJSONArray("messages")
 
         for (i in 0 until messages.length()) {
-            var message = messages.getJSONObject(i)
+            val message = messages.getJSONObject(i)
             chatMessage.add(ChatMessage(message.getString("speech"), BOT))
         }
         return chatMessage

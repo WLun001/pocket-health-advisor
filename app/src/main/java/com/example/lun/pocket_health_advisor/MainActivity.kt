@@ -35,6 +35,7 @@ class MainActivity : AppCompatActivity() {
         private const val APP_KEY = "cc277e12-542f-4612-97d7-f67e7b2f85e5"
         private const val APP_SECRET = "XIcRHW3cm06Nba+n6UMmuQ=="
         private const val ENVIRONMENT = "sandbox.sinch.com"
+        private const val RC_SIGN_IN = 1
     }
 
     lateinit var auth: FirebaseAuth
@@ -42,8 +43,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var firebaseUser: FirebaseUser
     private lateinit var authUser: AuthUser
     lateinit var hospitalUser: HospitalUser
-
-    private val RC_SIGN_IN = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,9 +57,9 @@ class MainActivity : AppCompatActivity() {
                     .setAction("Action", null).show()
         }
 
-        val GridLayout = mainGrid as GridLayout
+        val gridLayout = mainGrid as GridLayout
 
-        setSingleEvent(gridLayout = GridLayout)
+        setSingleEvent(gridLayout = gridLayout)
 
         authListener = FirebaseAuth.AuthStateListener { auth ->
 

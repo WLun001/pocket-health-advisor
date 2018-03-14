@@ -12,7 +12,7 @@ import android.util.Log
 import android.widget.LinearLayout
 import com.example.lun.pocket_health_advisor.DataClassWrapper.MapsHospital
 import com.example.lun.pocket_health_advisor.DataClassWrapper.MapsHospitalDetails
-import com.example.lun.pocket_health_advisor.NearbyHospitalAdapter.OnItemClickListerner
+import com.example.lun.pocket_health_advisor.NearbyHospitalAdapter.OnItemClickListener
 import kotlinx.android.synthetic.main.activity_nearby_hospital.*
 import kotlinx.android.synthetic.main.content_nearby_hospital.*
 import org.jetbrains.anko.*
@@ -25,10 +25,10 @@ class NearbyHospitalActivity : AppCompatActivity() {
         const val googleApiKey = "AIzaSyAg3W8vlilMkGYNSpdlceSxCzZtGUlKrx8"
         const val searchPlaceURL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?"
         const val distanceURL = "https://maps.googleapis.com/maps/api/distancematrix/json?"
-        val detailsPlaceURL = "https://maps.googleapis.com/maps/api/place/details/json?"
+        const val detailsPlaceURL = "https://maps.googleapis.com/maps/api/place/details/json?"
     }
 
-    private var listener = object : OnItemClickListerner {
+    private var listener = object : OnItemClickListener {
         override fun onItemClick(hospital: MapsHospital) {
             getHospitalDetails(hospital)
         }
