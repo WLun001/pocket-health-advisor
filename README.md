@@ -1,4 +1,5 @@
 # Pocket Health Advisor
+[![codebeat badge](https://codebeat.co/badges/3de5114a-4aff-42e5-a8a2-9b45078eb9be)](https://codebeat.co/projects/github-com-wlun001-pocket-health-advisor-master)
 
 ## Technologies Used
    * **Services**
