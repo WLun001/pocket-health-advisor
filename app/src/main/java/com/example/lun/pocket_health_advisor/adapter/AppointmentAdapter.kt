@@ -47,8 +47,8 @@ class AppointmentAdapter(private val context: Context, private val appointmentLi
     }
 
     private class ViewHolder(view: View?) {
-        val hospitalName: TextView = view?.findViewById<TextView>(R.id.tv_title) as TextView
-        val doctorName: TextView = view?.findViewById<TextView>(R.id.tv_1) as TextView
-        val time: TextView = view?.findViewById<TextView>(R.id.tv_2) as TextView
+        val hospitalName: TextView = view?.findViewById(R.id.tv_title) as TextView
+        val doctorName: TextView = view?.findViewById(R.id.tv_1) as TextView
+        val time: TextView = view?.findViewById(R.id.tv_2) as TextView
     }
 }

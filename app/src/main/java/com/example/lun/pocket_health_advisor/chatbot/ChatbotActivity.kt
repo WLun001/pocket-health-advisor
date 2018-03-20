@@ -44,8 +44,8 @@ import java.io.Serializable
 // TODO: solve the chat wont get response when in background
 class ChatbotActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<ArrayList<ChatMessage>> {
     companion object {
-        val DIALOGFLOW_URL = "https://api.dialogflow.com/v1/query?v=20170712"
-        val LOADER_ID = 1
+        const val DIALOGFLOW_URL = "https://api.dialogflow.com/v1/query?v=20170712"
+        const val LOADER_ID = 1
     }
 
     private var requestMethod = GET
@@ -225,9 +225,9 @@ class ChatbotActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Array
 
     private fun getMap(chatMessage: ChatMessage): HashMap<String, Any> {
         val data = HashMap<String, Any>()
-        data.put(getString(R.string.message_field), chatMessage.message)
-        data.put(getString(R.string.user_field), chatMessage.user)
-        data.put(getString(R.string.timestamp), FieldValue.serverTimestamp())
+        data[getString(R.string.message_field)] = chatMessage.message
+        data[getString(R.string.user_field)] = chatMessage.user
+        data[getString(R.string.timestamp)] = FieldValue.serverTimestamp()
         return data
     }
 
@@ -255,7 +255,7 @@ class ChatbotActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Array
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        var id = item?.itemId
+        val id = item?.itemId
 
         when (id) {
             medic_report -> {

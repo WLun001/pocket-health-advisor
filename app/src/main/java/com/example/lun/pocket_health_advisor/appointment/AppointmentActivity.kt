@@ -79,12 +79,12 @@ class AppointmentActivity : AppCompatActivity() {
         override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
             val view: View
 
-            if (convertView == null) {
+            view = if (convertView == null) {
                 // Inflate the drop down using the helper's LayoutInflater
                 val inflater = mDropDownHelper.dropDownViewInflater
-                view = inflater.inflate(R.layout.list_item, parent, false)
+                inflater.inflate(R.layout.list_item, parent, false)
             } else {
-                view = convertView
+                convertView
             }
 
             view.text1.text = getItem(position)

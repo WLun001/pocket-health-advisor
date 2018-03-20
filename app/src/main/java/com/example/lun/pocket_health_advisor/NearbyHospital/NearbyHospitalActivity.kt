@@ -114,7 +114,7 @@ class NearbyHospitalActivity : AppCompatActivity() {
             val location = Uri.encode("3.041803,101.793075")
             val uriBuilder = Uri.parse(distanceURL)
                     .buildUpon()
-                    .encodedQuery("""origins=$location&destinations=place_id:${mapsHospital.placeId}&key=${googleApiKey}
+                    .encodedQuery("""origins=$location&destinations=place_id:${mapsHospital.placeId}&key=$googleApiKey
                     """.trimIndent())
 
 

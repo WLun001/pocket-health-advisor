@@ -23,8 +23,8 @@ class DialogflowAsyncWorker(
     : AsyncTaskLoader<ArrayList<ChatMessage>>(context) {
 
     companion object {
-        val BOT = "bot"
-        val ACCESS_TOKEN = ("47836bc8e2494eabb7ea945d1b227d29").toByteArray(Charset.defaultCharset())
+        const val BOT = "bot"
+        private val ACCESS_TOKEN = ("47836bc8e2494eabb7ea945d1b227d29").toByteArray(Charset.defaultCharset())
         var encodedAuth = "Bearer " + Base64.encode(ACCESS_TOKEN, Base64.DEFAULT)
         const val GET = 0
         const val POST = 1
