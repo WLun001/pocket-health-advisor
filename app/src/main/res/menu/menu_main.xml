@@ -1,0 +1,22 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.lun.pocket_health_advisor.MainActivity">
+    <item
+        android:id="@+id/auth_user"
+        android:icon="@drawable/ic_account_circle_white_24dp"
+        android:orderInCategory="100"
+        android:title="User"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/sign_out"
+        android:title="Sign Out"
+        app:showAsAction="collapseActionView" />
+
+    <item
+        android:id="@+id/nearby_hospital"
+        android:title="Nearby Hospital"
+        app:showAsAction="collapseActionView"/>
+
+</menu>

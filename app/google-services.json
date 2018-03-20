@@ -1,0 +1,75 @@
+{
+  "project_info": {
+    "project_number": "949856295335",
+    "firebase_url": "https://pocket-health-advisor.firebaseio.com",
+    "project_id": "pocket-health-advisor",
+    "storage_bucket": "pocket-health-advisor.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:949856295335:android:520aea68e756e769",
+        "android_client_info": {
+          "package_name": "com.example.lun.pocket_health_advisor"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "949856295335-6jci5g1pvc7fs1vahlo6k2jvtfahttkv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.lun.pocket_health_advisor",
+            "certificate_hash": "6cc454ce8eb69d84e7c887aa97bff1b8312ce629"
+          }
+        },
+        {
+          "client_id": "949856295335-s0mjch2gmap7k7hngnl60rrsr6i7fu1k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.lun.pocket_health_advisor",
+            "certificate_hash": "6fb7cbafde135a575eabb556a1fbd51d0128d935"
+          }
+        },
+        {
+          "client_id": "949856295335-hje8o6mv1oosk8bvcqbn3ioiqnbgpiu7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.lun.pocket_health_advisor",
+            "certificate_hash": "e6d50b98ad319cc928ab3ee58d79983bd62ce609"
+          }
+        },
+        {
+          "client_id": "949856295335-4r3oar59rtc4ebd2pevc7057r46hi0mc.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "949856295335-efr6vevdjsi02cbncr7fejspgh2conl3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCRNdvIWp6Lq6Gb--o5iGqfyvhBp9pCs2Y"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "949856295335-4r3oar59rtc4ebd2pevc7057r46hi0mc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
