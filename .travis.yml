@@ -1,0 +1,46 @@
+language: android
+jdk: oraclejdk8
+# ue the Travis container-based infrastructure
+sudo: false
+android:
+  components:
+    - tools
+    - platform-tools
+    - tools #not a typo. Needed for SDK update
+    - build-tools-25.0.3
+
+    # The SDK version used to compile your project
+    - android-25
+
+    # Additional components
+    - extra-android-support
+    - extra-google-google_play_services
+    - extra-google-m2repository
+    - extra-android-m2repository
+    - addon-google_apis-google-24
+
+    # Specify at least one system image,
+    # if you need to run emulator(s) during your tests
+    #- sys-img-armeabi-v7a-android-23
+
+env:
+  global:
+    - ADB_INSTALL_TIMEOUT=8
+
+# Emulator Management: Create, Start and Wait
+# Re-enable this when we figure out how to reliably build on Travis
+#before_script:
+ # - echo no | android create avd --force -n test -t android-22 --abi armeabi-v7a
+ # - emulator -avd test -no-audio -no-window &
+ # - android-wait-for-emulator
+ # - adb shell input keyevent 82 &
+ # - bash android-wait-for-emulator.sh
+
+before_install:
+  - chmod +x gradlew
+
+before_script:
+  - bash fixbug.sh
+
+script:
+   - ./gradlew build
