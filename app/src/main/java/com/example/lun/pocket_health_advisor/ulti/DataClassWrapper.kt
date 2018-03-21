@@ -72,7 +72,8 @@ class DataClassWrapper {
             var initialSymptoms: ArrayList<InitialSyndrome>,
             var possibleConditions: ArrayList<PossibleCondition>,
             var questions: ArrayList<Question>,
-            var timestamp: String
+            var timestamp: String,
+            val reportId: String = ""
     ) : Serializable {
         // TODO: find better way to implement this
         fun generateMap(): HashMap<*, *> {

@@ -1,5 +1,7 @@
 package com.example.lun.pocket_health_advisor.medicReport
 
+import android.database.DataSetObservable
+import android.database.DataSetObserver
 import android.os.Bundle
 import android.support.v4.app.ListFragment
 import android.view.Menu
@@ -24,26 +26,29 @@ import org.jetbrains.anko.yesButton
 class MedicReportHistoryFragment : ListFragment() {
     private var medicReportList = ArrayList<MedicReport>()
     private var displayName: String? = ""
+    private lateinit var db: FirebaseFirestore
+    private var authUid: String? = ""
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setHasOptionsMenu(true)
 
+         db = FirebaseFirestore.getInstance()
         val listener = AdapterView.OnItemLongClickListener { p0, p1, position, p3 ->
-            val options = listOf("Send report to hospital")
+            val options = listOf("Send report to hospital", "Delete report")
             selector("Choose an option to perform", options, { _, i ->
                 when (i) {
                     0 -> sendReport(position)
+                    1-> deleteReport(position)
                 }
             })
             false
         }
         listView.onItemLongClickListener = listener
         val auth = FirebaseAuth.getInstance()
-        val authUid = auth.currentUser?.uid
+        authUid = auth.currentUser?.uid
         displayName = auth.currentUser?.displayName
-        getReportFromDb(authUid)
-
+        getReportFromDb()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
@@ -69,7 +74,7 @@ class MedicReportHistoryFragment : ListFragment() {
                         sendReport(i)
                     })
                 } else alert("No report available yet"){
-                    yesButton {  }
+                    yesButton { dialog -> dialog.dismiss()  }
                 }.show()
             }
         }
@@ -80,12 +85,32 @@ class MedicReportHistoryFragment : ListFragment() {
         toast("Clicked item " + position.toString())
     }
 
+
+    private fun deleteReport(position: Int){
+        authUid?.let {
+            db.collection(getString(R.string.first_col))
+                    .document(authUid.toString())
+                    .collection("medic_report")
+                    .document((listAdapter.getItem(position) as MedicReport).reportId)
+                    .delete()
+                    .addOnCompleteListener {
+                        getReportFromDb()
+                        alert("Successfully deleted report, revisit again see the changes") {
+                            yesButton { dialog -> dialog.dismiss() }
+                        }.show()
+                    }
+                    .addOnFailureListener {
+                        alert(it.message.toString()) {
+                            yesButton { dialog -> dialog.dismiss() }
+                        }.show()
+                    }
+        }
+    }
     // TODO: match with ic instead of name
     private fun sendReport(choice: Int) {
         val progress = indeterminateProgressDialog("sending report...")
         progress.show()
-        val db = FirebaseFirestore.getInstance()
-                .collection("patients")
+                db.collection("patients")
                 .whereEqualTo("name", displayName)
                 .get()
                 .addOnCompleteListener { task ->
@@ -117,11 +142,10 @@ class MedicReportHistoryFragment : ListFragment() {
                 }
     }
 
-    private fun getReportFromDb(uid: String?) {
-        uid?.let {
-            val db = FirebaseFirestore.getInstance()
-                    .collection(getString(R.string.first_col))
-                    .document(uid)
+    private fun getReportFromDb() {
+        authUid?.let {
+                   db.collection(getString(R.string.first_col))
+                    .document(authUid.toString())
                     .collection("medic_report")
                     .orderBy("timestamp")
                     .get()
@@ -134,7 +158,8 @@ class MedicReportHistoryFragment : ListFragment() {
                                                 readInitialSyndrome(i),
                                                 readPossibleConditions(i),
                                                 readQuestions(i),
-                                                i.get("timestamp").toString()
+                                                i.get("timestamp").toString(),
+                                                i.id
                                         )
                                 )
                             }
