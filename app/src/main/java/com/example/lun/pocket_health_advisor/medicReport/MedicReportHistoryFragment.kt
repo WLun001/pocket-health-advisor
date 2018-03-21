@@ -55,18 +55,22 @@ class MedicReportHistoryFragment : ListFragment() {
         val id = item?.itemId
         when (id) {
             R.id.send_to_hospital -> {
-                val progress = progressDialog("Please wait", "Getting report")
-                progress.show()
-                progress.max = listAdapter.count
-                val reportList = ArrayList<String>()
-                for (i in 0 until listAdapter.count) {
-                    reportList.add((listAdapter.getItem(i) as MedicReport).diagnoseCondition.commonName)
-                    progress.incrementProgressBy(1)
-                }
-                progress.dismiss()
-                selector("Please choose one report to send", reportList, { _, i ->
-                    sendReport(i)
-                })
+                if (listAdapter.count > 0) {
+                    val progress = progressDialog("Please wait", "Getting report")
+                    progress.show()
+                    progress.max = listAdapter.count
+                    val reportList = ArrayList<String>()
+                    for (i in 0 until listAdapter.count) {
+                        reportList.add((listAdapter.getItem(i) as MedicReport).diagnoseCondition.commonName)
+                        progress.incrementProgressBy(1)
+                    }
+                    progress.dismiss()
+                    selector("Please choose one report to send", reportList, { _, i ->
+                        sendReport(i)
+                    })
+                } else alert("No report available yet"){
+                    yesButton {  }
+                }.show()
             }
         }
         return super.onOptionsItemSelected(item)
@@ -109,9 +113,7 @@ class MedicReportHistoryFragment : ListFragment() {
                                         toast("error sending report".plus(task.message))
                                     }
                         }
-
                     }
-
                 }
     }
 
