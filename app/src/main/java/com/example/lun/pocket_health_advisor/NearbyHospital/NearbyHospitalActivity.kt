@@ -5,16 +5,17 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.Uri
 import android.os.Bundle
-import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
+import android.widget.EditText
 import android.widget.LinearLayout
 import com.example.lun.pocket_health_advisor.ulti.DataClassWrapper.MapsHospital
 import com.example.lun.pocket_health_advisor.ulti.DataClassWrapper.MapsHospitalDetails
 import com.example.lun.pocket_health_advisor.R
 import com.example.lun.pocket_health_advisor.adapter.NearbyHospitalAdapter
 import com.example.lun.pocket_health_advisor.adapter.NearbyHospitalAdapter.OnItemClickListener
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_nearby_hospital.*
 import kotlinx.android.synthetic.main.content_nearby_hospital.*
 import org.jetbrains.anko.*
@@ -166,22 +167,82 @@ class NearbyHospitalActivity : AppCompatActivity() {
             val hospitalDetails = MapsHospitalDetails(name, placeId, phoneNo, address, "", 0.0, "", url)
 
             uiThread {
-                AlertDialog.Builder(this@NearbyHospitalActivity)
-                        .setTitle("Details")
-                        .setMessage(
-                                """
+                alert("""
                                 Name : ${hospitalDetails.name}
                                 Phone : ${hospitalDetails.phoneNo}
                                 Address : ${hospitalDetails.address}
                                 Rating : ${hospitalDetails.rating}
                                 Website : ${hospitalDetails.website}
-                                """
-                        )
-                        .setPositiveButton(R.string.button_ok, { _, i ->
-                        })
-                        .create()
-                        .show()
+                                """){
+                    positiveButton(R.string.make_appointment){ dialog ->
+                        showMakeAppointmentDialog(hospitalDetails)
+                        dialog.dismiss()
+                    }
+                    noButton {  }
+                }.show()
+//                AlertDialog.Builder(this@NearbyHospitalActivity)
+//                        .setTitle("Details")
+//                        .setMessage(
+//                                """
+//                                Name : ${hospitalDetails.name}
+//                                Phone : ${hospitalDetails.phoneNo}
+//                                Address : ${hospitalDetails.address}
+//                                Rating : ${hospitalDetails.rating}
+//                                Website : ${hospitalDetails.website}
+//                                """
+//                        )
+//                        .setPositiveButton(R.string.make_appointment, { _, i ->
+//                            showMakeAppointmentDialog()
+//                        })
+//                        .setNegativeButton(R.string.button_cancel,{_,_ ->} )
+//                        .create()
+//                        .show()
             }
         }
+    }
+
+    private fun showMakeAppointmentDialog(hospitalDetails: MapsHospitalDetails){
+        val dialog = progressDialog(message = "Please wait a bit…", title = "Fetching data")
+        doAsync {
+            var firestore = FirebaseFirestore.getInstance()
+                    .collection("doctors")
+                    .whereEqualTo("hospital_id", hospitalDetails)
+        }
+        alert {
+            title = "Make Appointment"
+            var doctorSelector: EditText?
+            customView {
+                verticalLayout {
+                    padding = dip(30)
+                    textView {
+                        text = hospitalDetails.name
+                        textSize = 24f
+                    }
+                    doctorSelector = editText {
+                        hint = "Doctor"
+                        isFocusable = false
+                        isClickable = true
+                        textSize = 24f
+                    }
+                    doctorSelector!!.setOnClickListener{
+                        val countries = listOf("Russia", "USA", "Japan", "Australia")
+                        selector("Where are you from?", countries, { dialogInterface, i ->
+                                doctorSelector!!.setText(countries[i])
+                        })
+                    }
+                    editText {
+                        hint = "Notes"
+                        maxLines = 3
+                        textSize = 24f
+                    }
+                    button("Submit") {
+                        textSize = 26f
+                    }
+                }
+
+
+            }
+            yesButton {  }
+        }.show()
     }
 }

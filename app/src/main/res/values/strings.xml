@@ -27,6 +27,7 @@
     <string name="hospital_closed">Closed</string>
     <string name="hospital_unknown">Unknown</string>
     <string name="title_activity_medic_report">MedicReportActivity</string>
+    <string name="make_appointment">Make Appointment</string>
 
     <string name="report_title">Diagnose Reports</string>
     <string name="tab_text_1">Reports</string>
