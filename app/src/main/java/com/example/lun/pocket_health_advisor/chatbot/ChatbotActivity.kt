@@ -143,7 +143,7 @@ class ChatbotActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Array
                 .collection(getString(R.string.first_col))
                 .document(authUser.id)
                 .collection(getString(R.string.second_col))
-                .limit(100)
+                .limit(500)
                 .orderBy(getString(R.string.timestamp))
         // TODO: make user to load previous message
 
