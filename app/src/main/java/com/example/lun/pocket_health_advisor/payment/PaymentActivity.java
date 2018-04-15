@@ -82,6 +82,7 @@ public class PaymentActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
 
         progressDialog = new ProgressDialog(this);
+        progressDialog.setCancelable(false);
         progressDialog.setTitle("Waiting for amount");
         progressDialog.setMessage("Please wait for doctor to key in amount, do not close the app");
         progressDialog.setIndeterminate(true);
