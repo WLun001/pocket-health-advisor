@@ -178,58 +178,12 @@ class MapsHospitalsFragment : Fragment() {
                                 Rating : ${hospitalDetails.rating}
                                 Website : ${hospitalDetails.website}
                                 """){
-                    positiveButton(R.string.make_appointment){ dialog ->
-                        showMakeAppointmentDialog(hospitalDetails)
+                    positiveButton(R.string.button_ok){ dialog ->
                         dialog.dismiss()
                     }
                     noButton {  }
                 }.show()
             }
         }
-    }
-
-    private fun showMakeAppointmentDialog(hospitalDetails: DataClassWrapper.MapsHospitalDetails){
-        val dialog = progressDialog(message = "Please wait a bit…", title = "Fetching data")
-//        doAsync {
-//            var firestore = FirebaseFirestore.getInstance()
-//                    .collection("doctors")
-//                    .whereEqualTo("hospital_id", hospitalDetails)
-//        }
-        alert {
-            title = "Make Appointment"
-            var doctorSelector: EditText?
-            customView {
-                verticalLayout {
-                    padding = dip(30)
-                    textView {
-                        text = hospitalDetails.name
-                        textSize = 24f
-                    }
-                    doctorSelector = editText {
-                        hint = "Doctor"
-                        isFocusable = false
-                        isClickable = true
-                        textSize = 24f
-                    }
-                    doctorSelector!!.setOnClickListener{
-                        val countries = listOf("Russia", "USA", "Japan", "Australia")
-                        selector("Where are you from?", countries, { dialogInterface, i ->
-                            doctorSelector!!.setText(countries[i])
-                        })
-                    }
-                    editText {
-                        hint = "Notes"
-                        maxLines = 3
-                        textSize = 24f
-                    }
-                    button("Submit") {
-                        textSize = 26f
-                    }
-                }
-
-
-            }
-            yesButton {  }
-        }.show()
     }
 }
