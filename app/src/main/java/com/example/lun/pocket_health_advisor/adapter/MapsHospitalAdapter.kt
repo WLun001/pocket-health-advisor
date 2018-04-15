@@ -13,9 +13,9 @@ import kotlinx.android.synthetic.main.custom_list_item.view.*
 /**
  * Created by Wei Lun on 1/22/2018.
  */
-class HospitalAdapter(private var hospitalList: ArrayList<MapsHospital>,
-                      private var listener: OnItemClickListener)
-    : RecyclerView.Adapter<HospitalAdapter.ViewHolder>() {
+class MapsHospitalAdapter(private var hospitalList: ArrayList<MapsHospital>,
+                          private var listener: OnItemClickListener)
+    : RecyclerView.Adapter<MapsHospitalAdapter.ViewHolder>() {
 
     interface OnItemClickListener {
         fun onItemClick(hospital: MapsHospital)

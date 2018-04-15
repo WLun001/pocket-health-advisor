@@ -14,7 +14,7 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.LinearLayout
 import com.example.lun.pocket_health_advisor.R
-import com.example.lun.pocket_health_advisor.adapter.HospitalAdapter
+import com.example.lun.pocket_health_advisor.adapter.MapsHospitalAdapter
 import com.example.lun.pocket_health_advisor.ulti.DataClassWrapper
 import kotlinx.android.synthetic.main.fragment_hospital.*
 import org.jetbrains.anko.*
@@ -37,14 +37,14 @@ class MapsHospitalsFragment : Fragment() {
         const val detailsPlaceURL = "https://maps.googleapis.com/maps/api/place/details/json?"
     }
 
-    private var listener = object : HospitalAdapter.OnItemClickListener {
+    private var listener = object : MapsHospitalAdapter.OnItemClickListener {
         override fun onItemClick(hospital: DataClassWrapper.MapsHospital) {
             getHospitalDetails(hospital)
         }
 
     }
     private var hospitals = ArrayList<DataClassWrapper.MapsHospital>()
-    private var adapter = HospitalAdapter(hospitals, listener)
+    private var adapter = MapsHospitalAdapter(hospitals, listener)
     private lateinit var progress: ProgressDialog
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {

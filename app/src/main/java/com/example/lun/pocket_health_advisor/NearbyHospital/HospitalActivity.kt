@@ -75,14 +75,14 @@ class HospitalActivity : AppCompatActivity() {
         override fun getItem(position: Int): Fragment {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            return if (position == 1)
+            return if (position == 0)
                 MapsHospitalsFragment()
             else RegisteredHospitalFragment()
         }
 
         override fun getCount(): Int {
             // Show 3 total pages.
-            return 1
+            return 2
         }
     }
 
