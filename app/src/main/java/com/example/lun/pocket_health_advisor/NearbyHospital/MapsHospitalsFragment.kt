@@ -57,7 +57,6 @@ class MapsHospitalsFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        activity.title = "Hospital from Google Maps"
         progress = progressDialog("fetching hospitals")
 
         val linearLayout = LinearLayoutManager(context, LinearLayout.VERTICAL, false)
@@ -79,12 +78,12 @@ class MapsHospitalsFragment : Fragment() {
             progress.show()
             doAsync {
                 val location = Uri.encode("3.041803,101.793075")
-                val uriBuilder = Uri.parse(NearbyHospitalActivity.searchPlaceURL)
+                val uriBuilder = Uri.parse(searchPlaceURL)
                         .buildUpon()
                         .encodedQuery("location=$location")
                         .appendQueryParameter("rankby", "distance")
                         .appendQueryParameter("type", "hospital")
-                        .appendQueryParameter("key", NearbyHospitalActivity.googleApiKey)
+                        .appendQueryParameter("key", googleApiKey)
                 Log.d("Nearby", uriBuilder.toString())
 
                 val result = URL(uriBuilder.toString()).readText()
@@ -122,9 +121,9 @@ class MapsHospitalsFragment : Fragment() {
 //        progress.show()
         doAsync {
             val location = Uri.encode("3.041803,101.793075")
-            val uriBuilder = Uri.parse(NearbyHospitalActivity.distanceURL)
+            val uriBuilder = Uri.parse(distanceURL)
                     .buildUpon()
-                    .encodedQuery("""origins=$location&destinations=place_id:${mapsHospital.placeId}&key=${NearbyHospitalActivity.googleApiKey}
+                    .encodedQuery("""origins=$location&destinations=place_id:${mapsHospital.placeId}&key=$googleApiKey
                     """.trimIndent())
 
 
@@ -155,10 +154,10 @@ class MapsHospitalsFragment : Fragment() {
 
     private fun getHospitalDetails(hospital: DataClassWrapper.MapsHospital) {
         doAsync {
-            val uriBuilder = Uri.parse(NearbyHospitalActivity.detailsPlaceURL)
+            val uriBuilder = Uri.parse(detailsPlaceURL)
                     .buildUpon()
                     .appendQueryParameter("placeid", hospital.placeId)
-                    .appendQueryParameter("key", NearbyHospitalActivity.googleApiKey)
+                    .appendQueryParameter("key", googleApiKey)
 
             Log.d("URL", uriBuilder.toString())
 

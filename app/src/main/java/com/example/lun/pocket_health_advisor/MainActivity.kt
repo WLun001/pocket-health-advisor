@@ -17,7 +17,6 @@ import android.widget.Toast
 import com.example.lun.pocket_health_advisor.NearbyHospital.HospitalActivity
 import com.example.lun.pocket_health_advisor.ulti.DataClassWrapper.AuthUser
 import com.example.lun.pocket_health_advisor.ulti.DataClassWrapper.HospitalUser
-import com.example.lun.pocket_health_advisor.NearbyHospital.NearbyHospitalActivity
 import com.example.lun.pocket_health_advisor.R.id.*
 import com.example.lun.pocket_health_advisor.appointment.AppointmentActivity
 import com.example.lun.pocket_health_advisor.chatbot.ChatbotActivity
