@@ -80,6 +80,15 @@
             android:name=".appointment.AppointmentActivity"
             android:label="@string/title_activity_appointment"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".NearbyHospital.HospitalActivity"
+            android:label="@string/title_activity_hospital"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.lun.pocket_health_advisor.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

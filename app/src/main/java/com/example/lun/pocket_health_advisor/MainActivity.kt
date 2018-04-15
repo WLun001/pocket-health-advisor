@@ -14,6 +14,7 @@ import android.view.View
 import android.widget.EditText
 import android.widget.GridLayout
 import android.widget.Toast
+import com.example.lun.pocket_health_advisor.NearbyHospital.HospitalActivity
 import com.example.lun.pocket_health_advisor.ulti.DataClassWrapper.AuthUser
 import com.example.lun.pocket_health_advisor.ulti.DataClassWrapper.HospitalUser
 import com.example.lun.pocket_health_advisor.NearbyHospital.NearbyHospitalActivity
@@ -129,7 +130,7 @@ class MainActivity : AppCompatActivity() {
                     }
 
                     1 -> {
-                        startActivity(Intent(applicationContext, NearbyHospitalActivity::class.java))
+                        startActivity(Intent(applicationContext, HospitalActivity::class.java))
                     }
 
                     3 -> {
