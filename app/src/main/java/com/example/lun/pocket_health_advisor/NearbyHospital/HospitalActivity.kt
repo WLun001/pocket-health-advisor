@@ -6,17 +6,12 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
-import android.support.v4.view.ViewPager
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
 
 import com.example.lun.pocket_health_advisor.R
 import kotlinx.android.synthetic.main.activity_hospital.*
-import kotlinx.android.synthetic.main.fragment_hospital.view.*
 
 class HospitalActivity : AppCompatActivity() {
 
@@ -80,7 +75,9 @@ class HospitalActivity : AppCompatActivity() {
         override fun getItem(position: Int): Fragment {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            return MapsHospitalsFragment()
+            return if (position == 1)
+                MapsHospitalsFragment()
+            else RegisteredHospitalFragment()
         }
 
         override fun getCount(): Int {

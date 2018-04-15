@@ -14,7 +14,6 @@ import org.jetbrains.anko.support.v4.toast
 class ComingAppointmentFragment : ListFragment() {
 
     private lateinit var authUser: AuthUser
-    private lateinit var hospitalUser: HospitalUser
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)

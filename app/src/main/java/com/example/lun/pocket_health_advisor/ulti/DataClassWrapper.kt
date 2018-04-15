@@ -16,12 +16,13 @@ class DataClassWrapper {
     data class ChatMessage(var message: String = "", var user: String = "")
 
     data class AuthUser(var id: String, var name: String = "") : Serializable
-    data class HospitalUser(
-            var ic: String,
+    data class RegisteredHospital(
             var id: String,
             var name: String,
-            var hospitalId: String,
-            var age: String
+            var email: String,
+            var contactNo: String,
+            var address: String,
+            var consultationFee: String
     )
 
     data class Appointment(

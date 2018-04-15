@@ -1,6 +1,5 @@
 package com.example.lun.pocket_health_advisor.NearbyHospital
 
-import android.app.ListFragment
 import android.app.ProgressDialog
 import android.content.Context
 import android.net.ConnectivityManager
@@ -15,11 +14,8 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.LinearLayout
 import com.example.lun.pocket_health_advisor.R
-import com.example.lun.pocket_health_advisor.R.layout.fragment_hospital
-import com.example.lun.pocket_health_advisor.adapter.NearbyHospitalAdapter
+import com.example.lun.pocket_health_advisor.adapter.HospitalAdapter
 import com.example.lun.pocket_health_advisor.ulti.DataClassWrapper
-import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.android.synthetic.main.content_nearby_hospital.*
 import kotlinx.android.synthetic.main.fragment_hospital.*
 import org.jetbrains.anko.*
 import org.jetbrains.anko.support.v4.alert
@@ -41,14 +37,14 @@ class MapsHospitalsFragment : Fragment() {
         const val detailsPlaceURL = "https://maps.googleapis.com/maps/api/place/details/json?"
     }
 
-    private var listener = object : NearbyHospitalAdapter.OnItemClickListener {
+    private var listener = object : HospitalAdapter.OnItemClickListener {
         override fun onItemClick(hospital: DataClassWrapper.MapsHospital) {
             getHospitalDetails(hospital)
         }
 
     }
     private var hospitals = ArrayList<DataClassWrapper.MapsHospital>()
-    private var adapter = NearbyHospitalAdapter(hospitals, listener)
+    private var adapter = HospitalAdapter(hospitals, listener)
     private lateinit var progress: ProgressDialog
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -188,23 +184,6 @@ class MapsHospitalsFragment : Fragment() {
                     }
                     noButton {  }
                 }.show()
-//                AlertDialog.Builder(this@NearbyHospitalActivity)
-//                        .setTitle("Details")
-//                        .setMessage(
-//                                """
-//                                Name : ${hospitalDetails.name}
-//                                Phone : ${hospitalDetails.phoneNo}
-//                                Address : ${hospitalDetails.address}
-//                                Rating : ${hospitalDetails.rating}
-//                                Website : ${hospitalDetails.website}
-//                                """
-//                        )
-//                        .setPositiveButton(R.string.make_appointment, { _, i ->
-//                            showMakeAppointmentDialog()
-//                        })
-//                        .setNegativeButton(R.string.button_cancel,{_,_ ->} )
-//                        .create()
-//                        .show()
             }
         }
     }

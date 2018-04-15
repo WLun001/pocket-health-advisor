@@ -16,7 +16,6 @@ import android.widget.GridLayout
 import android.widget.Toast
 import com.example.lun.pocket_health_advisor.NearbyHospital.HospitalActivity
 import com.example.lun.pocket_health_advisor.ulti.DataClassWrapper.AuthUser
-import com.example.lun.pocket_health_advisor.ulti.DataClassWrapper.HospitalUser
 import com.example.lun.pocket_health_advisor.R.id.*
 import com.example.lun.pocket_health_advisor.appointment.AppointmentActivity
 import com.example.lun.pocket_health_advisor.chatbot.ChatbotActivity
@@ -47,7 +46,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var authListener: FirebaseAuth.AuthStateListener
     private lateinit var firebaseUser: FirebaseUser
     private lateinit var authUser: AuthUser
-    lateinit var hospitalUser: HospitalUser
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -157,8 +155,6 @@ class MainActivity : AppCompatActivity() {
 
         when (id) {
             sign_out -> AuthUI.getInstance().signOut(this)
-
-            nearby_hospital -> startActivity(Intent(this, NearbyHospitalActivity::class.java))
 
             auth_user -> {
                 var builder = AlertDialog.Builder(this)
