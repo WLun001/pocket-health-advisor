@@ -24,6 +24,10 @@ This repositories is Android app for Pocket Health Advisor
 ​- To develop an mobile application to reduce the waiting time for patients.
 - To develop a web application for hospitals to manage patients' appointments.​
 - To develop a web application for doctors to interact with patients via video calling and read patients' medical report​.
+
+## Application Flow
+![flow](docs/flow.png)
+
 ## Architecture Design
 ![Architecture Design](docs/architecture-diagram.png)
 
