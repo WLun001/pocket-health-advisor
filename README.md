@@ -63,5 +63,6 @@ Nearby Hospitals   | Registered Hospitals      |  Appointments
      * [TypeScript](https://www.typescriptlang.org)
    * **IDE**
      * [Android Studio](https://developer.android.com/studio)
-     * [Visual Studio Code](https://code.visualstudio.com)
      * [Sublime Text](https://www.sublimetext.com) 
+     * [Visual Studio Code](https://code.visualstudio.com)
+
