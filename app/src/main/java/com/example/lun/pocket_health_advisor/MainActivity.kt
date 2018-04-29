@@ -19,6 +19,7 @@ import com.example.lun.pocket_health_advisor.ulti.DataClassWrapper.AuthUser
 import com.example.lun.pocket_health_advisor.R.id.*
 import com.example.lun.pocket_health_advisor.appointment.AppointmentActivity
 import com.example.lun.pocket_health_advisor.chatbot.ChatbotActivity
+import com.example.lun.pocket_health_advisor.medicReport.MedicReportActivity
 import com.example.lun.pocket_health_advisor.payment.PaymentActivity
 import com.example.lun.pocket_health_advisor.videoCall.SinchLoginActivity
 import com.firebase.ui.auth.AuthUI
@@ -28,6 +29,7 @@ import com.google.firebase.auth.UserProfileChangeRequest
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import org.jetbrains.anko.toast
+import java.io.Serializable
 import java.util.*
 
 
@@ -126,8 +128,13 @@ class MainActivity : AppCompatActivity() {
                         startActivity(intent)
                     }
 
-                    1 -> {
-                        startActivity(Intent(applicationContext, HospitalActivity::class.java))
+                    1 -> startActivity(Intent(applicationContext, HospitalActivity::class.java))
+
+                    2 ->{
+                        val intent = Intent(this, MedicReportActivity::class.java)
+                        intent.putExtra(USER_DETAILS, authUser as Serializable)
+                        intent.putExtras(intent)
+                        startActivity(intent)
                     }
 
                     3 -> {

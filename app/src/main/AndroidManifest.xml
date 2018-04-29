@@ -79,6 +79,7 @@
         <activity
             android:name=".appointment.AppointmentActivity"
             android:label="@string/title_activity_appointment"
+            android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".NearbyHospital.HospitalActivity"

@@ -11,17 +11,18 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import android.widget.LinearLayout
 import com.example.lun.pocket_health_advisor.R
 import com.example.lun.pocket_health_advisor.adapter.MapsHospitalAdapter
 import com.example.lun.pocket_health_advisor.ulti.DataClassWrapper
 import kotlinx.android.synthetic.main.fragment_hospital.*
-import org.jetbrains.anko.*
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.noButton
+import org.jetbrains.anko.onComplete
 import org.jetbrains.anko.support.v4.alert
 import org.jetbrains.anko.support.v4.progressDialog
-import org.jetbrains.anko.support.v4.selector
 import org.jetbrains.anko.support.v4.toast
+import org.jetbrains.anko.uiThread
 import org.json.JSONObject
 import java.net.URL
 
@@ -70,47 +71,48 @@ class MapsHospitalsFragment : Fragment() {
         }
     }
 
-        private fun getNearbyHospital() {
-            progress.show()
-            doAsync {
-                val location = Uri.encode("3.041803,101.793075")
-                val uriBuilder = Uri.parse(searchPlaceURL)
-                        .buildUpon()
-                        .encodedQuery("location=$location")
-                        .appendQueryParameter("rankby", "distance")
-                        .appendQueryParameter("type", "hospital")
-                        .appendQueryParameter("key", googleApiKey)
-                Log.d("Nearby", uriBuilder.toString())
+    private fun getNearbyHospital() {
+        progress.show()
+        doAsync {
+            val location = Uri.encode("3.041803,101.793075")
+            val uriBuilder = Uri.parse(searchPlaceURL)
+                    .buildUpon()
+                    .encodedQuery("location=$location")
+                    .appendQueryParameter("rankby", "distance")
+                    .appendQueryParameter("type", "hospital")
+                    .appendQueryParameter("key", googleApiKey)
+            Log.d("Nearby", uriBuilder.toString())
 
-                val result = URL(uriBuilder.toString()).readText()
-                val array = JSONObject(result).getJSONArray("results")
-                progress.max = array.length()
-                var status: Boolean?
-                for (i in 0 until array.length()) {
-                    val name = array.getJSONObject(i).getString("name")
-                    val placeId = array.getJSONObject(i).getString("place_id")
-                    Log.d("placeId", placeId)
+            val result = URL(uriBuilder.toString()).readText()
+            val array = JSONObject(result).getJSONArray("results")
+            progress.max = array.length()
+            var status: Boolean?
+            for (i in 0 until array.length()) {
+                val name = array.getJSONObject(i).getString("name")
+                val placeId = array.getJSONObject(i).getString("place_id")
+                Log.d("placeId", placeId)
 
-                    status = if (array.getJSONObject(i).has("opening_hours")) {
-                        array.getJSONObject(i).getJSONObject("opening_hours")
-                                .getBoolean("open_now")
-                    } else null
+                status = if (array.getJSONObject(i).has("opening_hours")) {
+                    array.getJSONObject(i).getJSONObject("opening_hours")
+                            .getBoolean("open_now")
+                } else null
 
-                    val statusDes: String = when (status) {
-                        true -> {
-                            getString(R.string.hospital_open_now)
-                        }
-                        false -> {
-                            getString(R.string.hospital_closed)
-                        }
-                        null -> {
-                            getString(R.string.hospital_unknown)
-                        }
+                val statusDes: String = when (status) {
+                    true -> {
+                        getString(R.string.hospital_open_now)
                     }
-                    getHospitalDistance(DataClassWrapper.MapsHospital(name, statusDes, placeId))
+                    false -> {
+                        getString(R.string.hospital_closed)
+                    }
+                    null -> {
+                        getString(R.string.hospital_unknown)
+                    }
                 }
+                getHospitalDistance(DataClassWrapper.MapsHospital(name, statusDes, placeId))
             }
         }
+    }
+
     private fun getHospitalDistance(mapsHospital: DataClassWrapper.MapsHospital) {
 //        val progress = progressDialog("Calculating distances")
 //        progress.max = tempHospital.size
@@ -177,11 +179,11 @@ class MapsHospitalsFragment : Fragment() {
                                 Address : ${hospitalDetails.address}
                                 Rating : ${hospitalDetails.rating}
                                 Website : ${hospitalDetails.website}
-                                """){
-                    positiveButton(R.string.button_ok){ dialog ->
+                                """) {
+                    positiveButton(R.string.button_ok) { dialog ->
                         dialog.dismiss()
                     }
-                    noButton {  }
+                    noButton { }
                 }.show()
             }
         }

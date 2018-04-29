@@ -25,6 +25,7 @@ class AppointmentActivity : AppCompatActivity() {
 
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         // Setup spinner
         spinner.adapter = MyAdapter(
