@@ -29,7 +29,7 @@ class AppointmentActivity : AppCompatActivity() {
         // Setup spinner
         spinner.adapter = MyAdapter(
                 toolbar.context,
-                arrayOf("Section 1", "Section 2", "Section 3"))
+                arrayOf("Appointment", "Section 2", "Section 3"))
 
         spinner.onItemSelectedListener = object : OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {

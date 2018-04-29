@@ -29,7 +29,7 @@ class RegisteredHospitalAdapter(private val context: Context, private val hospit
         Log.d("adapter", "populating list")
         viewHolder.hospitalName.text = hospitals[position].name.capitalize()
         viewHolder.hospitalNo.text = hospitals[position].contactNo
-        viewHolder.consultationFee.text = hospitals[position].consultationFee
+        viewHolder.consultationFee.text = "RM ".plus(hospitals[position].consultationFee)
 
         return view
     }
