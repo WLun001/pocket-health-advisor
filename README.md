@@ -1,6 +1,29 @@
 # Pocket Health Advisor
 [![codebeat badge](https://codebeat.co/badges/3de5114a-4aff-42e5-a8a2-9b45078eb9be)](https://codebeat.co/projects/github-com-wlun001-pocket-health-advisor-master)
+This repositories is Android app for Pocket Health Advisor
 
+## Related Repositories
+- [Web View Hospital](https://github.com/wanching0730/angular-hospital-2)
+- [Web View Doctor](https://github.com/wanching0730/Doctor-View-Angular)
+- [Cloud Function](https://github.com/WLun001/infermedica-cloud-function)
+- [Braintree Server](https://github.com/WLun001/braintree-server)
+
+# Project Overview
+## Abstract
+- Hectic life and pack scheduling of people​ .
+- Less concern about health issue​. ​
+- Giving up on treatment due to long queue​.
+
+## Problem statement
+- Long waiting time for patients in Malaysian hospital.
+- People not aware about their existing health issues​.
+
+## Objectives
+- To develop an mobile application to get on demand healthcare advises from users' syndromes​.​
+- To develop an mobile application that is able to consult doctor at any place via video calling .
+​- To develop an mobile application to reduce the waiting time for patients.
+- To develop a web application for hospitals to manage patients' appointments.​
+- To develop a web application for doctors to interact with patients via video calling and read patients' medical report​.
 ## Architecture Design
 ![Architecture Design](docs/architecture-diagram.png)
 
