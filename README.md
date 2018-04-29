@@ -8,8 +8,8 @@
 Main           |  ChatBot      |  Medical Report  
 :---------------------------:|:---------------------------:|:---------------------------:
 ![main](docs/main.png) | ![Chatbot](docs/chatbot.png) | ![quote](docs/report.png) 
-          Nearby Hospitals   | Registered Hospitals      |  Appointments 
- ![nearbyHospital](docs/nearbyhospital.png) |![registeredHospital](docs/registerhospitals.png) | ![appointments](docs/appointment.png)  
+Nearby Hospitals   | Registered Hospitals      |  Appointments 
+![nearbyHospital](docs/nearbyhospital.png) |![registeredHospital](docs/registerhospital.png) | ![appointments](docs/appointment.png)  
 
 
 ## Technologies Used
