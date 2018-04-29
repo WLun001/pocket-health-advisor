@@ -1,7 +1,19 @@
 # Pocket Health Advisor
 [![codebeat badge](https://codebeat.co/badges/3de5114a-4aff-42e5-a8a2-9b45078eb9be)](https://codebeat.co/projects/github-com-wlun001-pocket-health-advisor-master)
 
+## Architecture Design
+![Architecture Design](docs/architecture-diagram.png)
+
+## UI Screenshot
+Main           |  ChatBot      |  Medical Report  
+:---------------------------:|:---------------------------:|:---------------------------:
+![main](docs/main.png) | ![Chatbot](docs/chatbot.png) | ![quote](docs/report.png) 
+          Nearby Hospitals   | Registered Hospitals      |  Appointments 
+ ![nearbyHospital](docs/nearbyhospital.png) |![registeredHospital](docs/registerhospitals.png) | ![appointments](docs/appointment.png)  
+
+
 ## Technologies Used
+![overview](docs/technologies.png)
    * **Services**
      * [DialogFlow](https://dialogflow.com)
      * [Firebase Authentication](https://firebase.google.com/docs/auth)
