@@ -54,7 +54,6 @@ Nearby Hospitals   | Registered Hospitals      |  Appointments
    * **Frameworks**
      * [Android](https://developer.android.com/index.html)
      * [Angular](https://angular.io)
-     * [NodeJs](https://nodejs.org/en)
    * **Languages**
      * [Java](https://java.com)
      * [JavaScript](https://www.javascript.com)
@@ -65,4 +64,6 @@ Nearby Hospitals   | Registered Hospitals      |  Appointments
      * [Android Studio](https://developer.android.com/studio)
      * [Sublime Text](https://www.sublimetext.com) 
      * [Visual Studio Code](https://code.visualstudio.com)
+   * **Other**
+     * [NodeJs](https://nodejs.org/en)
 
