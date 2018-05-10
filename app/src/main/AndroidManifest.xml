@@ -90,6 +90,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.lun.pocket_health_advisor.MainActivity" />
         </activity>
+        <activity
+            android:name=".medicReport.MReportDetailsActivity"
+            android:label="@string/title_activity_mreport_details"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

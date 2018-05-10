@@ -92,12 +92,12 @@ class DataClassWrapper {
             val name: String,
             val choice: String,
             var map: HashMap<*, *>
-    )
+    ) : Serializable
 
     data class Question(
             val question: String,
             val symptom: String,
             val userResponse: String,
             var questionList: ArrayList<*>
-    )
+    ) : Serializable
 }
