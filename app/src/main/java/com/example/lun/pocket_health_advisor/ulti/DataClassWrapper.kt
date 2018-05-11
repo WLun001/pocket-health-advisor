@@ -23,7 +23,7 @@ class DataClassWrapper {
             var contactNo: String,
             var address: String,
             var consultationFee: String
-    )
+    ) : Serializable
 
     data class Appointment(
             val doctorName: String,

@@ -1,20 +1,17 @@
 package com.example.lun.pocket_health_advisor.NearbyHospital
 
-import android.app.ProgressDialog
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.ListFragment
 import android.view.View
-import android.widget.EditText
 import android.widget.ListView
 import com.example.lun.pocket_health_advisor.R
 import com.example.lun.pocket_health_advisor.adapter.RegisteredHospitalAdapter
+import com.example.lun.pocket_health_advisor.appointment.RequestAppointmentActivity
 import com.example.lun.pocket_health_advisor.ulti.DataClassWrapper.RegisteredHospital
 import com.google.firebase.firestore.FirebaseFirestore
-import org.jetbrains.anko.*
+import org.jetbrains.anko.noButton
 import org.jetbrains.anko.support.v4.alert
-import org.jetbrains.anko.support.v4.progressDialog
-import org.jetbrains.anko.support.v4.selector
-import org.jetbrains.anko.support.v4.toast
 
 
 /**
@@ -33,13 +30,15 @@ class RegisteredHospitalFragment : ListFragment() {
 
     override fun onListItemClick(l: ListView?, v: View?, position: Int, id: Long) {
         alert("""
-                                Name : ${hospitals[position].name}
-                                Phone : ${hospitals[position].contactNo}
-                                Address : ${hospitals[position].address}
-                                Consultation Fee : ${hospitals[position].consultationFee}
-                                """) {
+                                    Name : ${hospitals[position].name}
+                                    Phone : ${hospitals[position].contactNo}
+                                    Address : ${hospitals[position].address}
+                                    Consultation Fee : ${hospitals[position].consultationFee}
+                                    """) {
             positiveButton(R.string.make_appointment) { dialog ->
-                showMakeAppointmentDialog(position)
+                startActivity(Intent(
+                        activity, RequestAppointmentActivity::class.java)
+                        .putExtra(getString(R.string.intent_hospital), hospitals[position]))
                 dialog.dismiss()
             }
             noButton { }
@@ -70,65 +69,75 @@ class RegisteredHospitalFragment : ListFragment() {
         }
     }
 
-    private fun showMakeAppointmentDialog(position: Int) {
-        var currentDoctor: String
-        val dialog: ProgressDialog = progressDialog(message = "Please wait a bit…", title = "Fetching data")
-        dialog.isIndeterminate = true
-        dialog.show()
-        val doctors = ArrayList<String>()
-        doAsync {
-            firestore.collection("doctors").whereEqualTo("hospital_id", hospitals[position].id)
-                    .get().addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            val result = task.result
-                            result?.let {
-                                if (result.size() > 0) {
-                                    result.forEach { doctors.add(it.getString("name")) }
-                                } else toast("no doctor found")
-                            }
-                        }
-                    }
-            onComplete {
-                dialog.dismiss()
-                uiThread {
-                    alert {
-                        title = "Make Appointment"
-                        var doctorSelector: EditText?
-                        customView {
-                            verticalLayout {
-                                padding = dip(30)
-                                textView {
-                                    text = hospitals[position].name
-                                    textSize = 24f
-                                }
-                                doctorSelector = editText {
-                                    hint = "Doctor"
-                                    isFocusable = false
-                                    isClickable = true
-                                    textSize = 24f
-                                }
-                                doctorSelector!!.setOnClickListener {
-                                    selector("Pick a doctor", doctors, { dialogInterface, i ->
-                                        doctorSelector!!.setText(doctors[i])
-                                        currentDoctor = doctors[i]
-                                    })
-                                }
-                                editText {
-                                    hint = "Notes"
-                                    maxLines = 3
-                                    textSize = 24f
-                                }
-                                button("Submit") {
-                                    textSize = 26f
-                                }
-                            }
-                        }
-                        yesButton { }
-                    }.show()
-                }
-            }
-        }
-    }
+//    private fun showMakeAppointmentDialog(position: Int) {
+//        var currentDoctor: String
+//        val dialog: ProgressDialog = progressDialog(message = "Please wait a bit…", title = "Fetching data")
+//        dialog.isIndeterminate = true
+//        dialog.show()
+//        val doctors = ArrayList<String>()
+//        doAsync {
+//            firestore.collection("doctors").whereEqualTo("hospital_id", hospitals[position].id)
+//                    .get().addOnCompleteListener { task ->
+//                        if (task.isSuccessful) {
+//                            val result = task.result
+//                            result?.let {
+//                                if (result.size() > 0) {
+//                                    result.forEach { doctors.add(it.getString("name")) }
+//                                } else toast("no doctor found")
+//                            }
+//                        }
+//                    }
+//            onComplete {
+//                dialog.dismiss()
+//                uiThread {
+//                    alert {
+//                        title = getString(R.string.request_appointment)
+//                        var doctorSelector: EditText?
+//                        var datePickerEditText: EditText?
+//                        customView {
+//                            scrollView {
+//                                verticalLayout {
+//                                    padding = dip(30)
+//                                    textView {
+//                                        text = hospitals[position].name
+//                                        textSize = 24f
+//                                    }
+//                                    doctorSelector = editText {
+//                                        hint = context.getString(R.string.select_doctor)
+//                                        isFocusable = false
+//                                        isClickable = true
+//                                        textSize = 24f
+//                                    }
+//                                    doctorSelector!!.setOnClickListener {
+//                                        selector("Pick a doctor", doctors, { _, i ->
+//                                            doctorSelector!!.setText(doctors[i])
+//                                            currentDoctor = doctors[i]
+//                                        })
+//                                    }
+//
+//                                   datePickerEditText =  editText {
+//                                        hint = context.getString(R.string.pick_date)
+//                                        maxLines = 3
+//                                        textSize = 24f
+//                                    }
+//                                    datePickerEditText!!.setOnClickListener {  }
+//                                    editText {
+//                                        hint = context.getString(R.string.appointment_notes)
+//                                        maxLines = 3
+//                                        textSize = 24f
+//                                    }
+//                                    button("Submit") {
+//                                        textSize = 26f
+//                                    }
+//                                }
+//                            }
+//                        }
+//                        yesButton { }
+//                    }.show()
+//                }
+//            }
+//        }
+//    }
 
 
 }

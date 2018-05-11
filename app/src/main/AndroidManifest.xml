@@ -93,6 +93,10 @@
         <activity
             android:name=".medicReport.MReportDetailsActivity"
             android:label="@string/title_activity_mreport_details"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".appointment.RequestAppointmentActivity"
+            android:label="@string/title_activity_request_appointment"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
