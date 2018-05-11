@@ -17,6 +17,6 @@
     <item
         android:id="@+id/nearby_hospital"
         android:title="Nearby Hospital"
-        app:showAsAction="collapseActionView"/>
+        app:showAsAction="collapseActionView" />
 
 </menu>

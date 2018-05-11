@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/send_to_hospital"
-        app:showAsAction="ifRoom"
-        android:title="Send To Hospital"/>
+        android:title="Send To Hospital"
+        app:showAsAction="ifRoom" />
 
 </menu>

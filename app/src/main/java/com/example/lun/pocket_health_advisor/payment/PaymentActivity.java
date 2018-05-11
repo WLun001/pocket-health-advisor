@@ -46,8 +46,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.example.lun.pocket_health_advisor.ulti.ConstWrapper.PAYMENT_DIAGNOSIS_PRICE;
 import static com.example.lun.pocket_health_advisor.ulti.ConstWrapper.PAYMENT_CONSULTATION_FEE;
+import static com.example.lun.pocket_health_advisor.ulti.ConstWrapper.PAYMENT_DIAGNOSIS_PRICE;
 
 public class PaymentActivity extends AppCompatActivity {
 

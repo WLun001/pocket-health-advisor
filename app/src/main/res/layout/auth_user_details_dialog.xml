@@ -1,40 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
     <ImageView
-        android:src="@drawable/ic_account_circle_white_24dp"
         android:layout_width="match_parent"
         android:layout_height="64dp"
-        android:scaleType="center"
         android:background="#FFFFBB33"
-        android:contentDescription="@string/app_name" />
+        android:contentDescription="@string/app_name"
+        android:scaleType="center"
+        android:src="@drawable/ic_account_circle_white_24dp" />
 
     <TextView
         android:id="@+id/display_message"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/display_message"/>
+        android:text="@string/display_message" />
+
     <EditText
         android:id="@+id/display_name"
-        android:inputType="textEmailAddress"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginBottom="4dp"
         android:layout_marginLeft="4dp"
         android:layout_marginRight="4dp"
-        android:layout_marginBottom="4dp"
-        android:hint="@string/new_display_name" />
+        android:layout_marginTop="16dp"
+        android:hint="@string/new_display_name"
+        android:inputType="textEmailAddress" />
     <!--<EditText-->
-        <!--android:id="@+id/password"-->
-        <!--android:inputType="textPassword"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginTop="4dp"-->
-        <!--android:layout_marginLeft="4dp"-->
-        <!--android:layout_marginRight="4dp"-->
-        <!--android:layout_marginBottom="16dp"-->
-        <!--android:fontFamily="sans-serif"-->
-        <!--android:hint="@string/password"/>-->
+    <!--android:id="@+id/password"-->
+    <!--android:inputType="textPassword"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginTop="4dp"-->
+    <!--android:layout_marginLeft="4dp"-->
+    <!--android:layout_marginRight="4dp"-->
+    <!--android:layout_marginBottom="16dp"-->
+    <!--android:fontFamily="sans-serif"-->
+    <!--android:hint="@string/password"/>-->
 </LinearLayout>

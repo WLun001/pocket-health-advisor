@@ -5,6 +5,6 @@
     <item
         android:id="@+id/medic_report"
         android:icon="@drawable/report"
-        app:showAsAction="always"
-        android:title="Report"/>
+        android:title="Report"
+        app:showAsAction="always" />
 </menu>

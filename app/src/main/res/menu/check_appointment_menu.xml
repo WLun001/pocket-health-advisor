@@ -4,6 +4,6 @@
     <item
         android:id="@+id/check_appointment"
         android:title="Check Appointment"
-        app:showAsAction="collapseActionView"/>
+        app:showAsAction="collapseActionView" />
 
 </menu>
