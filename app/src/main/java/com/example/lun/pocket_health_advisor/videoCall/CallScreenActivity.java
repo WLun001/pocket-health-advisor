@@ -27,6 +27,8 @@ import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static com.example.lun.pocket_health_advisor.ulti.ConstWrapper.PAYMENT_DIAGNOSIS_PRICE;
+
 public class CallScreenActivity extends BaseActivity {
 
     public static final String REMOTE_CALLER_ID_EXTRA = CallScreenActivity.class.getPackage() + ".REMOTE_CALLER_ID";
@@ -144,6 +146,7 @@ public class CallScreenActivity extends BaseActivity {
         }
         finish();
         Intent intent = new Intent(this, PaymentActivity.class);
+        intent.putExtra(getString(R.string.payment_type), PAYMENT_DIAGNOSIS_PRICE);
         intent.putExtra("remote_id", remoteCallerId);
         startActivity(intent);
     }

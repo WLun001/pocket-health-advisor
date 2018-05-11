@@ -5,8 +5,11 @@
     <string name="title_activity_sinch_login">SinchLoginActivity</string>
     <string name="title_activity_nearby_hospital">NearbyHospitalActivity</string>
 
-
+    <!--CONSTANT - users-->
     <string name="intent_hospital">com.example.lun.pocket_health_advisor.HOSPITAL</string>
+    <string name="payment_type">com.example.lun.pocket_health_advisor.PAYMENT_TYPE</string>
+    <string name="BEFORE_CONSULTATION">0</string>
+    <string name="AFTER_CONSULTATION">1</string>
 
     <!--firesthospitalNamename - users-->
     <string name="first_col">users</string>

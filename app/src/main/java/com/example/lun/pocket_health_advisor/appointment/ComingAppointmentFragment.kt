@@ -1,10 +1,14 @@
 package com.example.lun.pocket_health_advisor.appointment
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.ListFragment
 import android.view.View
 import android.widget.ListView
+import com.example.lun.pocket_health_advisor.R
 import com.example.lun.pocket_health_advisor.adapter.AppointmentAdapter
+import com.example.lun.pocket_health_advisor.payment.PaymentActivity
+import com.example.lun.pocket_health_advisor.ulti.ConstWrapper.Companion.PAYMENT_CONSULTATION_FEE
 import com.example.lun.pocket_health_advisor.ulti.DataClassWrapper.Appointment
 import com.example.lun.pocket_health_advisor.ulti.DataClassWrapper.AuthUser
 import com.google.firebase.auth.FirebaseAuth
@@ -30,8 +34,17 @@ class ComingAppointmentFragment : ListFragment() {
     }
 
     override fun onListItemClick(l: ListView?, v: View?, position: Int, id: Long) {
-        val paymentStatus = (listAdapter.getItem(position) as Appointment).paymentStatus
-        if (paymentStatus) alert { message = "Paid" ; yesButton { }}.show() else alert { message="please make payment"; yesButton {  } }.show()
+        val appointment = listAdapter.getItem(position) as Appointment
+        val paymentStatus = appointment.paymentStatus
+        if (paymentStatus) alert { message = "Paid"; yesButton { } }.show() else alert {
+            message = "please make payment"; positiveButton("Pay now", {
+            val intent = Intent(activity, PaymentActivity::class.java)
+            intent.putExtra(getString(R.string.payment_type), PAYMENT_CONSULTATION_FEE)
+            intent.putExtra("appointment_id", appointment.id)
+            intent.putExtra("hospital_id", appointment.hospitalId)
+            startActivity(intent)
+        })
+        }.show()
     }
 
     private fun searchPatient() {
@@ -68,6 +81,7 @@ class ComingAppointmentFragment : ListFragment() {
                                 result.forEach {
                                     appointmentList.add(
                                             Appointment(
+                                                    it.getString("id"),
                                                     it.getString("doctor_name"),
                                                     it.getString("doctor_id"),
                                                     it.getString("hospital_id"),

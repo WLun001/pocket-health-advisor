@@ -26,6 +26,7 @@ class DataClassWrapper {
     ) : Serializable
 
     data class Appointment(
+            val id: String,
             val doctorName: String,
             val doctorId: String,
             val hospitalId: String,

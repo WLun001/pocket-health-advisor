@@ -43,11 +43,11 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
+
+import static com.example.lun.pocket_health_advisor.ulti.ConstWrapper.PAYMENT_DIAGNOSIS_PRICE;
+import static com.example.lun.pocket_health_advisor.ulti.ConstWrapper.PAYMENT_CONSULTATION_FEE;
 
 public class PaymentActivity extends AppCompatActivity {
 
@@ -64,6 +64,9 @@ public class PaymentActivity extends AppCompatActivity {
     private ProgressDialog progressDialog;
     private FirebaseFirestore db;
     private String appointmentId;
+    private String appID;
+    private int paymentType;
+    private String hospitalId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,18 +79,25 @@ public class PaymentActivity extends AppCompatActivity {
         etAmount = (EditText) findViewById(R.id.etPrice);
         btnPay = (Button) findViewById(R.id.btnPay);
         //TODO: get patient id from intent
-        Intent intent = getIntent();
-        String remoteCallerId = intent.getStringExtra("remote_id");
 
         db = FirebaseFirestore.getInstance();
 
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setCancelable(false);
-        progressDialog.setTitle("Waiting for amount");
-        progressDialog.setMessage("Please wait for doctor to key in amount, do not close the app");
-        progressDialog.setIndeterminate(true);
-        progressDialog.show();
-        searchAppointment(remoteCallerId);
+        Intent intent = getIntent();
+        paymentType = intent.getIntExtra(getString(R.string.payment_type), PAYMENT_CONSULTATION_FEE);
+        if (paymentType == PAYMENT_CONSULTATION_FEE) {
+            appID = intent.getStringExtra("appointment_id");
+            hospitalId = intent.getStringExtra("hospital_id");
+            getConsultationPrice();
+        } else {
+            progressDialog = new ProgressDialog(this);
+            progressDialog.setCancelable(false);
+            progressDialog.setTitle("Waiting for amount");
+            progressDialog.setMessage("Please wait for doctor to key in amount, do not close the app");
+            progressDialog.setIndeterminate(true);
+            progressDialog.show();
+            String remoteCallerId = intent.getStringExtra("remote_id");
+            searchAppointment(remoteCallerId);
+        }
 
         btnPay.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -150,8 +160,8 @@ public class PaymentActivity extends AppCompatActivity {
                         if (task.getResult().size() > 0) {
                             DocumentSnapshot doc = task.getResult().getDocuments().get(0);
                             //get appointment id
-                            getPaymentAmount(doc.getId());
                             appointmentId = doc.getId();
+                            getDiagnosisPrice(appointmentId);
                         }
                     }
                 });
@@ -162,7 +172,7 @@ public class PaymentActivity extends AppCompatActivity {
      *
      * @param appointmentId id of an appointment
      */
-    private void getPaymentAmount(String appointmentId) {
+    private void getDiagnosisPrice(String appointmentId) {
         db.collection("appointments")
                 .whereEqualTo("id", appointmentId)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -176,6 +186,22 @@ public class PaymentActivity extends AppCompatActivity {
                         }
                     }
                 });
+    }
+
+    /**
+     * This method get consultation amount
+     */
+    private void getConsultationPrice() {
+        db.collection("hospitals")
+                .whereEqualTo("id", hospitalId)
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.getResult().size() > 0) {
+                    etAmount.setText(task.getResult().getDocuments().get(0).get("consultation_fee").toString());
+                }
+            }
+        });
     }
 
     /**
@@ -223,10 +249,10 @@ public class PaymentActivity extends AppCompatActivity {
      * This method change the payment status in appointment collection
      */
     private void recordAppointmentPaymentStatus() {
-        if (appointmentId != null) {
+        if (appID != null) {
             HashMap<String, Object> data = new HashMap<>();
             data.put("payment_status", true);
-            db.collection("appointments").document(appointmentId)
+            db.collection("appointments").document(appID)
                     .update(data);
         }
     }
@@ -245,9 +271,10 @@ public class PaymentActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         if (response.contains("Successful")) {
-                            recordPayment();
-                            recordPatientPaymentStatus();
-                            recordAppointmentPaymentStatus();
+                            if (paymentType == PAYMENT_DIAGNOSIS_PRICE) {
+                                recordPayment();
+                                recordPatientPaymentStatus();
+                            } else recordAppointmentPaymentStatus();
                             Toast.makeText(PaymentActivity.this, "Transaction successful", Toast.LENGTH_LONG).show();
                             llHolder.setVisibility(View.GONE);
 
