@@ -64,7 +64,8 @@ class ComingAppointmentFragment : ListFragment() {
                                                     it.getString("hospital_id"),
                                                     it.getString("hospital_name"),
                                                     it.getString("patient_id"),
-                                                    it.get("time").toString()
+                                                    it.get("time").toString(),
+                                                    it.getBoolean("payment_status")
                                             )
                                     )
                                 }

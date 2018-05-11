@@ -31,8 +31,8 @@ class DataClassWrapper {
             val hospitalId: String,
             val hospitalName: String,
             val patientId: String,
-            val time: String
-
+            val time: String,
+            val paymentStatus: Boolean
     )
 
     data class Response(var response: JSONObject)

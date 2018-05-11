@@ -9,6 +9,7 @@ import android.widget.BaseAdapter
 import android.widget.TextView
 import com.example.lun.pocket_health_advisor.R
 import com.example.lun.pocket_health_advisor.ulti.DataClassWrapper.MedicReport
+import java.util.*
 
 /**
  * Created by wlun on 2/10/18.
@@ -34,7 +35,6 @@ class MedicReportAdapter(private var context: Context, private var medicReportLi
 
         return view
     }
-
 
     override fun getItem(position: Int): Any {
         return medicReportList[position]

@@ -1,6 +1,7 @@
 package com.example.lun.pocket_health_advisor.adapter
 
 import android.content.Context
+import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -27,6 +28,7 @@ class AppointmentAdapter(private val context: Context, private val appointmentLi
             viewHolder = view.tag as ViewHolder
         }
         Log.d("adapter", "populating list")
+        showPaymentStatusColour(viewHolder.hospitalName, viewHolder.doctorName, viewHolder.time, appointmentList[position])
         viewHolder.hospitalName.text = appointmentList[position].hospitalName.capitalize()
         viewHolder.doctorName.text = appointmentList[position].doctorName
         viewHolder.time.text = appointmentList[position].time
@@ -44,6 +46,18 @@ class AppointmentAdapter(private val context: Context, private val appointmentLi
 
     override fun getCount(): Int {
         return appointmentList.size
+    }
+
+    private fun showPaymentStatusColour(hospitalName: TextView, doctorName: TextView, time: TextView, app: Appointment) {
+        if (app.paymentStatus) {
+            hospitalName.setTextColor(Color.parseColor("#FF3BE215"))
+            doctorName.setTextColor(Color.parseColor("#FF3BE215"))
+            time.setTextColor(Color.parseColor("#FF3BE215"))
+        } else {
+            hospitalName.setTextColor(Color.parseColor("#FFE22315"))
+            doctorName.setTextColor(Color.parseColor("#FFE22315"))
+            time.setTextColor(Color.parseColor("#FFE22315"))
+        }
     }
 
     private class ViewHolder(view: View?) {
