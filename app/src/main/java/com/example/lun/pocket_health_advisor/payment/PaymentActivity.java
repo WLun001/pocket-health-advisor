@@ -140,9 +140,9 @@ public class PaymentActivity extends AppCompatActivity {
     private void searchAppointment(String remoteCallerId) {
         //TODO: Change to patient ic and doctor ic
         db.collection("appointments")
-                .whereEqualTo("patient_id", "b341e3dc-1959-4996-c6c8-720b004021cd")
+                .whereEqualTo("patient_id", "5a234c39-3999-d6e3-8526-f97a3128bcf2")
                 .whereEqualTo("doctor_name", remoteCallerId)
-                .whereEqualTo("date", new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).format(Calendar.getInstance().getTime()))
+                .whereEqualTo("date",/* new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).format(Calendar.getInstance().getTime())*/"january 8")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override

@@ -1,12 +1,9 @@
 package com.example.lun.pocket_health_advisor.appointment
 
-import android.app.ProgressDialog
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.transition.CircularPropagation
 import android.widget.DatePicker
 import android.widget.EditText
-import android.widget.ProgressBar
 import android.widget.TimePicker
 import com.example.lun.pocket_health_advisor.R
 import com.example.lun.pocket_health_advisor.ulti.DataClassWrapper.RegisteredHospital
@@ -160,16 +157,19 @@ class RequestAppointmentActivity : AppCompatActivity() {
             toast("request sent")
             progress.dismiss()
             finish()
+        }.addOnSuccessListener { documentReference ->
+            firestore.collection("waiting_list").document(documentReference.id).update("id", documentReference.id)
         }
                 .addOnFailureListener { toast("couldn't send request"); progress.dismiss() }
     }
 
     private fun getUserInput(): HashMap<String, Any> {
         val data = HashMap<String, Any>()
-        data["appointment_name"] = select_report.text.toString()
+        data["id"] = UUID.randomUUID().toString()
+        data["appointment_desc"] = select_report.text.toString()
         data["patient_name"] = displayName.toString()
         data["doctor_name"] = if (!select_doctor.text.isEmpty()) select_doctor.text.toString() else "null"
-        data["hospital_name"] = hospital.name
+        data["hospital_id"] = hospital.id
         data["date"] = app_date.text.toString()
         data["time"] = app_time.text.toString()
         data["notes"] = app_notes.text.toString()

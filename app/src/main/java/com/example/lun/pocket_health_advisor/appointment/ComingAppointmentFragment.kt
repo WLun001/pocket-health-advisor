@@ -2,12 +2,16 @@ package com.example.lun.pocket_health_advisor.appointment
 
 import android.os.Bundle
 import android.support.v4.app.ListFragment
+import android.view.View
+import android.widget.ListView
 import com.example.lun.pocket_health_advisor.adapter.AppointmentAdapter
 import com.example.lun.pocket_health_advisor.ulti.DataClassWrapper.Appointment
 import com.example.lun.pocket_health_advisor.ulti.DataClassWrapper.AuthUser
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import org.jetbrains.anko.support.v4.alert
 import org.jetbrains.anko.support.v4.toast
+import org.jetbrains.anko.yesButton
 
 /**
  * Created by wlun on 2/14/18.
@@ -23,6 +27,11 @@ class ComingAppointmentFragment : ListFragment() {
         val auth = FirebaseAuth.getInstance().currentUser
         auth?.displayName?.let { authUser = AuthUser(auth.uid, auth.displayName.toString()) }
         searchPatient()
+    }
+
+    override fun onListItemClick(l: ListView?, v: View?, position: Int, id: Long) {
+        val paymentStatus = (listAdapter.getItem(position) as Appointment).paymentStatus
+        if (paymentStatus) alert { message = "Paid" ; yesButton { }}.show() else alert { message="please make payment"; yesButton {  } }.show()
     }
 
     private fun searchPatient() {
