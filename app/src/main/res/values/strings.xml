@@ -42,11 +42,13 @@
     <string name="title_activity_mreport_details">MReportDetailsActivity</string>
 
     <string name="request_appointment">Request Appointment</string>
-    <string name="appointment_notes">Notes</string>
+    <string name="appointment_notes">Notes (optional)</string>
     <string name="select_doctor">Select doctor (optional)</string>
     <string name="pick_date">Pick a date</string>
     <string name="title_activity_request_appointment">RequestAppointmentActivity</string>
     <string name="appointment_date">Appointment date</string>
     <string name="appointment_time">Appointment time</string>
     <string name="select_medical_report">Select Medical Report</string>
+    <string name="requesting">Requesting. Please wait awhile</string>
+    <string name="please_wait">Please wait</string>
 </resources>

@@ -1,10 +1,12 @@
 package com.example.lun.pocket_health_advisor.appointment
 
+import android.app.ProgressDialog
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
+import android.transition.CircularPropagation
 import android.widget.DatePicker
 import android.widget.EditText
+import android.widget.ProgressBar
 import android.widget.TimePicker
 import com.example.lun.pocket_health_advisor.R
 import com.example.lun.pocket_health_advisor.ulti.DataClassWrapper.RegisteredHospital
@@ -16,6 +18,7 @@ import kotlinx.android.synthetic.main.content_request_appointment.*
 import org.jetbrains.anko.*
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.HashMap
 
 class RequestAppointmentActivity : AppCompatActivity() {
 
@@ -23,16 +26,20 @@ class RequestAppointmentActivity : AppCompatActivity() {
     private lateinit var hospital: RegisteredHospital
     private lateinit var calendar: Calendar
     private var authUid: String? = ""
+    private var displayName: String? = ""
     private val doctors = ArrayList<String>()
     private val reports = ArrayList<String>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_request_appointment)
         setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        title = "Request Appointment"
 
         firestore = FirebaseFirestore.getInstance()
         val auth = FirebaseAuth.getInstance()
         authUid = auth.currentUser?.uid
+        displayName = auth.currentUser?.displayName
         calendar = Calendar.getInstance()
 
         hospital = intent.getSerializableExtra(getString(R.string.intent_hospital)) as RegisteredHospital
@@ -46,14 +53,14 @@ class RequestAppointmentActivity : AppCompatActivity() {
         select_doctor.setOnClickListener { setupSelector(getString(R.string.select_doctor), select_doctor, doctors) }
         app_date.setOnClickListener { setupDatePicker() }
         app_time.setOnClickListener { setupTimePicker() }
-
-
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
-
+        fab.setOnClickListener {
+            if (checkUserInputNotEmpty()) sendWaitingList(getUserInput()) else
+                alert {
+                    title = "Error"
+                    message = "Please fill all required fields!"
+                    yesButton { }
+                }.show()
         }
-
     }
 
     private fun setupSelector(title: String, editText: EditText, list: ArrayList<String>) {
@@ -140,4 +147,33 @@ class RequestAppointmentActivity : AppCompatActivity() {
                     }
                 }
     }
+
+    private fun checkUserInputNotEmpty(): Boolean {
+        return !select_report.text.isEmpty() && !app_date.text.isEmpty() && !app_time.text.isEmpty()
+    }
+
+    private fun sendWaitingList(data: HashMap<String, Any>) {
+        val progress = progressDialog(getString(R.string.requesting), getString(R.string.please_wait))
+        progress.isIndeterminate = true
+        progress.show()
+        firestore.collection("waiting_list").add(data).addOnCompleteListener {
+            toast("request sent")
+            progress.dismiss()
+            finish()
+        }
+                .addOnFailureListener { toast("couldn't send request"); progress.dismiss() }
+    }
+
+    private fun getUserInput(): HashMap<String, Any> {
+        val data = HashMap<String, Any>()
+        data["appointment_name"] = select_report.text.toString()
+        data["patient_name"] = displayName.toString()
+        data["doctor_name"] = if (!select_doctor.text.isEmpty()) select_doctor.text.toString() else "null"
+        data["hospital_name"] = hospital.name
+        data["date"] = app_date.text.toString()
+        data["time"] = app_time.text.toString()
+        data["notes"] = app_notes.text.toString()
+        return data
+    }
+
 }
