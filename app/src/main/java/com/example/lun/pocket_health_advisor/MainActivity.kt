@@ -15,12 +15,13 @@ import android.widget.EditText
 import android.widget.GridLayout
 import android.widget.Toast
 import com.example.lun.pocket_health_advisor.NearbyHospital.HospitalActivity
-import com.example.lun.pocket_health_advisor.ulti.DataClassWrapper.AuthUser
-import com.example.lun.pocket_health_advisor.R.id.*
+import com.example.lun.pocket_health_advisor.R.id.auth_user
+import com.example.lun.pocket_health_advisor.R.id.sign_out
 import com.example.lun.pocket_health_advisor.appointment.AppointmentActivity
 import com.example.lun.pocket_health_advisor.chatbot.ChatbotActivity
 import com.example.lun.pocket_health_advisor.medicReport.MedicReportActivity
 import com.example.lun.pocket_health_advisor.payment.PaymentActivity
+import com.example.lun.pocket_health_advisor.ulti.DataClassWrapper.AuthUser
 import com.example.lun.pocket_health_advisor.videoCall.SinchLoginActivity
 import com.firebase.ui.auth.AuthUI
 import com.google.firebase.auth.FirebaseAuth
@@ -130,7 +131,7 @@ class MainActivity : AppCompatActivity() {
 
                     1 -> startActivity(Intent(applicationContext, HospitalActivity::class.java))
 
-                    2 ->{
+                    2 -> {
                         val intent = Intent(this, MedicReportActivity::class.java)
                         intent.putExtra(USER_DETAILS, authUser as Serializable)
                         intent.putExtras(intent)

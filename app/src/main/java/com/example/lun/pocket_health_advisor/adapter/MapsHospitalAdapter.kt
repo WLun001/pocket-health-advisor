@@ -6,8 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import com.example.lun.pocket_health_advisor.ulti.DataClassWrapper.MapsHospital
 import com.example.lun.pocket_health_advisor.R
+import com.example.lun.pocket_health_advisor.ulti.DataClassWrapper.MapsHospital
 import kotlinx.android.synthetic.main.custom_list_item.view.*
 
 /**

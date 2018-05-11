@@ -44,7 +44,7 @@ class RequestAppointmentActivity : AppCompatActivity() {
     private fun setupListener() {
         select_report.setOnClickListener { setupSelector(getString(R.string.select_medical_report), select_report, reports) }
         select_doctor.setOnClickListener { setupSelector(getString(R.string.select_doctor), select_doctor, doctors) }
-        app_date.setOnClickListener {setupDatePicker() }
+        app_date.setOnClickListener { setupDatePicker() }
         app_time.setOnClickListener { setupTimePicker() }
 
 
@@ -67,7 +67,10 @@ class RequestAppointmentActivity : AppCompatActivity() {
             customView {
                 verticalLayout {
                     datePicker = datePicker {
-                        minDate = System.currentTimeMillis()}}}
+                        minDate = System.currentTimeMillis()
+                    }
+                }
+            }
             yesButton {
                 calendar.set(datePicker.year, datePicker.month, datePicker.dayOfMonth)
                 val format = SimpleDateFormat("dd-MM-yyyy").format(calendar.time)
@@ -83,12 +86,15 @@ class RequestAppointmentActivity : AppCompatActivity() {
             lateinit var timePicker: TimePicker
             customView {
                 verticalLayout {
-                    timePicker = timePicker { }}}
+                    timePicker = timePicker { }
+                }
+            }
             yesButton {
                 calendar.set(Calendar.HOUR, timePicker.hour)
                 calendar.set(Calendar.MINUTE, timePicker.minute)
                 val format = SimpleDateFormat("hh:mm a").format(calendar.time)
-                app_time.setText(format)}
+                app_time.setText(format)
+            }
             noButton { }
         }.show()
     }

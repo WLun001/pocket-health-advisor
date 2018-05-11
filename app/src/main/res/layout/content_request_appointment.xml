@@ -41,6 +41,7 @@
                 android:text="@string/appointment_date"
                 android:textSize="20sp"
                 android:textStyle="bold" />
+
             <EditText
                 android:id="@+id/select_doctor"
                 android:layout_width="match_parent"

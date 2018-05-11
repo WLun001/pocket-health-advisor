@@ -7,8 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
-import com.example.lun.pocket_health_advisor.ulti.DataClassWrapper.MedicReport
 import com.example.lun.pocket_health_advisor.R
+import com.example.lun.pocket_health_advisor.ulti.DataClassWrapper.MedicReport
 
 /**
  * Created by wlun on 2/10/18.

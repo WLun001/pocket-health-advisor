@@ -18,7 +18,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import org.jetbrains.anko.support.v4.*
 import org.jetbrains.anko.toast
 import org.jetbrains.anko.yesButton
-import java.io.Serializable
 
 /**
  * Created by wlun on 2/10/18.
