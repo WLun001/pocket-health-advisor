@@ -39,7 +39,8 @@ public class SinchService extends Service {
         mSettings = new PersistedSettings(getApplicationContext());
         String userName = mSettings.getUsername();
         if (!userName.isEmpty()) {
-            start(userName);
+//            start(userName);
+            start("111");
         }
     }
 

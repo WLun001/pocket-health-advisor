@@ -142,7 +142,7 @@ public class PaymentActivity extends AppCompatActivity {
         db.collection("appointments")
                 .whereEqualTo("patient_id", "5a234c39-3999-d6e3-8526-f97a3128bcf2")
                 .whereEqualTo("doctor_name", remoteCallerId)
-                .whereEqualTo("date",/* new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).format(Calendar.getInstance().getTime())*/"january 8")
+                .whereEqualTo("date",/* new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).format(Calendar.getInstance().getTime())*/"22-05-2018")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -184,7 +184,7 @@ public class PaymentActivity extends AppCompatActivity {
     private void recordPayment() {
         //TODO: get patient id from intent or db
         db.collection("appointments")
-                .whereEqualTo("patient_id", "b341e3dc-1959-4996-c6c8-720b004021cd")
+                .whereEqualTo("patient_id", "5a234c39-3999-d6e3-8526-f97a3128bcf2")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -215,7 +215,7 @@ public class PaymentActivity extends AppCompatActivity {
     private void recordPatientPaymentStatus() {
         HashMap<String, Object> data = new HashMap<>();
         data.put("payment_status", true);
-        db.collection("patients").document("b341e3dc-1959-4996-c6c8-720b004021cd")
+        db.collection("patients").document("5a234c39-3999-d6e3-8526-f97a3128bcf2")
                 .update(data);
     }
 
