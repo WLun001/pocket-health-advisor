@@ -53,13 +53,15 @@ This repositories is Android app for Pocket Health Advisor
 ![Architecture Design](docs/architecture-diagram.png)
 
 ## UI Screenshot
-Login           |  Main      |  Chatbot  | Generated Report
-:---------------------------:|:---------------------------:|:---------------------------:|:---------------------------:
-![login](docs/login.png) |![main](docs/main.png) | ![Chatbot](docs/chatbot.png) |  ![report](docs/report.png)
-Full Medical Report | Nearby Hospitals   | Registered Hospitals      |Request Appointment
-![full-report](docs/medic_report.png) |![nearbyHospital](docs/nearbyhospital.png) |![registeredHospital](docs/registerhospital.png) | ![requestAppointment](docs/request_appointment.png)
- Appointments | Video Call | In-app payment
-![appointments](docs/appointment.png) |![video-call](docs/video_call.png) | ![payment](docs/payment.png)
+Login           |  Main      |  Chatbot
+:---------------------------:|:---------------------------:|:---------------------------:
+![login](docs/login.png) |![main](docs/main.png) | ![Chatbot](docs/chatbot.png)
+ Generated Report | Full Medical Report | Nearby Hospitals
+![report](docs/report.png) |![full-report](docs/medic_report.png) |![nearbyHospital](docs/nearbyhospital.png)
+| Registered Hospitals      |Request Appointment | Appointment
+![registeredHospital](docs/registerhospital.png) | ![requestAppointment](docs/request_appointment.png) | ![appointments](docs/appointment.png)
+ Video Call | In-app payment
+![video-call](docs/video_call.png) | ![payment](docs/payment.png)
 
 ## Technologies Used
 ![overview](docs/technologies.png)
