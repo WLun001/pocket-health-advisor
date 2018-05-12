@@ -53,11 +53,13 @@ This repositories is Android app for Pocket Health Advisor
 ![Architecture Design](docs/architecture-diagram.png)
 
 ## UI Screenshot
-Main           |  ChatBot      |  Medical Report  
-:---------------------------:|:---------------------------:|:---------------------------:
-![main](docs/main.png) | ![Chatbot](docs/chatbot.png) | ![quote](docs/report.png) 
-Nearby Hospitals   | Registered Hospitals      |  Appointments 
-![nearbyHospital](docs/nearbyhospital.png) |![registeredHospital](docs/registerhospital.png) | ![appointments](docs/appointment.png)  
+Login           |  Main      |  Chatbot  | Generated Report
+:---------------------------:|:---------------------------:|:---------------------------:|:---------------------------:
+![login](docs/login.png) |![main](docs/main.png) | ![Chatbot](docs/chatbot.png) |  ![report](docs/report.png)
+Nearby Hospitals   | Registered Hospitals      |Request Appointment  |  Appointments
+![nearbyHospital](docs/nearbyhospital.png) |![registeredHospital](docs/registerhospital.png) | ![requestAppointment](docs/request_appointment.png) |![appointments](docs/appointment.png)
+Video Call | In-app payment
+![video-call](docs/video_call.png) | ![payment](docs/payment.png)
 
 ## Technologies Used
 ![overview](docs/technologies.png)

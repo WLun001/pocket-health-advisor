@@ -152,7 +152,7 @@ public class PaymentActivity extends AppCompatActivity {
         db.collection("appointments")
                 .whereEqualTo("patient_id", "5a234c39-3999-d6e3-8526-f97a3128bcf2")
                 .whereEqualTo("doctor_name", remoteCallerId)
-                .whereEqualTo("date",/* new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).format(Calendar.getInstance().getTime())*/"22-05-2018")
+                .whereEqualTo("date",/* new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).format(Calendar.getInstance().getTime())*/"31-05-2018")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
