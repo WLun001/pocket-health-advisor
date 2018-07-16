@@ -15,7 +15,7 @@ This repositories is Android app for Pocket Health Advisor
 - Giving up on treatment due to long queue​.
 
 ## Problem statement
-- Long waiting time for patients in Malaysian hospital.
+- Long waiting time for patients in Malaysia hospital.
 - People not aware about their existing health issues​.
 
 ## Objectives
