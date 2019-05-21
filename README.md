@@ -61,7 +61,7 @@ Login           |  Main      |  Chatbot
 | Registered Hospitals      |Request Appointment | Appointment
 ![registeredHospital](https://raw.githubusercontent.com/WLun001/pocket-health-advisor/master/docs/registerhospital.png) | ![requestAppointment](https://raw.githubusercontent.com/WLun001/pocket-health-advisor/master/docs/request_appointment.png) | ![appointments](https://raw.githubusercontent.com/WLun001/pocket-health-advisor/master/docs/appointment.png)
  Video Call | In-app payment
-![video-call](https://raw.githubusercontent.com/WLun001/pocket-health-advisor/master/docs/video_call.png) | ![payment](docs/payment.png)
+![video-call](https://raw.githubusercontent.com/WLun001/pocket-health-advisor/master/docs/video_call.png) | ![payment](https://raw.githubusercontent.com/WLun001/pocket-health-advisor/master/docs/payment.png)
 
 ## Technologies Used
 ![overview](https://raw.githubusercontent.com/WLun001/pocket-health-advisor/master/docs/technologies.png)
